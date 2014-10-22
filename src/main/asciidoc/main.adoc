@@ -1,0 +1,1104 @@
+= RoboVM Reference
+:toc: left
+:icons: font
+:source-highlighter: highlight.js
+:appversion: 1.0.0-alpha-04
+:osxversion: 10.9
+:xcodeversion: 6.x
+:imagesdir: images
+
+== Introduction
+
+Mobile app developers targeting both Android and iOS face many challenges.
+When comparing the native development environments of these two platforms,
+i.e. the toolchains provided by Google and Apple respectively, one quickly
+finds that they differ substantially. Android development, as defined by
+Google, is based on the Eclipse IDE and the Java programming language. iOS
+development, according to Apple, on the other hand is based on the Xcode IDE
+and the Objective-C programming language. These differences rule out any code
+reuse between the platforms. Also, not many developers are proficient in both
+environments. In the end almost every multi-platform app is developed using
+separate development teams and separate codebases for each platform.
+
+The ultimate goal of the RoboVM project is to solve this problem without
+compromising on neither developer nor app-user experience. With RoboVM
+developing for both iOS and Android becomes less challenging; the same Java
+developers can build both versions of the app and a large part of the codebase
+can be shared.
+
+=== Features
+
+* Brings Java and other JVM languages, such as
+  http://www.scala-lang.org/[Scala], http://clojure.org/[Clojure],
+  http://groovy.codehaus.org/[Groovy] and http://kotlinlang.org/[Kotlin], to
+  iOS devices.
+* Translates Java bytecode into machine code
+  http://en.wikipedia.org/wiki/Ahead-of-time_compilation[ahead-of-time] for
+  fast execution directly on the CPU without any overhead. The main target is
+  iOS and the ARM processor but there is also support for Mac OS X and Linux
+  running on x86 CPUs (32-bit).
+* Doesn't impose any restrictions on the Java platform features accessible to
+  the developer, such as reflection or file I/O.
+* Supports standard JAR files which lets the developer reuse the vast
+  ecosystem of 3rd party Java libraries.
+* Provides access to the
+  https://developer.apple.com/technologies/ios/cocoa-touch.html[full native
+  iOS APIs] through a Java to Objective-C bridge enabling the development of
+  apps with truly native UIs and with full hardware access.
+* Integrates with the most popular tools such as
+  https://www.eclipse.org/[Eclipse], http://maven.apache.org/[Maven] and
+  http://www.gradle.org/[Gradle].
+* App Store ready. 
+
+=== Limitations
+
+There are a few limitations in RoboVM, mainly due to restrictions in the iOS
+platform:
+
+* Loading custom bytecode at runtime is not supported. All class files
+  comprising the app have to be available at compile time on the developer
+  machine.
+* The http://en.wikipedia.org/wiki/Java_Native_Interface[Java Native
+  Interface] technology as used on the desktop or on servers usually loads
+  native code from dynamic libraries but Apple does not permit custom dynamic
+  libraries to be shipped with an iOS app. RoboVM supports <<jni,a variant of
+  JNI based on static libraries>>.
+
+NOTE: RoboVM has *full* support for reflection.
+
+////
+TBW. Describes scope, use cases, how it works, features, limitations, users,
+contributing, support options.
+////
+
+== Getting Started
+
+In this section you'll learn how to install RoboVM and make sure the toolchain
+works correctly by creating a very simple demo app.
+
+=== Prerequisites
+
+In order to use RoboVM the following is required:
+
+* A Mac running Mac OS X {osxversion} or later
+* http://www.oracle.com/technetwork/java/javase/downloads/index.html[Oracle's
+  Java SE JDK 7]
+* https://itunes.apple.com/us/app/xcode/id497799835?mt=12[Xcode {xcodeversion} from the
+  Mac App Store]
+
+IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s
+Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as
+adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To
+check which Java version Eclipse is running in go to _Eclipse -> About
+Eclipse_, then click _Installation Details_ and open the _Configuration_ tab.
+Find the `java.version` property and make sure it is 1.7 or higher.
+
+NOTE: The first time you install Xcode and every time you update to a new
+version you have to open it once to agree to the Xcode terms.
+
+=== RoboVM for Eclipse Plugin Installation
+
+Once your system meets all the requirements installing the plugin is simply a
+matter of opening the Eclipse Marketplace from the Eclipse _Help_ menu,
+searching for *RoboVM* and clicking _Install Now_.
+
+[[img-marketplace]]
+.Eclipse marketplace dialog
+image::eclipse-marketplace.png[]
+
+Alternatively you can use the following update site:
+
+----
+http://download.robovm.org/eclipse/
+----
+
+NOTE: The RoboVM for Eclipse plugin is known to work with Eclipse 4.2 (Juno)
+and later. We recommend you use Eclipse version 4.4 (Luna) or later.
+
+=== Command Line Tools Installation
+
+To install the RoboVM command line tools just
+http://download.robovm.org/robovm-{appversion}.tar.gz[download the latest
+package], extract it and add the `robovm-{appversion}/bin/` folder to your
+`$PATH` environment variable and set the `$ROBOVM_HOME` environment variable:
+
+[source,bash,subs="attributes"]
+----
+$ curl -O 'http://download.robovm.org/robovm-{appversion}.tar.gz'
+$ tar xvfz robovm-{appversion}.tar.gz
+$ export ROBOVM_HOME=$(cd robovm-{appversion} ; pwd -P)
+$ echo 'export ROBOVM_HOME="'"$ROBOVM_HOME"'"' >> ~/.profile
+$ echo 'export PATH="$PATH:'$ROBOVM_HOME'/bin"' >> ~/.profile
+----
+
+If everything is working correctly you should see the command line usage help
+text when you run
+----
+$ robovm -help
+----
+
+NOTE: If you change your `~/.profile` file you have to restart your shell or
+open a new window or tab in Terminal for the changes to take effect.
+
+[id=demo-app]
+=== Your First iOS App
+
+You should now be all set to run your first iOS app using RoboVM. In this section we will walk you through how to run a simple app <<iosdemo-eclipse>> and <<iosdemo-command-line>>.
+
+[id="iosdemo-eclipse"]
+==== In Eclipse
+
+Create a new project using _File -> New -> Project..._ and select the _RoboVM
+iOS Project_ wizard in the list.
+
+[[img-ios-project-wizard]]
+.The _RoboVM iOS Project wizard_
+image::eclipse-ios-project-wizard.png[]
+
+Enter `IOSDemo` as _Project name_, _App name_ and _Main class_. Enter
+`org.robovm.IOSDemo` as _App id_. Click _Finish_.
+
+[[img-create-project]]
+.The _New RoboVM iOS Project_ dialog
+image::eclipse-create-project.png[]
+
+Now let's create that main class we specified in the new project dialog.
+Create a new class and call it `IOSDemo` with no package name. Copy and paste
+the code below into the newly created file replacing whatever Eclipse auto
+generated for you.
+
+[source,java]
+----
+include::IOSDemo.java[]
+----
+
+Finally, launch the app in the iOS simulator by right clicking the project you
+created and select _Run As... -> iOS Simulator App (iPhone)_. This will run the
+app on a simulated iPhone.
+
+[[img-simulator]]
+.The IOSDemo app running in the iOS simulator
+image::simulator.png[width=300]
+
+NOTE: To run the app on an actual device you would use the _Run As... -> iOS
+Device App_ choice instead. Please note that this requires that the device has
+been set up for development. Please refer to
+https://developer.apple.com/library/ios/recipes/xcode_help-devices_organizer/articles/provision_device_for_development-generic.html[Apple's
+documentation] for further information.
+
+Check out the <<where-to-go-next>> section for pointers on where to go next.
+
+[id="iosdemo-command-line"]
+==== From the Command Line
+
+We'll start off by creating a few directories:
+
+[source,bash,subs="attributes"]
+----
+$ mkdir IOSDemo
+$ cd IOSDemo/
+$ mkdir src bin
+----
+
+Next create a new file called `IOSDemo.java` in the `src/` directory with the following contents:
+
+[source,java]
+----
+include::IOSDemo.java[]
+----
+
+Compile `IOSDemo.java` using `javac`:
+
+[source,bash,subs="attributes"]
+----
+$ javac -cp "$ROBOVM_HOME/lib/robovm-rt.jar:$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar" -d bin/ src/IOSDemo.java
+----
+
+Compile the Java bytecode into native code and launch the app using:
+
+[source,bash,subs="attributes"]
+----
+$ robovm -verbose -arch x86 -os ios -cp "$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar:bin/" -run IOSDemo
+----
+
+[[img-simulator]]
+.The IOSDemo app running in the iOS simulator
+image::simulator.png[width=300]
+
+[id="where-to-go-next"]
+=== Where to go from here?
+
+* Check out the <<the-robovm-for-eclipse-plugin>> section.
+* If you'd rather use the command line you should check out the <<command-line-usage>> section.
+* For more example projects have a look at the
+  https://github.com/robovm/robovm-samples[RoboVM iOS samples project on GitHub].
+
+== Under the hood
+
+=== The bytecode compiler
+
+At the heart of RoboVM is its
+http://en.wikipedia.org/wiki/Ahead-of-time_compilation[ahead-of-time
+compiler]. This is a tool that can be invoked either from the command line
+(see <<command-line-usage>>), from build tools such as Maven (see
+<<maven-integration>>) or Gradle or from an IDE (such as
+<<the-robovm-for-eclipse-plugin,Eclipse>>). It takes Java bytecode and
+translates it into machine code for a specific operating system and CPU type.
+Usually this means iOS and the ARM processor type but RoboVM is also capable
+of generating code for Mac OS X and Linux running on x86 CPUs (32-bit).
+
+The ahead-of-time approach is very different from how traditional JVMs, like
+http://en.wikipedia.org/wiki/HotSpot[Oracle’s Hotspot], usually work. Such
+JVMs typically read in Java bytecode at runtime and somehow execute the
+virtual machine instructions contained in the bytecode. To speed up this
+process the JVM employs a technique called
+http://en.wikipedia.org/wiki/Just-in-time_compilation[just-in-time
+compilation]. In simple terms this process translates the virtual machine
+instructions of a method to native machine code for the current physical CPU
+the first time the method is invoked by the program.
+
+Due to technical restrictions that Apple has built into iOS just-in-time
+compilation of any kind is impossible in an iOS app. The only alternatives are
+to use an interpreter, which is too slow and power consuming, or use
+ahead-of-time compilation like in RoboVM. The ahead-of-time compilation
+process takes place at compile time on the developer machine so at runtime, on
+an iOS device, the generated machine code runs at full speed, comparable to or
+even faster than code compiled from Objective-C.
+
+By consuming Java bytecode rather than Java source code the RoboVM
+ahead-of-time compiler can, at least in theory, be used with any JVM language
+that compiles down to bytecode. Scala, Clojure and Kotlin are JVM languages
+already known to work. Another benefit with this approach is that RoboVM can
+be used with 3rd party libraries in standard JAR files without any need for
+the original source code enabling the use of proprietary and closed-source
+libraries.
+
+=== Incremental compilation
+
+The first launch of a RoboVM app, even an app as simple as the `IOSDemo` app we
+saw in <<demo-app>>, takes some time. When compiling an app the RoboVM
+compiler starts with the app’s main class. It will then compile all classes
+needed by the main class and then the classes needed by those classes and so
+on until all classes needed by the app have been compiled. This process also
+compiles the standard runtime classes such as `java.lang.Object` and
+`java.lang.String`. This is a one-time thing only. RoboVM keeps a cache of
+compiled classes and only recompiles a class when it or any of its direct
+dependencies have changed.
+
+TIP: By default RoboVM uses `$HOME/.robovm/cache/` as the cache folder. By
+deleting this folder you can force RoboVM to recompile all classes from
+scratch.
+
+The benefit of incremental compilation and caching of the object files is that
+it keeps down compile times. By only including the classes reachable from the
+main class it also keeps down the size of the produced executable. In some
+situations (e.g. when loading classes using reflection) the RoboVM compiler is
+unable to determine that a class should be compiled. Fortunately the compiler
+can be instructed to always <<config-reference,include a particular class or
+even all classes matching a pattern>>.
+
+=== Android-based runtime class library
+
+Any JVM needs a runtime class library. This is the library which provides the
+standard packages and classes needed by any Java program such as
+`java.lang.Object` and `java.lang.String`. RoboVM takes its runtime class library
+from the Android open-source project and all non-Android specific packages
+have been ported over to RoboVM. This means that any Java or JVM language code
+that only uses classes in the standard packages provided on Android should
+work the same under RoboVM.
+
+[id=config-reference]
+== Configuration Reference
+
+The recommended way to build RoboVM apps is to use a `robovm.xml` file to
+configure the compiler. This section lists the supported elements and also the
+corresponding command line options (if any).
+
+The `robovm.xml` file is usually accompanied by a `robovm.properties` file.
+The `robovm.xml` file will be searched for these properties and any matches
+will be replaced with the actual value from the properties file. Properties
+are referenced using the same `${...}` syntax as used by Maven, Gradle and
+Ant. Here's and example:
+
+.robovm.properties
+[source]
+app.executable=IOSDemo
+app.name=IOSDemo
+
+.robovm.xml
+[source,xml]
+<config>
+  <executableName>${app.executable}</executableName>
+  <mainClass>${app.mainclass}</mainClass>
+  <os>ios</os>
+  <arch>thumbv7</arch>
+  <resources>
+    <resource>
+      <directory>resources</directory>
+    </resource>
+  </resources>
+  <target>ios</target>
+  <iosInfoPList>Info.plist.xml</iosInfoPList>
+</config>
+
+NOTE: All relative paths specified in a `robovm.xml` file will be resolved
+relative to the file itself.
+
+=== <installDir>
+
+Specifies where to install the generated executable and other files. The
+default is `<working-dir>/<executableName>`. For iOS apps the app will always
+be created in a sub-folder in the specified `<installDir>` folder named like
+the `CFBundleExecutable` value in the app´s `Info.plist.xml` file and with
+`.app` appended.
+
+.Example:
+[source,xml]
+<installDir>target/MyApp</installDir>
+
+.Command line usage:
+`-d <dir>`
+
+=== <executableName>
+
+Specifies the name of the executable to be generated.
+
+.Example:
+[source,xml]
+<executableName>MyAppExe</executableName>
+
+.Command line usage:
+-o <name>
+
+=== <useDynamicJni>
+
+Specifies whether to use dynamic JNI. With this enabled native methods will be
+dynamically linked at runtime. Native methods in classes in the boot classpath
+will always use static JNI. On iOS only static JNI is supported and this
+option is ignored. The default is `false`.
+
+.Example:
+[source,xml]
+<useDynamicJni>true</useDynamicJni>
+
+.Command line usage:
+`-dynamic-jni`
+
+=== <skipRuntimeLib>
+
+Specifies whether the default `robovm-rt.jar` should be automatically added to the bootclasspath. The default is `true`
+
+.Example:
+[source,xml]
+<skipRuntimeLib>false</skipRuntimeLib>
+
+.Command line usage:
+`-skiprt`
+
+=== <mainJar>
+
+This is the equivalent of the `-jar` command line option to the `java`
+command. The jar file will be added to the classpath and RoboVM will use the
+`Main-Class` set in the `META-INF/MANIFEST.MF` file in the jar file as
+`<mainClass>` value. Either this or `<mainClass>` must be specified.
+
+.Example:
+[source,xml]
+<mainJar>lib/my-app.jar</mainJar>
+
+.Command line usage:
+`-jar <file>`
+
+=== <mainClass>
+
+Specifies the fully-qualified name of the class containing the
+`main(String[])` method that will be called when starting the app.  Either
+this or `<mainJar>` must be specified.
+
+.Example:
+[source,xml]
+<mainClass>com.example.MyApp</mainClass>
+
+.Command line usage:
+Specified after all RoboVM compiler options but before any program options.
+
+=== <cacerts>
+
+Specifies the cacerts file to be included in the app. RoboVM includes the same
+CA cerificates as included in Android 4.4.3. Allowed values are `none` and
+`full`. Default is `full` but no cacerts will be included unless the code
+actually needs them.
+
+.Example:
+[source,xml]
+<cacerts>none</cacerts>
+
+.Command line usage:
+`-cacerts <value>`
+
+=== <os>
+
+Specifies the name of the OS to build for. Allowed values are `auto`, `linux`,
+`macosx` and `ios`. Default is `auto` which normally means to build for the
+current host OS.
+
+.Example:
+[source,xml]
+<os>ios</os>
+
+.Command line usage:
+`-os <name>`
+
+=== <arch>
+
+Specifies the name of the CPU architecture to compile for. Allowed values are
+`auto`, `x86`, `thumbv7`. Default is `auto` which  normally means to build for
+the current host's CPU architecture.
+
+.Example:
+[source,xml]
+<arch>thumbv7</arch>
+
+.Command line usage:
+`-arch <name>`
+
+=== <forceLinkClasses>
+
+Contains `<pattern>` elements listing class patterns matching classes that
+must be linked in even if not referenced (directly or indirectly) from the
+main class. If no main class is specified all classes will be linked in unless
+this option has been given. Patterns are specified using an ANT style path
+syntax with the following rules:
+
+* `?` matches one character.
+* `*` matches zero or more characters.
+* `**` matches zero or more packages in a fully-qualified class name.
+
+An alternative syntax using `#` is also supported. This is useful when
+specifying patterns on the command line as it prevents the shall from
+expanding `*` characters.
+
+.Example:
+[source,xml]
+<forceLinkClasses>
+  <pattern>com.android.okhttp.HttpHandler</pattern>
+  <pattern>com.android.okhttp.HttpsHandler</pattern>
+  <pattern>com.android.org.conscrypt.**</pattern>
+</forceLinkClasses>
+
+.Command line usage:
+`-forcelinkclasses <list>`
+
+NOTE: `-forcelinkclasses` can either be specified multiple times on the
+command line, each specifying a single pattern or specified once with multiple
+`:` separated patterns. E.g. `-forcelinkclasses
+'com.example.Foo:com.example.bar.**'`.
+
+=== <libs>
+
+Specifies, in nested `<lib>` elements, static libraries (with extension `.a`),
+object files (with extension `.o`) and system libraries that should be
+included when linking the final executable.
+
+If `force="true"` has been specified for a `<lib>` poining at a static library
+the entire static library will be linked in regardless of whether the symbols
+in it are referenced by the rest of the app's code or not. This uses the
+`-force_load` command line linker option when building for Mac OS X and iOS
+and `--whole-archive` when building for Linux. The default is `force="true"`.
+
+.Example:
+[source,xml]
+<libs>
+  <lib force="false">lib/libfoo.a</lib>
+  <lib>lib/myobjectfile.o</lib>
+  <lib>curl</lib>
+</libs>
+
+.Command line usage:
+`-libs <list>`
+
+NOTE: `-libs` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-libs 'lib/libfoo.a:curl'`.
+
+CAUTION: There's no way to specify `force="false"` when using `-libs` from the
+command line. Use a `robovm.xml` file instead.
+
+=== <exportedSymbols>
+
+Specifies, in nested `<symbol>` elements, symbols that should be exported when
+linking the executable. This can be used when linking in functions which will
+be called using <<bro,Bro>>. Wildcards can be used to match symbols:
+
+* `*` matches zero or more characters,
+* `?` matches one character. 
+* `[abc]`, `[a-z]` matches one character from the specified set of characters.
+
+.Example:
+[source,xml]
+<exportedSymbols>
+  <symbol>CB*</symbol>
+  <symbol>sin</symbol>
+</exportedSymbols>
+
+.Command line usage:
+`-exportedsymbols <list>`
+
+NOTE: `-exportedsymbols` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-exportedsymbols 'CB*:sin'`.
+
+=== <frameworks>
+
+Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that
+should be linked against when linking the final executable.
+
+.Example:
+[source,xml]
+<frameworks>
+  <framework>CoreImage</framework>
+  <framework>UIKit</framework>
+</frameworks>
+
+.Command line usage:
+`-frameworks <list>`
+
+NOTE: `-frameworks` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-frameworks 'CoreImage:UIKit'`.
+
+=== <weakFrameworks>
+
+Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that
+should be weakly linked against when linking the final executable. Weakly
+linking against a framework means that all symbols in the framework will be
+marked as weakly linked. This allows apps to be built against one version of a
+framework which defines a particular symbol and later run against a different
+version of that framework which doesn't have that symbol defined. If that
+symbol had been strongly linked the app would immediately crash at launch.
+
+.Example:
+[source,xml]
+<weakFrameworks>
+  <framework>CoreImage</framework>
+  <framework>UIKit</framework>
+</weakFrameworks>
+
+.Command line usage:
+`-weakframeworks <list>`
+
+NOTE: `-weakframeworks` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-weakframeworks 'CoreImage:UIKit'`.
+
+=== <frameworkPaths>
+
+Specifies, in nested `<path>` elements, framework search paths used when
+searching for custom frameworks.
+
+.Example:
+[source,xml]
+<frameworkPaths>
+  <path>lib/frameworks</path>
+</frameworkPaths>
+
+.Command line usage:
+`-frameworkpaths <list>`
+
+NOTE: `-frameworkpaths` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-frameworkpaths 'lib/frameworks:../frameworks'`.
+
+=== <resources>
+
+Specifies files and directories that should be copied to the installation
+directory. A resource can be specified using a single path:
+
+.Example:
+[source,xml]
+<resources>
+  <resource>path/to/the/resource.txt</resource>
+</resources>
+
+NOTE: If the path specifies a directory, that directory including its contents
+(except for the default excludes, see below) will be copied. If the path
+specifies a file, that file will be copied directly to the installation directory.
+
+A resource be also be specified with a base directory, a target path and include and exclude
+filters (similar to Maven's `<resource>` element):
+
+.Example:
+[source,xml]
+<resources>
+  <resource>
+   <targetPath>data</targetPath>
+   <directory>resources</directory>
+   <includes>
+     <include>**/*</include>
+   </includes>
+   <excludes>
+     <exclude>**/*.bak</exclude>
+   </excludes>
+   <flatten>false</flatten>
+   <ignoreDefaultExcludes>false</ignoreDefaultExcludes>
+   <skipPngCrush>false</skipPngCrush>
+  </resource>
+</resources>
+
+==== <targetPath>
+
+The target path relative to the installation directory (i.e. app bundle
+directory for iOS apps) where paths matching this `<resource>` will be copied.
+If not specified paths will be copied directly to the installation directory.
+
+==== <directory>
+
+The base directory containing the files and directories copied by the
+`<resource>`.
+
+==== <includes>
+
+Specifies one or more Ant-style patterns (using `**`, `*` and `?` as
+wildcards) matching files which will be included when copying this
+`<resource>`.
+
+==== <excludes>
+
+Specifies one or more Ant-style patterns (using `**`, `*` and `?` as
+wildcards) matching files which will be excluded when copying this
+`<resource>`.
+
+==== <flatten>
+
+Set to `true` if the files matched by this `<resource>` should be copied
+directly into the installation directory without preserving the directory
+structure of the source directory. The default is `false`.
+
+==== <ignoreDefaultExcludes>
+
+Set to `true` if the <<defaultexcludes,default excludes>> should be ignored
+and copied for this `<resource>`. The default is `false`, i.e. don't copy
+files matching the default excludes.
+
+==== <skipPngCrush>
+
+Set this to `true` if `pngcrush` should not be called for PNG files matching
+this `<resource>` when targeting iOS. The default is `false`,
+i.e. `pngcrush` WILL be called for PNG files.
+
+NOTE: Depending on the target (iOS, Mac OS X or Linux) resources may be
+transformed and renamed while being copied (e.g. running `pngcrush` or
+converting `xib` files to `nib` files).
+
+[id="defaultexcludes"]
+==== Default excludes
+
+(The same as those used by Ant 1.9)
+
+.Miscellaneous typical temporary files
+[cols="5"]
+|===
+|+**/*~+
+|+**/#*#+
+|+**/.#*+
+|+**/%*%+
+|+**/._*+
+|===
+
+.CVS
+[cols="3"]
+|===
+|+**/CVS+
+|+**/CVS/**+
+|+**/.cvsignore+
+|===
+
+.SCCS
+[cols="2"]
+|===
+|+**/SCCS+
+|+**/SCCS/**+
+|===
+
+.Visual SourceSafe
+[cols="1"]
+|===
+|+**/vssver.scc+
+|===
+
+.Subversion
+[cols="2"]
+|===
+|+**/.svn+
+|+**/.svn/**+
+|===
+
+.Git
+[cols="5"]
+|===
+|+**/.git+
+|+**/.git/**+
+|+**/.gitattributes+
+|+**/.gitignore+
+|+**/.gitmodules+
+|===
+
+.Mercurial
+[cols="6"]
+|===
+|+**/.hg+
+|+**/.hg/**+
+|+**/.hgignore+
+|+**/.hgsub+
+|+**/.hgsubstate+
+
+|+**/.hgtags+
+|===
+
+.Bazaar
+[cols="3"]
+|===
+|+**/.bzr+
+|+**/.bzr/**+
+|+**/.bzrignore+
+|===
+
+.Mac
+[cols="1"]
+|===
+|+**/.DS_Store+
+|===
+
+.Command line usage:
+`-resources <list>`
+
+NOTE: `-resources` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-resources '+resources/**:data/*+'`.
+
+CAUTION: If a pattern is specified on the command line using `-resources` the
+longest non-pattern path before the first wildcard will be used as base
+directory and will not be recreated in the installation directory. E.g. with
+the pattern `+resources/**+` all files and folders in the folder named
+`resources` will be copied directly to the installation directory.
+
+=== <bootclasspath>
+
+Specifies, in nested `<classpathentry>` elements, directories, JAR archives,
+and ZIP archives to search for class files to be compiled by the RoboVM
+compiler. Classes in these entries will be loaded by the boot classloader at
+runtime.  Used to locate the `+java.*+` and `+javax.*+` classes. Default is
+`<robovm-home>/lib/robovm-rt.jar`.
+
+.Example:
+[source,xml]
+<bootclasspath>
+  <classpathentry>path/to/my/robovm-rt.jar</classpathentry>
+</bootclasspath>
+
+.Command line usage:
+`-bootclasspath <list>`
+`-bootcp <list>`
+`-bcp <list>`
+
+NOTE: `-bootclasspath` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values.
+
+CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such
+as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the
+`robovm.xml` file will be ignored. Instead the classpaths of the IDE or build
+tool with be used.
+
+=== <classpath>
+
+Specifies, in nested `<classpathentry>` elements, directories, JAR archives,
+and ZIP archives to search for class files to be compiled by the RoboVM
+compiler. Classes in these entries will be loaded by the system classloader at
+runtime.
+
+.Example:
+[source,xml]
+<classpath>
+  <classpathentry>target/classes</classpathentry>
+  <classpathentry>lib/commons-lang.jar</classpathentry>
+</classpath>
+
+.Command line usage:
+`-classpath <list>`
+`-cp <list>`
+
+NOTE: `-classpath` can either be specified multiple times on the command line,
+each specifying a single value or specified once with multiple `:` separated
+values.
+
+CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such
+as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the
+`robovm.xml` file will be ignored. Instead the classpaths of the IDE or build
+tool with be used.
+
+////
+=== <pluginArguments>
+////
+
+=== <targetType>
+
+Specifies the target to build for. Either `auto`, `console` or `ios`. The default is
+`auto` which means use `<os>` to decide.
+
+.Example:
+[source,xml]
+<targetType>ios</targetType>
+
+.Command line usage:
+`-target <name>`
+
+=== <iosSdkVersion>
+
+(*iOS only*) Specifies the version number of the iOS SDK to build against. If not specified
+the latest SDK that can be found will be used.
+
+.Example:
+[source,xml]
+<iosSdkVersion>8.0</iosSdkVersion>
+
+.Command line usage:
+`-sdk <version>`
+
+=== <iosInfoPList>
+
+(*iOS only*) `Info.plist` file to be used by the app. If not specified a
+simple `Info.plist` will be generated with a `CFBundleIdentifier` based on the
+`<mainClass>` or `<executableName>`.
+
+.Example:
+[source,xml]
+<iosInfoPList>plists/Info.plist</iosInfoPList>
+
+.Command line usage:
+`-plist <file>`
+
+TIP: The specified `Info.plist` file will be searched for `${...}` patterns
+just like `robovm.xml` files are. Such patterns will be replaced by the
+corresponding property, usually read from a `robovm.properties` file.
+
+=== <iosResourceRulesPList>
+
+(*iOS only*) Property list (`.plist`) file containing resource rules passed to
+`codesign` when signing the app.
+
+.Example:
+[source,xml]
+<iosResourceRulesPList>plists/ResourceRules.plist</iosResourceRulesPList>
+
+.Command line usage:
+`-resourcerules <file>`
+
+=== <iosEntitlementsPList>
+
+(*iOS only*) Property list (`.plist`) file containing entitlements passed to
+`codesign` when signing the app.
+
+.Example:
+[source,xml]
+<iosEntitlementsPList>plists/Entitlements.plist</iosEntitlementsPList>
+
+.Command line usage:
+`-entitlements <file>`
+
+[id="command-line-usage"]
+== Command Line Usage
+
+This section describes how to carry out some of the most common actions using
+the `robovm` command line tool. For a complete usage reference for the options
+supported by the `robovm` tool run
+
+[source,bash]
+----
+$ robovm -help
+----
+
+=== Working with robovm.xml files
+
+Almost everything can be done directly from the command line using the
+options of the `robovm` command but it is still recommended to use an
+<<config-reference,XML configuration file>> called `robovm.xml` to configure
+the compiler.
+
+The `-dumpconfig` option can be used to create a `robovm.xml` file. This
+creates a `robovm.xml` file for the demo app in <<demo-app>>:
+
+[source,bash]
+----
+$ robovm -arch thumbv7 -os ios -cp "$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar:bin/" -dumpconfig robovm.xml IOSDemo
+----
+
+Once we have the `robovm.xml` file we only have to specify it on the command
+line to launch the app. This would launch the app on a connected device since
+the `robovm.xml` file specifies the `thumbv7` architecture:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -run
+----
+
+TIP: You can load multiple configurations by specifying `-config` multiple
+times. The latter ones take precedence.
+
+We can override the configuration read from a `robovm.xml` file by specifying the options we want to override after the `robovm.xml` file has been read in. To launch on the iOS simulator we need to build for the `x86` architecture so we use the `-arch` option *after* the configuration file has been specified:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -arch x86 -run
+----
+
+We can even "edit" the `robovm.xml` file by combining `-config` and `-dumpconfig`. This adds a new classpath entry:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -cp foo.jar -dumpconfig robovm-new.xml
+$ mv robovm-new.xml robovm.xml
+----
+
+=== Expanding properties in robovm.xml files
+
+XML configuration files (and also `Info.plist` files) will be searched for `${...}` patterns. Such patterns will be replaced with properties loaded using the `-properties` command line option which reads in `.properties` file. Individual properties can also be specified directly on the command line using the `-Pname=value` option.
+
+=== Launching apps
+
+To launch an app using the command line tool you simply specify the `-run`
+command line option. RoboVM will use the configured target OS (`-os`) and
+architecture (`-arch`) to determine how to launch the app.
+
+To launch in the iOS simulator use `-os ios` `-arch x86`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch x86 -run com.example.MainClass
+----
+
+To launch on an iOS device use `-os ios` `-arch thumbv7`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch thumbv7 -run com.example.MainClass
+----
+
+RoboVM also supports building Mac OS X console apps. This is what you get if
+you don't specify any `-os` or `-arch` (or use `-os macosx` `-arch x86`):
+
+[source,bash]
+----
+$ robovm -cp ... -run com.example.MainClass
+----
+
+=== Packaging for App Store/Ad-Hoc distribution
+
+The `-createipa` option is used to create an
+http://en.wikipedia.org/wiki/.ipa_(file_extension)[IPA file] which can be
+submitted to the App Store or distributed to beta tester or throughout an
+enterprise.
+
+NOTE: Before you can do this you will have to have your signing certificates
+and provisioning profiles in order. Apple has some
+https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40012582-CH1-SW1[great
+resources] that describe how to enroll in the iOS developers program and
+create the certificates and provisioning profiles required for App Store
+distribution.
+
+
+This will create an IPA file signed with the code signing certificate matching
+_iPhone Distribution_ and using the provisioning profile named __My
+Distribution Profile__. The IPA will be stored in `~/Desktop/IPA/`:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -signidentity 'iPhone Distribution' -provisioningprofile 'My Distribution Profile' -d ~/Desktop/IPA/ -createipa
+----
+
+TIP: The `-signingidentiy` option matches against the start of the certificate
+name. Alternatively you can use a certificate fingerprint. Run the command
+`security find-identity -v -p codesigning` or use the _KeyChain Access_ OS X
+app to view your installed certificates.
+
+CAUTION: The IPA creation also creates a `.dSYM` folder in the folder you
+specify with `-d`. The `.dSYM` contains the debug symbols of your app. It is
+required if you want to symbolicate a crash report generated by your app. To
+symbolicate you need the exact `.dSYM` so *make sure you back this up*.
+
+The IPA is now ready to be distributed. To submit the IPA file to the App
+Store you would use the _Application Loader_ application that comes with
+Xcode. The _Application Loader_ application can easily be located using
+_Spotlight_.
+
+[id="the-robovm-for-eclipse-plugin"]
+== Using the RoboVM for Eclipse Plugin
+
+////
+TIP: The iOS project you just created looks pretty much like an ordinary Java
+project. But instead of the usual _JRE System Library_ containing Oracle's
+runtime class library this project instead uses the _RoboVM Runtime Library_.
+The _RoboVM Runtime Library_ contains all those packages you are used to
+seeing in a Java project like `java.lang`, `java.util`, etc. The classes in
+the _RoboVM Runtime Library_ have been ported over from the Android standard
+class library.
+
+TIP: The iOS project also references the _RoboVM CocoaTouch Library_ which contains
+bindings for the
+https://developer.apple.com/technologies/ios/cocoa-touch.html[iOS CocoaTouch
+APIs]. With these bindings you can do pretty much anything you could have done
+if you had developed your app in Objective-C (or Swift) using Apple's tools:
+build native GUIs, access the hardware such as bluetooth and the GPS, access
+contacts, handle in-app payments, display ads, etc.
+
+Notes about what Eclipse created for us. robovm.properties, robovm.xml,
+Info.plist.xml and resources/.
+
+TBW. How to create new project. How to run on console, iOS simulator, iOS
+device. How to package IPA for App Store or Ad-Hoc distribution. Run JUnit
+test.
+////
+
+[id="maven-integration"]
+== Maven Integration
+
+////
+TBW. Describes Maven configuration and supported goals. How to run on console,
+iOS simulator, iOS device. How to package IPA for App Store or Ad-Hoc
+distribution. Run JUnit tests.
+////
+
+[id=jni]
+== Using the Java Native Interface (JNI)
+
+[id=bro]
+== The Bro Java to Native Bridge
+
+=== Binding Objective-C
+
+=== Objective-C/Java Memory Management
+
+=== The bro-gen tool
+
+== Cross-Platform Development
+
+////
+TBW. Describes best practices when developing iOS and Android versions of an
+app trying to reuse as much code as possible.
+////
+
+////
+== JavaFX on iOS
+////
+
+////
+== Tips \'n' tricks
+////
+
+////
+List signing identities, provisioning profiles.
+Wipe class cache.
+Fix black screen in iOS app due to GC.
+////
+
+== Hacking on RoboVM
