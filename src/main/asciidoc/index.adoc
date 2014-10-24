@@ -1513,7 +1513,8 @@ IntPtr myInts = Struct.allocate(IntPtr.class, 100);
 
 === Enums
 
-Simple C enums are mapped using Java `Enum` types which implement the bro
+Simple C `enum` constants are mapped using Java `Enum` types which implement
+the bro
 http://apidocs.robovm.com/latest/org/robovm/rt/bro/ValuedEnum.html[`ValuedEnum`]
 interface. Here's an example:
 
@@ -1521,11 +1522,11 @@ interface. Here's an example:
 [source,c]
 ----
 enum {
-   NSTextAlignmentLeft      = 0,
-   NSTextAlignmentCenter    = 1,
-   NSTextAlignmentRight     = 2,
-   NSTextAlignmentJustified = 3,
-   NSTextAlignmentNatural   = 4
+   NSTextAlignmentLeft,
+   NSTextAlignmentCenter,
+   NSTextAlignmentRight,
+   NSTextAlignmentJustified,
+   NSTextAlignmentNatural
 };
 ----
 
@@ -1553,11 +1554,143 @@ public enum NSTextAlignment implements ValuedEnum {
 }
 ----
 
-=== Bitmasks
+By default Bro marshals a `ValuedEnum` as a signed 32-bit value. The default
+can be changed by specifying an explicit `@Marshaler` on the enum type. Here's
+how to marshal `NSTextAlignment` values as platform dependent (32-bit on
+32-bit platforms, 64-bit on 64-bit platforms) signed integer values:
+
+.Overriding the default marshaler for a `ValuedEnum`:
+[source,java]
+----
+@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)
+public enum NSTextAlignment implements ValuedEnum {
+    ...
+}
+----
+
+There are `ValuedEnum` marshalers for marshaling signed and unsigned 8-, 16-,
+32- and 64-bit integer values. They are all available as http://apidocs.robovm.com/latest/org/robovm/rt/bro/ValuedEnum.html[inner classes in the
+`ValuedEnum` interface].
+
+TIP: The `@Marshaler` annotation can also be placed on a particular method return
+type or parameter type to only change the marshaler for that specific value.
+
+=== Bits
+
+Bro provides a class called
+http://apidocs.robovm.com/1.0.0-SNAPSHOT/org/robovm/rt/bro/Bits.html[`Bits`]
+that can be used to bind bitmask constants:
+
+.C:
+[source,c]
+----
+enum {
+    UIPopoverArrowDirectionUp    = 1UL << 0,
+    UIPopoverArrowDirectionDown  = 1UL << 1,
+    UIPopoverArrowDirectionLeft  = 1UL << 2,
+    UIPopoverArrowDirectionRight = 1UL << 3,
+    ...
+};
+----
+
+.Java:
+[source,java]
+----
+public final class UIPopoverArrowDirection 
+        extends Bits<UIPopoverArrowDirection> {
+
+    public static final UIPopoverArrowDirection None = 
+            new UIPopoverArrowDirection(0L);
+    public static final UIPopoverArrowDirection Up = 
+            new UIPopoverArrowDirection(1L);
+    public static final UIPopoverArrowDirection Down = 
+            new UIPopoverArrowDirection(2L);
+    public static final UIPopoverArrowDirection Left = 
+            new UIPopoverArrowDirection(4L);
+    public static final UIPopoverArrowDirection Right = 
+            new UIPopoverArrowDirection(8L);
+    ...    
+
+    private static final UIPopoverArrowDirection[] values = 
+        _values(UIPopoverArrowDirection.class);
+
+    public UIPopoverArrowDirection(long value) { super(value); }
+    private UIPopoverArrowDirection(long value, long mask) {
+        super(value, mask);
+    }
+    protected UIPopoverArrowDirection wrap(long value, long mask) {
+        return new UIPopoverArrowDirection(value, mask);
+    }
+    protected UIPopoverArrowDirection[] _values() {
+        return values;
+    }
+    public static UIPopoverArrowDirection[] values() {
+        return values.clone();
+    }
+}
+----
+
+`Bits` values can be ORed using the `Bits.with(...)` methods in a manner very
+similar to how `java.util.EnumSet.of(...)` works:
+
+.C:
+[source,c]
+----
+int upDown = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+----
+
+.Java:
+[source,java]
+----
+UIPopoverArrowDirection upDown = UIPopoverArrowDirection.with(
+    UIPopoverArrowDirection.Up, UIPopoverArrowDirection.Down);
+----
+
+TIP: `Bits` types is the preferred way to bind bitmasks since it provides some
+degree of type-safety and an easier to understand API. It does however impose
+a performance penalty compared to using `public static final` constants.
+
+By default Bro marshals a `Bits` instance as an unsigned 32-bit value. The
+default can be changed by specifying an explicit `@Marshaler` on the class.
+Here's how to marshal `UIPopoverArrowDirection` values as platform dependent
+(32-bit on 32-bit platforms, 64-bit on 64-bit platforms) unsigned integer
+values:
+
+.Overriding the default marshaler for a `Bits`:
+[source,java]
+----
+@Marshaler(Bits.AsMachineSizedIntMarshaler.class)
+public final class UIPopoverArrowDirection 
+        extends Bits<UIPopoverArrowDirection> {
+    ...
+}
+----
+
+There are `Bits` marshalers for marshaling unsigned 8-, 16-, 32- and 64-bit
+integer values. They are all available as
+http://apidocs.robovm.com/latest/org/robovm/rt/bro/Bits.html[inner
+classes in the `Bits` interface].
+
+TIP: The `@Marshaler` annotation can also be placed on a particular method return
+type or parameter type to only change the marshaler for that specific value.
+
+=== Native functions
+
+=== Global values
 
 === Callback methods
 
-=== Mapping custom types
+=== Type marshalers
+
+==== Builtin marshalers
+
+==== Value marshalers
+
+==== Pointer marshalers
+
+==== Pointer marshalers
+
+=== Binding linked in libraries
 
 === Binding Objective-C
 
