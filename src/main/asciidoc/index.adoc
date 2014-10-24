@@ -1366,7 +1366,13 @@ The `@ByRef` and `@ByVal` annotations can be used to control how a `Struct`
 object is returned from a method or passed as a parameter to a method.
 `@ByRef` means pass as pointer and is the default. `@ByVal` means pass by
 value. The default can be changed to `@ByVal` for a particular `Struct` class
-by annotating the class with `@ByVal`.
+by annotating the class with `@ByVal`:
+
+[source,java]
+----
+@ByVal
+public class Person extends Struct<Person> { ... }
+----
 
 ==== Nested structs
 
