@@ -1,5 +1,6 @@
 = RoboVM Reference
 :toc: left
+:toclevels: 3
 :icons: font
 :source-highlighter: highlight.js
 :appversion: 1.0.0-alpha-04
@@ -1431,6 +1432,200 @@ public class TestUnion extends Struct<TestUnion> {
     @StructMember(0) public native TestUnion s2(short s2);
 }
 ----
+
+==== Native array members
+
+Bro provides the `@Array` annotation which is used to bind array struct
+members. The `@Array` annotation specifies the dimensions of the member's
+type. Space large enough to hold a native array of the specified type and
+dimensions will be reserved inside the struct.
+
+Single-dimensional array:
+
+.C:
+[source,c]
+----
+struct Vector {
+    int values[3];
+};
+----
+.Java:
+[source,java]
+----
+public class Vector extends Struct<Vector> {
+    @StructMember(0) 
+    public native @Array(3) int[] values();
+    @StructMember(0) 
+    public native Vector values(@Array(3) int[] values);
+}
+----
+
+Multi-dimensional array:
+
+.C:
+[source,c]
+----
+struct Matrix {
+    int values[1, 2, 3];
+};
+----
+.Java:
+[source,java]
+----
+public class Matrix extends Struct<Matrix> {
+    @StructMember(0) 
+    public native @Array({1, 2, 3}) int[][][] values();
+    @StructMember(0) 
+    public native Matrix values(@Array({1, 2, 3}) int[][][] values);
+}
+----
+
+NOTE: The native data will be copied to and from the `int[]` and `int[][][]`
+arrays in these examples. Changes in the Java arrays will not be directly
+reflected in the native data. The setter has to be called to update the native
+data.
+
+An alternative to using Java arrays is to use a sub-class of `java.nio.Buffer`
+instead:
+
+Single-dimensional array:
+
+.C:
+[source,c]
+----
+struct Vector {
+    int values[3];
+};
+----
+.Java:
+[source,java]
+----
+public class Vector extends Struct<Vector> {
+    @StructMember(0) 
+    public native @Array(3) IntBuffer values();
+    @StructMember(0) 
+    public native Vector values(@Array(3) IntBuffer values);
+}
+----
+
+Multi-dimensional array:
+
+.C:
+[source,c]
+----
+struct Matrix {
+    int values[1, 2, 3];
+};
+----
+.Java:
+[source,java]
+----
+public class Matrix extends Struct<Matrix> {
+    @StructMember(0) 
+    public native @Array({1, 2, 3}) IntBuffer values();
+    @StructMember(0) 
+    public native Matrix values(@Array({1, 2, 3}) IntBuffer values);
+}
+----
+
+NOTE: The buffer's `capacity()` will be restricted to the dimension of the
+array. For multi-dimensional arrays this is the product of the dimensions,
+1*2*3=6 for the `Matrix` example.
+
+A third option is to use one of the pointer classes in the
+http://apidocs.robovm.com/latest/org/robovm/rt/bro/ptr/package-summary.html[`org.robovm.rt.bro.ptr`]
+package:
+
+Single-dimensional array:
+
+.C:
+[source,c]
+----
+struct Vector {
+    int values[3];
+};
+----
+.Java:
+[source,java]
+----
+public class Vector extends Struct<Vector> {
+    @StructMember(0) 
+    public native @Array(3) IntPtr values();
+    @StructMember(0) 
+    public native Vector values(@Array(3) IntPtr values);
+}
+----
+
+Multi-dimensional array:
+
+.C:
+[source,c]
+----
+struct Matrix {
+    int values[1, 2, 3];
+};
+----
+.Java:
+[source,java]
+----
+public class Matrix extends Struct<Matrix> {
+    @StructMember(0) 
+    public native @Array({1, 2, 3}) IntPtr values();
+    @StructMember(0) 
+    public native Matrix values(@Array({1, 2, 3}) IntPtr values);
+}
+----
+
+It's also possible to have arrays of structs in a `Struct`:
+
+.C:
+[source,c]
+----
+struct Color {
+    char r; char g; char b;
+};
+struct Gradient {
+    Color stops[3];
+};
+----
+.Java:
+[source,java]
+----
+public class Color extends Struct<Color> { ... }
+public class Gradient extends Struct<Gradient> {
+    @StructMember(0) public native @Array(3) Color[] stops();
+    @StructMember(0) public native Gradient stops(@Array(3) Color[] stops);
+}
+----
+
+==== Unbounded native array members
+
+For unbounded native array members one should use one of the pointer classes
+in the
+http://apidocs.robovm.com/latest/org/robovm/rt/bro/ptr/package-summary.html[`org.robovm.rt.bro.ptr`]
+package combined with the `@ByVal` annotation:
+
+.C:
+[source,c]
+----
+struct PascalString {
+    int length;
+    char chars[];
+};
+----
+.Java:
+[source,java]
+----
+public class PascalString extends Struct<PascalString> {
+    @StructMember(0) public native int length();
+    @StructMember(0) public native PascalString length(int length);
+    @StructMember(0) public native @ByVal BytePtr chars();
+}
+----
+
+NOTE: There's no setter for the `chars` member as that would have required the
+length to be known at compile time. Setting the individual bytes of `chars`
+has to be done through the `BytePtr` returned by the getter.
 
 ==== Struct memory handling
 
