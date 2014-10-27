@@ -1883,13 +1883,52 @@ type or parameter type to only change the marshaler for that specific value.
 
 === Type marshalers
 
-==== Builtin marshalers
+Type marshalers are used by Bro to convert from native types into Java types
+and vice versa. 
+
+==== Marshaler lookup
 
 ==== Value marshalers
 
-==== Pointer marshalers
+==== Array marshalers
 
 ==== Pointer marshalers
+
+Pointer marshalers marshal pointers to native objects to/from some Java object
+that wraps that pointer. The general contract for a pointer marshaler class
+looks like this:
+
+[source,java]
+----
+public class MyTypeMarshaler {
+    @MarshalsPointer
+    public static MyType toObject(Class<?> cls, long handle, long flags) {
+        ...
+    }
+    @MarshalsPointer
+    public static long toNative(MyType o, long flags) {
+        ...
+    }
+}
+----
+
+This marshaler marshals `MyType` instances to/from native pointers (`handle`).
+Bro uses the signatures of the `@MarshalsPointer` methods to determine whether
+it is a method which marshals Java->native or native->Java. The Java type it
+can handle is determined by the signature (`MyType` in this case).
+
+The `cls` parameter specifies the actual `Class` used at the marshaling site.
+The passed in `Class` is assignment compatible with the `MyType` class or
+interface.
+
+The `flags` parameter gives some information on the call site. The possible
+values are defined by
+http://apidocs.robovm.com/latest/org/robovm/rt/bro/MarshalerFlags.html[`MarshalerFlags`]
+class.
+
+TIP: Marshaler method names are unimportant, the signatures are what matters.
+
+==== Builtin marshalers
 
 === Binding linked in libraries
 
