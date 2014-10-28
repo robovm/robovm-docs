@@ -78,6 +78,11 @@ contributing, support options.
 In this section you'll learn how to install RoboVM and make sure the toolchain
 works correctly by creating a very simple demo app.
 
+TIP: Wanna run RoboVM on Linux? You can build Linux console apps using RoboVM
+at this time. Please see the
+https://github.com/robovm/robovm/wiki/Get-started-on-Linux[RoboVM GitHub wiki]
+for instructions.
+
 === Prerequisites
 
 In order to use RoboVM the following is required:
