@@ -72,6 +72,7 @@ TBW. Describes scope, use cases, how it works, features, limitations, users,
 contributing, support options.
 ////
 
+[id=getstarted]
 == Getting Started
 
 In this section you'll learn how to install RoboVM and make sure the toolchain
