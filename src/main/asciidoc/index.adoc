@@ -105,6 +105,7 @@ increase it *you need to change the -Xmx setting used when launching Eclipse*.
 To do this locate your Eclipse installation folder, right-click the Eclipse
 file and select Show Package Contents. Open the `eclipse.ini` file located in
 `Contents/MacOS` in a text editor and change the -Xmx value to 2G or more.
+Restart Eclipse.
 
 NOTE: The first time you install Xcode and every time you update to a new
 version you have to open it once to agree to the Xcode terms.
