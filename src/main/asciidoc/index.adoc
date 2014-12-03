@@ -100,6 +100,12 @@ check which Java version Eclipse is running in go to _Eclipse -> About
 Eclipse_, then click _Installation Details_ and open the _Configuration_ tab.
 Find the `java.version` property and make sure it is 1.7 or higher.
 
+IMPORTANT: The default max heap setting for Eclipse may be to low. In order to
+increase it *you need to change the -Xmx setting used when launching Eclipse*.
+To do this locate your Eclipse installation folder, right-click the Eclipse
+file and select Show Package Contents. Open the `eclipse.ini` file located in
+`Contents/MacOS` in a text editor and change the -Xmx value to 2G or more.
+
 NOTE: The first time you install Xcode and every time you update to a new
 version you have to open it once to agree to the Xcode terms.
 
