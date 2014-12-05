@@ -3,7 +3,7 @@
 :toclevels: 3
 :icons: font
 :source-highlighter: highlight.js
-:appversion: 1.0.0-alpha-04
+:appversion: 1.0.0-beta-01
 :osxversion: 10.9
 :xcodeversion: 6.x
 :imagesdir: images
