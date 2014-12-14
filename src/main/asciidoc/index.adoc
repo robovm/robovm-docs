@@ -112,21 +112,19 @@ version you have to open it once to agree to the Xcode terms.
 
 === RoboVM for Eclipse Plugin Installation
 
-Once your system meets all the requirements installing the plugin is simply a
-matter of opening the Eclipse Marketplace from the Eclipse _Help_ menu,
-searching for *RoboVM* and clicking _Install Now_.
-
-[[img-marketplace]]
-.Eclipse marketplace dialog
-image::eclipse-marketplace.png[]
-
-Alternatively you can use the following update site:
+Once your system meets all the requirements you install the plugin by
+selecting _Install New Software_ from the Eclipse _Help_ menu, enter the
+following update site into the _Work with_ field and click _Next_:
 
 ----
 http://download.robovm.org/eclipse/
 ----
 
-NOTE: The RoboVM for Eclipse plugin is known to work with Eclipse 4.2 (Juno)
+[[img-eclipse-install-new-software]]
+.Eclipse _Install New Software_ dialog
+image::eclipse-install-new-software.png[]
+
+NOTE: The RoboVM for Eclipse plugin is known to work with Eclipse 4.3 (Kepler)
 and later. We recommend you use Eclipse version 4.4 (Luna) or later.
 
 === Command Line Tools Installation
