@@ -36,8 +36,8 @@ can be shared.
 * Translates Java bytecode into machine code
   http://en.wikipedia.org/wiki/Ahead-of-time_compilation[ahead-of-time] for
   fast execution directly on the CPU without any overhead. The main target is
-  iOS and the ARM processor but there is also support for Mac OS X and Linux
-  running on x86 CPUs (32-bit).
+  iOS and the ARM processor (32-bit and 64-bit) but there is also support for
+  Mac OS X and Linux running on x86 CPUs (both 32-bit and 64-bit).
 * Doesn't impose any restrictions on the Java platform features accessible to
   the developer, such as reflection or file I/O.
 * Supports standard JAR files which lets the developer reuse the vast
@@ -257,7 +257,7 @@ compiler]. This is a tool that can be invoked either from the command line
 <<the-robovm-for-eclipse-plugin,Eclipse>>). It takes Java bytecode and
 translates it into machine code for a specific operating system and CPU type.
 Usually this means iOS and the ARM processor type but RoboVM is also capable
-of generating code for Mac OS X and Linux running on x86 CPUs (32-bit).
+of generating code for Mac OS X and Linux running on x86 CPUs.
 
 The ahead-of-time approach is very different from how traditional JVMs, like
 http://en.wikipedia.org/wiki/HotSpot[Oracle’s Hotspot], usually work. Such
@@ -464,8 +464,8 @@ current host OS.
 === <arch>
 
 Specifies the name of the CPU architecture to compile for. Allowed values are
-`auto`, `x86`, `thumbv7`. Default is `auto` which  normally means to build for
-the current host's CPU architecture.
+`auto`, `x86`, `x86_64`, `thumbv7`, `arm64`. Default is `auto` which  normally
+means to build for the current host's CPU architecture.
 
 .Example:
 [source,xml]
@@ -989,11 +989,18 @@ To launch in the iOS simulator use `-os ios` `-arch x86`:
 $ robovm -cp ... -os ios -arch x86 -run com.example.MainClass
 ----
 
-To launch on an iOS device use `-os ios` `-arch thumbv7`:
+To launch on an iOS device in 32-bit mode use `-os ios` `-arch thumbv7`:
 
 [source,bash]
 ----
 $ robovm -cp ... -os ios -arch thumbv7 -run com.example.MainClass
+----
+
+To launch on an iOS device in 64-bit mode use `-os ios` `-arch arm64`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch arm64 -run com.example.MainClass
 ----
 
 RoboVM also supports building Mac OS X console apps. This is what you get if
