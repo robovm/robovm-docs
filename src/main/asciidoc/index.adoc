@@ -1036,9 +1036,11 @@ $ robovm -config robovm.xml -signidentity 'iPhone Distribution' -provisioningpro
 ----
 
 TIP: The `-signingidentiy` option matches against the start of the certificate
-name. Alternatively you can use a certificate fingerprint. Run the command
-`security find-identity -v -p codesigning` or use the _KeyChain Access_ OS X
-app to view your installed certificates.
+name. Alternatively you can use a certificate fingerprint. If the
+`-signingidentiy` value is enclosed in `/` a regexp search will be done
+against the certificate name instead. Run the command `security find-identity
+-v -p codesigning` or use the _KeyChain Access_ OS X app to view your
+installed certificates.
 
 CAUTION: The IPA creation also creates a `.dSYM` folder in the folder you
 specify with `-d`. The `.dSYM` contains the debug symbols of your app. It is
