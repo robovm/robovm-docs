@@ -32,7 +32,7 @@
               <attributes>
                 <revdate>${maven.build.timestamp}</revdate>
                 <revnumber>${project.version}</revnumber>
-                <appversion>${robovm.version}</appversion>
+                <!-- <appversion>${robovm.version}</appversion> -->
               </attributes>
               <backend>html5</backend>
               <compact>true</compact>
