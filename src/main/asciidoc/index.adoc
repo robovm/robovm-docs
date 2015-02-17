@@ -195,7 +195,7 @@ image::simulator.png[width=300]
 NOTE: To run the app on an actual device you would use the _Run As... -> iOS
 Device App_ choice instead. Please note that this requires that the device has
 been set up for development. Please refer to
-https://developer.apple.com/library/ios/recipes/xcode_help-devices_organizer/articles/provision_device_for_development-generic.html[Apple's
+https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/LaunchingYourApponDevices/LaunchingYourApponDevices.html[Apple's
 documentation] for further information.
 
 Check out the <<where-to-go-next>> section for pointers on where to go next.
