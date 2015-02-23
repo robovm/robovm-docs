@@ -49,7 +49,7 @@ can be shared.
 * Integrates with the most popular tools such as
   https://www.eclipse.org/[Eclipse], http://maven.apache.org/[Maven] and
   http://www.gradle.org/[Gradle].
-* App Store ready. 
+* App Store ready.
 
 === Limitations
 
@@ -543,7 +543,7 @@ linking the executable. This can be used when linking in functions which will
 be called using <<bro,Bro>>. Wildcards can be used to match symbols:
 
 * `*` matches zero or more characters,
-* `?` matches one character. 
+* `?` matches one character.
 * `[abc]`, `[a-z]` matches one character from the specified set of characters.
 
 .Example:
@@ -592,8 +592,8 @@ symbol had been strongly linked the app would immediately crash at launch.
 .Example:
 [source,xml]
 <weakFrameworks>
-  <framework>CoreImage</framework>
-  <framework>UIKit</framework>
+  <framework>AdSupport</framework>
+  <framework>StoreKit</framework>
 </weakFrameworks>
 
 .Command line usage:
@@ -702,6 +702,41 @@ NOTE: Depending on the target (iOS, Mac OS X or Linux) resources may be
 transformed and renamed while being copied (e.g. running `pngcrush` or
 converting `xib` files to `nib` files).
 
+[id="resourceprocessing"]
+==== Resource processing
+
+By default, any resources found in the specified resource paths will be copied
+to the installation directory. However, there exist several specific files and folders
+that need to be processed first before they can be used in an iOS application. +
+The following sections explain which resources will be automatically processed
+for you and what they are used for.
+
+===== .xcassets folders
+
+`.xcassets` folders, also known as `Asset Catalogs`, contain graphical assets grouped
+into several subfolders, also known as `Sets`. Each set contains several image files along with a `Contents.json`
+file that describes the images. +
+The following types of sets are supported:
+
+<name>.imageset:: If your app has a deployment target of iOS 7 or higher images
+in this set will be converted into a runtime binary format to reduce the overall
+app size. Otherwise they will simply be copied to the install directory. +
+You can access an image by its name with `UIImage.create(String)`.
+AppIcon.appiconset:: Images in this set will be used as the app icon of the iOS app.
+LaunchImage.launchimage:: Images in this set will be used as the launch image
+of the iOS app.
+
+===== .atlas folders
+
+`.atlas` folders contain several graphic files that will be merged into one or
+multiple texture atlases. The result is a `.atlasc` folder named after the resource
+folder that contains the texture atlas image files and a property list file with the
+coordinates to all texture regions. +
+The resulting texture atlas can be used via SpriteKit's `SKTextureAtlas` or
+manually by reading the files.
+
+NOTE: Texture atlas generation can be configured with the <<tools>> element.
+
 [id="defaultexcludes"]
 ==== Default excludes
 
@@ -793,6 +828,53 @@ longest non-pattern path before the first wildcard will be used as base
 directory and will not be recreated in the installation directory. E.g. with
 the pattern `+resources/**+` all files and folders in the folder named
 `resources` will be copied directly to the installation directory.
+
+[id="tools"]
+=== <tools>
+
+Specifies, in nested elements, additional configuration options for various command
+line tools that are used to process Cocoa-specific resources.
+For a list of resource types that get processed see <<resourceprocessing>>.
+
+==== <textureAtlas>
+
+Specifies configuration options for the `TextureAtlas` tool.
+This tool is used for processing `.atlas` folders with image files into valid
+texture atlases.
+
+.Example:
+[source,xml]
+<tools>
+  <textureAtlas>
+    <outputFormat>RGBA8888_PNG</outputFormat>
+    <maximumTextureDimension>2048x2048</maximumTextureDimension>
+    <powerOfTwo>true</powerOfTwo>
+  </textureAtlas>
+</tools>
+
+===== <outputFormat>
+
+Specifies the output format of the resulting texture atlas. +
+Can be any of the following:
+
+* RGBA8888_PNG (default)
+* RGBA8888_COMPRESSED
+* RGBA4444_COMPRESSED
+* RGBA5551_COMPRESSED
+* RGB565_COMPRESSED
+
+===== <maximumTextureDimension>
+
+Specifies the maximum allowed dimension of the resulting texture atlas. +
+Can be any of the following:
+
+* 2048x2048 (default)
+* 4096x4096
+
+===== <powerOfTwo>
+
+Specifies whether the dimensions of the resulting texture atlas should be power
+of 2. Default is `false`.
 
 === <bootclasspath>
 
@@ -1205,7 +1287,7 @@ would be bound like this using Bro:
 [source,java]
 ----
 @Bridge
-public native @MachineSizedFloat double abs(
+public native @MachineSizedFloat double pow(
     @MachineSizedFloat double x,
     @MachineSizedFloat double y);
 ----
@@ -1265,7 +1347,7 @@ would be bound like this using Bro:
 ----
 @Bridge
 public native @MachineSizedUInt long max(
-    @MachineSizedUInt long a, 
+    @MachineSizedUInt long a,
     @MachineSizedUInt long b);
 ----
 
@@ -1479,9 +1561,9 @@ struct Vector {
 [source,java]
 ----
 public class Vector extends Struct<Vector> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array(3) int[] values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Vector values(@Array(3) int[] values);
 }
 ----
@@ -1499,9 +1581,9 @@ struct Matrix {
 [source,java]
 ----
 public class Matrix extends Struct<Matrix> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array({1, 2, 3}) int[][][] values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Matrix values(@Array({1, 2, 3}) int[][][] values);
 }
 ----
@@ -1527,9 +1609,9 @@ struct Vector {
 [source,java]
 ----
 public class Vector extends Struct<Vector> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array(3) IntBuffer values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Vector values(@Array(3) IntBuffer values);
 }
 ----
@@ -1547,9 +1629,9 @@ struct Matrix {
 [source,java]
 ----
 public class Matrix extends Struct<Matrix> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array({1, 2, 3}) IntBuffer values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Matrix values(@Array({1, 2, 3}) IntBuffer values);
 }
 ----
@@ -1575,9 +1657,9 @@ struct Vector {
 [source,java]
 ----
 public class Vector extends Struct<Vector> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array(3) IntPtr values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Vector values(@Array(3) IntPtr values);
 }
 ----
@@ -1595,9 +1677,9 @@ struct Matrix {
 [source,java]
 ----
 public class Matrix extends Struct<Matrix> {
-    @StructMember(0) 
+    @StructMember(0)
     public native @Array({1, 2, 3}) IntPtr values();
-    @StructMember(0) 
+    @StructMember(0)
     public native Matrix values(@Array({1, 2, 3}) IntPtr values);
 }
 ----
@@ -1769,7 +1851,7 @@ public enum NSTextAlignment implements ValuedEnum {
             }
         }
         throw new IllegalArgumentException(
-            "No constant with value " + n + " found in " 
+            "No constant with value " + n + " found in "
                 + NSTextAlignment.class.getName());
     }
 }
@@ -1817,22 +1899,22 @@ enum {
 .Java:
 [source,java]
 ----
-public final class UIPopoverArrowDirection 
+public final class UIPopoverArrowDirection
         extends Bits<UIPopoverArrowDirection> {
 
-    public static final UIPopoverArrowDirection None = 
+    public static final UIPopoverArrowDirection None =
             new UIPopoverArrowDirection(0L);
-    public static final UIPopoverArrowDirection Up = 
+    public static final UIPopoverArrowDirection Up =
             new UIPopoverArrowDirection(1L);
-    public static final UIPopoverArrowDirection Down = 
+    public static final UIPopoverArrowDirection Down =
             new UIPopoverArrowDirection(2L);
-    public static final UIPopoverArrowDirection Left = 
+    public static final UIPopoverArrowDirection Left =
             new UIPopoverArrowDirection(4L);
-    public static final UIPopoverArrowDirection Right = 
+    public static final UIPopoverArrowDirection Right =
             new UIPopoverArrowDirection(8L);
-    ...    
+    ...
 
-    private static final UIPopoverArrowDirection[] values = 
+    private static final UIPopoverArrowDirection[] values =
         _values(UIPopoverArrowDirection.class);
 
     public UIPopoverArrowDirection(long value) { super(value); }
@@ -1881,7 +1963,7 @@ values:
 [source,java]
 ----
 @Marshaler(Bits.AsMachineSizedIntMarshaler.class)
-public final class UIPopoverArrowDirection 
+public final class UIPopoverArrowDirection
         extends Bits<UIPopoverArrowDirection> {
     ...
 }
@@ -1904,7 +1986,7 @@ type or parameter type to only change the marshaler for that specific value.
 === Type marshalers
 
 Type marshalers are used by Bro to convert from native types into Java types
-and vice versa. 
+and vice versa.
 
 ==== Marshaler lookup
 
