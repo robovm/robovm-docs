@@ -2063,6 +2063,7 @@ Wipe class cache.
 Fix black screen in iOS app due to GC.
 ////
 
+[id="nightly-builds"]
 == Using the latest nightly build
 
 WARNING: Nightly builds can be unstable. Use at your own risk!
