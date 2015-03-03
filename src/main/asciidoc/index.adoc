@@ -2158,6 +2158,10 @@ Use `SNAPSHOT` version dependencies for the RoboVM dependencies in your
 `build.gradle`. Also make sure you use the corresponding `SNAPSHOT` version of
 the `robovm-gradle-plugin`:
 
+NOTE: Gradle caches `SNAPSHOT` dependencies and will not always download new
+ones as expected. Please clear your Gradle cache (`$HOME/.gradle`,
+`<projectdir>/.gradle`) to make sure you get the latest `SNAPSHOT` builds.
+
 [source,groovy]
 ----
 buildscript {
