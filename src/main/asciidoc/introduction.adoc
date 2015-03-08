@@ -1,0 +1,63 @@
+== Introduction
+
+Mobile app developers targeting both Android and iOS face many challenges.
+When comparing the native development environments of these two platforms,
+i.e. the toolchains provided by Google and Apple respectively, one quickly
+finds that they differ substantially. Android development, as defined by
+Google, is based on the Eclipse IDE and the Java programming language. iOS
+development, according to Apple, on the other hand is based on the Xcode IDE
+and the Objective-C programming language. These differences rule out any code
+reuse between the platforms. Also, not many developers are proficient in both
+environments. In the end almost every multi-platform app is developed using
+separate development teams and separate codebases for each platform.
+
+The ultimate goal of the RoboVM project is to solve this problem without
+compromising on neither developer nor app-user experience. With RoboVM
+developing for both iOS and Android becomes less challenging; the same Java
+developers can build both versions of the app and a large part of the codebase
+can be shared.
+
+=== Features
+
+* Brings Java and other JVM languages, such as
+  http://www.scala-lang.org/[Scala], http://clojure.org/[Clojure],
+  http://groovy.codehaus.org/[Groovy] and http://kotlinlang.org/[Kotlin], to
+  iOS devices.
+* Translates Java bytecode into machine code
+  http://en.wikipedia.org/wiki/Ahead-of-time_compilation[ahead-of-time] for
+  fast execution directly on the CPU without any overhead. The main target is
+  iOS and the ARM processor (32-bit and 64-bit) but there is also support for
+  Mac OS X and Linux running on x86 CPUs (both 32-bit and 64-bit).
+* Doesn't impose any restrictions on the Java platform features accessible to
+  the developer, such as reflection or file I/O.
+* Supports standard JAR files which lets the developer reuse the vast
+  ecosystem of 3rd party Java libraries.
+* Provides access to the
+  https://developer.apple.com/technologies/ios/cocoa-touch.html[full native
+  iOS APIs] through a Java to Objective-C bridge enabling the development of
+  apps with truly native UIs and with full hardware access.
+* Integrates with the most popular tools such as
+  https://www.eclipse.org/[Eclipse], http://maven.apache.org/[Maven] and
+  http://www.gradle.org/[Gradle].
+* App Store ready.
+
+=== Limitations
+
+There are a few limitations in RoboVM, mainly due to restrictions in the iOS
+platform:
+
+* Loading custom bytecode at runtime is not supported. All class files
+  comprising the app have to be available at compile time on the developer
+  machine.
+* The http://en.wikipedia.org/wiki/Java_Native_Interface[Java Native
+  Interface] technology as used on the desktop or on servers usually loads
+  native code from dynamic libraries but Apple does not permit custom dynamic
+  libraries to be shipped with an iOS app. RoboVM supports <<jni,a variant of
+  JNI based on static libraries>>.
+
+NOTE: RoboVM has *full* support for reflection.
+
+////
+TBW. Describes scope, use cases, how it works, features, limitations, users,
+contributing, support options.
+////

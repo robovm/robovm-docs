@@ -1,0 +1,27 @@
+[id="the-robovm-for-eclipse-plugin"]
+== Using the RoboVM for Eclipse Plugin
+
+////
+TIP: The iOS project you just created looks pretty much like an ordinary Java
+project. But instead of the usual _JRE System Library_ containing Oracle's
+runtime class library this project instead uses the _RoboVM Runtime Library_.
+The _RoboVM Runtime Library_ contains all those packages you are used to
+seeing in a Java project like `java.lang`, `java.util`, etc. The classes in
+the _RoboVM Runtime Library_ have been ported over from the Android standard
+class library.
+
+TIP: The iOS project also references the _RoboVM CocoaTouch Library_ which contains
+bindings for the
+https://developer.apple.com/technologies/ios/cocoa-touch.html[iOS CocoaTouch
+APIs]. With these bindings you can do pretty much anything you could have done
+if you had developed your app in Objective-C (or Swift) using Apple's tools:
+build native GUIs, access the hardware such as bluetooth and the GPS, access
+contacts, handle in-app payments, display ads, etc.
+
+Notes about what Eclipse created for us. robovm.properties, robovm.xml,
+Info.plist.xml and resources/.
+
+TBW. How to create new project. How to run on console, iOS simulator, iOS
+device. How to package IPA for App Store or Ad-Hoc distribution. Run JUnit
+test.
+////

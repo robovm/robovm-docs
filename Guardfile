@@ -9,6 +9,7 @@ guard 'shell' do
     path = m[0][src_folder.length+1..-1]
     path = path.sub(/\.adoc$/, '.html')
     Asciidoctor.render_file(m[0], {:to_file => "target/live/#{path}", :mkdirs => true, :safe => 0})
+    Asciidoctor.render_file("#{src_folder}/index.adoc", {:to_file => "target/live/index.html", :mkdirs => true, :safe => 0})
   }
   watch(/^#{src_folder}\/.*\.png$/) {|m|
     path = m[0][src_folder.length+1..-1]

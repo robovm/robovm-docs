@@ -1,0 +1,814 @@
+[id=config-reference]
+== Configuration Reference
+
+The recommended way to build RoboVM apps is to use a `robovm.xml` file to
+configure the compiler. This section lists the supported elements and also the
+corresponding command line options (if any).
+
+The `robovm.xml` file is usually accompanied by a `robovm.properties` file.
+The `robovm.xml` file will be searched for these properties and any matches
+will be replaced with the actual value from the properties file. Properties
+are referenced using the same `${...}` syntax as used by Maven, Gradle and
+Ant. Here's and example:
+
+.robovm.properties
+[source]
+app.executable=IOSDemo
+app.name=IOSDemo
+
+.robovm.xml
+[source,xml]
+<config>
+  <executableName>${app.executable}</executableName>
+  <mainClass>${app.mainclass}</mainClass>
+  <os>ios</os>
+  <arch>thumbv7</arch>
+  <resources>
+    <resource>
+      <directory>resources</directory>
+    </resource>
+  </resources>
+  <target>ios</target>
+  <iosInfoPList>Info.plist.xml</iosInfoPList>
+</config>
+
+NOTE: All relative paths specified in a `robovm.xml` file will be resolved
+relative to the file itself.
+
+=== <installDir>
+
+Specifies where to install the generated executable and other files. The
+default is `<working-dir>/<executableName>`. For iOS apps the app will always
+be created in a sub-folder in the specified `<installDir>` folder named like
+the `CFBundleExecutable` value in the app´s `Info.plist.xml` file and with
+`.app` appended.
+
+.Example:
+[source,xml]
+<installDir>target/MyApp</installDir>
+
+.Command line usage:
+`-d <dir>`
+
+=== <executableName>
+
+Specifies the name of the executable to be generated.
+
+.Example:
+[source,xml]
+<executableName>MyAppExe</executableName>
+
+.Command line usage:
+-o <name>
+
+=== <useDynamicJni>
+
+Specifies whether to use dynamic JNI. With this enabled native methods will be
+dynamically linked at runtime. Native methods in classes in the boot classpath
+will always use static JNI. On iOS only static JNI is supported and this
+option is ignored. The default is `false`.
+
+.Example:
+[source,xml]
+<useDynamicJni>true</useDynamicJni>
+
+.Command line usage:
+`-dynamic-jni`
+
+=== <skipRuntimeLib>
+
+Specifies whether the default `robovm-rt.jar` should be automatically added to the bootclasspath. The default is `true`
+
+.Example:
+[source,xml]
+<skipRuntimeLib>false</skipRuntimeLib>
+
+.Command line usage:
+`-skiprt`
+
+=== <mainJar>
+
+This is the equivalent of the `-jar` command line option to the `java`
+command. The jar file will be added to the classpath and RoboVM will use the
+`Main-Class` set in the `META-INF/MANIFEST.MF` file in the jar file as
+`<mainClass>` value. Either this or `<mainClass>` must be specified.
+
+.Example:
+[source,xml]
+<mainJar>lib/my-app.jar</mainJar>
+
+.Command line usage:
+`-jar <file>`
+
+=== <mainClass>
+
+Specifies the fully-qualified name of the class containing the
+`main(String[])` method that will be called when starting the app.  Either
+this or `<mainJar>` must be specified.
+
+.Example:
+[source,xml]
+<mainClass>com.example.MyApp</mainClass>
+
+.Command line usage:
+Specified after all RoboVM compiler options but before any program options.
+
+=== <cacerts>
+
+Specifies the cacerts file to be included in the app. RoboVM includes the same
+CA cerificates as included in Android 4.4.3. Allowed values are `none` and
+`full`. Default is `full` but no cacerts will be included unless the code
+actually needs them.
+
+.Example:
+[source,xml]
+<cacerts>none</cacerts>
+
+.Command line usage:
+`-cacerts <value>`
+
+=== <os>
+
+Specifies the name of the OS to build for. Allowed values are `auto`, `linux`,
+`macosx` and `ios`. Default is `auto` which normally means to build for the
+current host OS.
+
+.Example:
+[source,xml]
+<os>ios</os>
+
+.Command line usage:
+`-os <name>`
+
+=== <arch>
+
+Specifies the name of the CPU architecture to compile for. Allowed values are
+`auto`, `x86`, `x86_64`, `thumbv7`, `arm64`. Default is `auto` which  normally
+means to build for the current host's CPU architecture.
+
+.Example:
+[source,xml]
+<arch>thumbv7</arch>
+
+.Command line usage:
+`-arch <name>`
+
+=== <forceLinkClasses>
+
+Contains `<pattern>` elements listing class patterns matching classes that
+must be linked in even if not referenced (directly or indirectly) from the
+main class. If no main class is specified all classes will be linked in unless
+this option has been given. Patterns are specified using an ANT style path
+syntax with the following rules:
+
+* `?` matches one character.
+* `*` matches zero or more characters.
+* `**` matches zero or more packages in a fully-qualified class name.
+
+An alternative syntax using `#` is also supported. This is useful when
+specifying patterns on the command line as it prevents the shall from
+expanding `*` characters.
+
+.Example:
+[source,xml]
+<forceLinkClasses>
+  <pattern>com.android.okhttp.HttpHandler</pattern>
+  <pattern>com.android.okhttp.HttpsHandler</pattern>
+  <pattern>com.android.org.conscrypt.**</pattern>
+</forceLinkClasses>
+
+.Command line usage:
+`-forcelinkclasses <list>`
+
+NOTE: `-forcelinkclasses` can either be specified multiple times on the
+command line, each specifying a single pattern or specified once with multiple
+`:` separated patterns. E.g. `-forcelinkclasses
+'com.example.Foo:com.example.bar.**'`.
+
+=== <libs>
+
+Specifies, in nested `<lib>` elements, static libraries (with extension `.a`),
+object files (with extension `.o`) and system libraries that should be
+included when linking the final executable.
+
+If `force="true"` has been specified for a `<lib>` poining at a static library
+the entire static library will be linked in regardless of whether the symbols
+in it are referenced by the rest of the app's code or not. This uses the
+`-force_load` command line linker option when building for Mac OS X and iOS
+and `--whole-archive` when building for Linux. The default is `force="true"`.
+
+.Example:
+[source,xml]
+<libs>
+  <lib force="false">lib/libfoo.a</lib>
+  <lib>lib/myobjectfile.o</lib>
+  <lib>curl</lib>
+</libs>
+
+.Command line usage:
+`-libs <list>`
+
+NOTE: `-libs` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-libs 'lib/libfoo.a:curl'`.
+
+CAUTION: There's no way to specify `force="false"` when using `-libs` from the
+command line. Use a `robovm.xml` file instead.
+
+=== <exportedSymbols>
+
+Specifies, in nested `<symbol>` elements, symbols that should be exported when
+linking the executable. This can be used when linking in functions which will
+be called using <<bro,Bro>>. Wildcards can be used to match symbols:
+
+* `*` matches zero or more characters,
+* `?` matches one character.
+* `[abc]`, `[a-z]` matches one character from the specified set of characters.
+
+.Example:
+[source,xml]
+<exportedSymbols>
+  <symbol>CB*</symbol>
+  <symbol>sin</symbol>
+</exportedSymbols>
+
+.Command line usage:
+`-exportedsymbols <list>`
+
+NOTE: `-exportedsymbols` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-exportedsymbols 'CB*:sin'`.
+
+=== <frameworks>
+
+Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that
+should be linked against when linking the final executable.
+
+.Example:
+[source,xml]
+<frameworks>
+  <framework>CoreImage</framework>
+  <framework>UIKit</framework>
+</frameworks>
+
+.Command line usage:
+`-frameworks <list>`
+
+NOTE: `-frameworks` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-frameworks 'CoreImage:UIKit'`.
+
+=== <weakFrameworks>
+
+Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that
+should be weakly linked against when linking the final executable. Weakly
+linking against a framework means that all symbols in the framework will be
+marked as weakly linked. This allows apps to be built against one version of a
+framework which defines a particular symbol and later run against a different
+version of that framework which doesn't have that symbol defined. If that
+symbol had been strongly linked the app would immediately crash at launch.
+
+.Example:
+[source,xml]
+<weakFrameworks>
+  <framework>AdSupport</framework>
+  <framework>StoreKit</framework>
+</weakFrameworks>
+
+.Command line usage:
+`-weakframeworks <list>`
+
+NOTE: `-weakframeworks` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-weakframeworks 'CoreImage:UIKit'`.
+
+=== <frameworkPaths>
+
+Specifies, in nested `<path>` elements, framework search paths used when
+searching for custom frameworks.
+
+.Example:
+[source,xml]
+<frameworkPaths>
+  <path>lib/frameworks</path>
+</frameworkPaths>
+
+.Command line usage:
+`-frameworkpaths <list>`
+
+NOTE: `-frameworkpaths` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values. E.g. `-frameworkpaths 'lib/frameworks:../frameworks'`.
+
+=== <resources>
+
+Specifies files and directories that should be copied to the installation
+directory. A resource can be specified using a single path:
+
+.Example:
+[source,xml]
+<resources>
+  <resource>path/to/the/resource.txt</resource>
+</resources>
+
+NOTE: If the path specifies a directory, that directory including its contents
+(except for the default excludes, see below) will be copied. If the path
+specifies a file, that file will be copied directly to the installation directory.
+
+A resource be also be specified with a base directory, a target path and include and exclude
+filters (similar to Maven's `<resource>` element):
+
+.Example:
+[source,xml]
+<resources>
+  <resource>
+   <targetPath>data</targetPath>
+   <directory>resources</directory>
+   <includes>
+     <include>**/*</include>
+   </includes>
+   <excludes>
+     <exclude>**/*.bak</exclude>
+   </excludes>
+   <flatten>false</flatten>
+   <ignoreDefaultExcludes>false</ignoreDefaultExcludes>
+   <skipPngCrush>false</skipPngCrush>
+  </resource>
+</resources>
+
+==== <targetPath>
+
+The target path relative to the installation directory (i.e. app bundle
+directory for iOS apps) where paths matching this `<resource>` will be copied.
+If not specified paths will be copied directly to the installation directory.
+
+==== <directory>
+
+The base directory containing the files and directories copied by the
+`<resource>`.
+
+==== <includes>
+
+Specifies one or more Ant-style patterns (using `**`, `*` and `?` as
+wildcards) matching files which will be included when copying this
+`<resource>`.
+
+==== <excludes>
+
+Specifies one or more Ant-style patterns (using `**`, `*` and `?` as
+wildcards) matching files which will be excluded when copying this
+`<resource>`.
+
+==== <flatten>
+
+Set to `true` if the files matched by this `<resource>` should be copied
+directly into the installation directory without preserving the directory
+structure of the source directory. The default is `false`.
+
+==== <ignoreDefaultExcludes>
+
+Set to `true` if the <<defaultexcludes,default excludes>> should be ignored
+and copied for this `<resource>`. The default is `false`, i.e. don't copy
+files matching the default excludes.
+
+==== <skipPngCrush>
+
+Set this to `true` if `pngcrush` should not be called for PNG files matching
+this `<resource>` when targeting iOS. The default is `false`,
+i.e. `pngcrush` WILL be called for PNG files.
+
+NOTE: Depending on the target (iOS, Mac OS X or Linux) resources may be
+transformed and renamed while being copied (e.g. running `pngcrush` or
+converting `xib` files to `nib` files).
+
+[id="resourceprocessing"]
+==== Resource processing
+
+By default, any resources found in the specified resource paths will be copied
+to the installation directory. However, there exist several specific files and folders
+that need to be processed first before they can be used in an iOS application. +
+The following sections explain which resources will be automatically processed
+for you and what they are used for.
+
+===== .xcassets folders
+
+`.xcassets` folders, also known as `Asset Catalogs`, contain graphical assets grouped
+into several subfolders, also known as `Sets`. Each set contains several image files along with a `Contents.json`
+file that describes the images. +
+The following types of sets are supported:
+
+<name>.imageset:: If your app has a deployment target of iOS 7 or higher images
+in this set will be converted into a runtime binary format to reduce the overall
+app size. Otherwise they will simply be copied to the install directory. +
+You can access an image by its name with `UIImage.create(String)`.
+AppIcon.appiconset:: Images in this set will be used as the app icon of the iOS app.
+LaunchImage.launchimage:: Images in this set will be used as the launch image
+of the iOS app.
+
+===== .atlas folders
+
+`.atlas` folders contain several graphic files that will be merged into one or
+multiple texture atlases. The result is a `.atlasc` folder named after the resource
+folder that contains the texture atlas image files and a property list file with the
+coordinates to all texture regions. +
+The resulting texture atlas can be used via SpriteKit's `SKTextureAtlas` or
+manually by reading the files.
+
+NOTE: Texture atlas generation can be configured with the <<tools>> element.
+
+[id="defaultexcludes"]
+==== Default excludes
+
+(The same as those used by Ant 1.9)
+
+.Miscellaneous typical temporary files
+[cols="5"]
+|===
+|+**/*~+
+|+**/#*#+
+|+**/.#*+
+|+**/%*%+
+|+**/._*+
+|===
+
+.CVS
+[cols="3"]
+|===
+|+**/CVS+
+|+**/CVS/**+
+|+**/.cvsignore+
+|===
+
+.SCCS
+[cols="2"]
+|===
+|+**/SCCS+
+|+**/SCCS/**+
+|===
+
+.Visual SourceSafe
+[cols="1"]
+|===
+|+**/vssver.scc+
+|===
+
+.Subversion
+[cols="2"]
+|===
+|+**/.svn+
+|+**/.svn/**+
+|===
+
+.Git
+[cols="5"]
+|===
+|+**/.git+
+|+**/.git/**+
+|+**/.gitattributes+
+|+**/.gitignore+
+|+**/.gitmodules+
+|===
+
+.Mercurial
+[cols="6"]
+|===
+|+**/.hg+
+|+**/.hg/**+
+|+**/.hgignore+
+|+**/.hgsub+
+|+**/.hgsubstate+
+
+|+**/.hgtags+
+|===
+
+.Bazaar
+[cols="3"]
+|===
+|+**/.bzr+
+|+**/.bzr/**+
+|+**/.bzrignore+
+|===
+
+.Mac
+[cols="1"]
+|===
+|+**/.DS_Store+
+|===
+
+.Command line usage:
+`-resources <list>`
+
+NOTE: `-resources` can either be specified multiple times on the command line, each
+specifying a single value or specified once with multiple `:` separated
+values. E.g. `-resources '+resources/**:data/*+'`.
+
+CAUTION: If a pattern is specified on the command line using `-resources` the
+longest non-pattern path before the first wildcard will be used as base
+directory and will not be recreated in the installation directory. E.g. with
+the pattern `+resources/**+` all files and folders in the folder named
+`resources` will be copied directly to the installation directory.
+
+[id="tools"]
+=== <tools>
+
+Specifies, in nested elements, additional configuration options for various command
+line tools that are used to process Cocoa-specific resources.
+For a list of resource types that get processed see <<resourceprocessing>>.
+
+==== <textureAtlas>
+
+Specifies configuration options for the `TextureAtlas` tool.
+This tool is used for processing `.atlas` folders with image files into valid
+texture atlases.
+
+.Example:
+[source,xml]
+<tools>
+  <textureAtlas>
+    <outputFormat>RGBA8888_PNG</outputFormat>
+    <maximumTextureDimension>2048x2048</maximumTextureDimension>
+    <powerOfTwo>true</powerOfTwo>
+  </textureAtlas>
+</tools>
+
+===== <outputFormat>
+
+Specifies the output format of the resulting texture atlas. +
+Can be any of the following:
+
+* RGBA8888_PNG (default)
+* RGBA8888_COMPRESSED
+* RGBA4444_COMPRESSED
+* RGBA5551_COMPRESSED
+* RGB565_COMPRESSED
+
+===== <maximumTextureDimension>
+
+Specifies the maximum allowed dimension of the resulting texture atlas. +
+Can be any of the following:
+
+* 2048x2048 (default)
+* 4096x4096
+
+===== <powerOfTwo>
+
+Specifies whether the dimensions of the resulting texture atlas should be power
+of 2. Default is `false`.
+
+=== <bootclasspath>
+
+Specifies, in nested `<classpathentry>` elements, directories, JAR archives,
+and ZIP archives to search for class files to be compiled by the RoboVM
+compiler. Classes in these entries will be loaded by the boot classloader at
+runtime.  Used to locate the `+java.*+` and `+javax.*+` classes. Default is
+`<robovm-home>/lib/robovm-rt.jar`.
+
+.Example:
+[source,xml]
+<bootclasspath>
+  <classpathentry>path/to/my/robovm-rt.jar</classpathentry>
+</bootclasspath>
+
+.Command line usage:
+`-bootclasspath <list>`
+`-bootcp <list>`
+`-bcp <list>`
+
+NOTE: `-bootclasspath` can either be specified multiple times on the command
+line, each specifying a single value or specified once with multiple `:`
+separated values.
+
+CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such
+as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the
+`robovm.xml` file will be ignored. Instead the classpaths of the IDE or build
+tool with be used.
+
+=== <classpath>
+
+Specifies, in nested `<classpathentry>` elements, directories, JAR archives,
+and ZIP archives to search for class files to be compiled by the RoboVM
+compiler. Classes in these entries will be loaded by the system classloader at
+runtime.
+
+.Example:
+[source,xml]
+<classpath>
+  <classpathentry>target/classes</classpathentry>
+  <classpathentry>lib/commons-lang.jar</classpathentry>
+</classpath>
+
+.Command line usage:
+`-classpath <list>`
+`-cp <list>`
+
+NOTE: `-classpath` can either be specified multiple times on the command line,
+each specifying a single value or specified once with multiple `:` separated
+values.
+
+CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such
+as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the
+`robovm.xml` file will be ignored. Instead the classpaths of the IDE or build
+tool with be used.
+
+////
+=== <pluginArguments>
+////
+
+=== <targetType>
+
+Specifies the target to build for. Either `auto`, `console` or `ios`. The default is
+`auto` which means use `<os>` to decide.
+
+.Example:
+[source,xml]
+<targetType>ios</targetType>
+
+.Command line usage:
+`-target <name>`
+
+=== <iosSdkVersion>
+
+(*iOS only*) Specifies the version number of the iOS SDK to build against. If not specified
+the latest SDK that can be found will be used.
+
+.Example:
+[source,xml]
+<iosSdkVersion>8.0</iosSdkVersion>
+
+.Command line usage:
+`-sdk <version>`
+
+=== <iosInfoPList>
+
+(*iOS only*) `Info.plist` file to be used by the app. If not specified a
+simple `Info.plist` will be generated with a `CFBundleIdentifier` based on the
+`<mainClass>` or `<executableName>`.
+
+.Example:
+[source,xml]
+<iosInfoPList>plists/Info.plist</iosInfoPList>
+
+.Command line usage:
+`-plist <file>`
+
+TIP: The specified `Info.plist` file will be searched for `${...}` patterns
+just like `robovm.xml` files are. Such patterns will be replaced by the
+corresponding property, usually read from a `robovm.properties` file.
+
+=== <iosResourceRulesPList>
+
+(*iOS only*) Property list (`.plist`) file containing resource rules passed to
+`codesign` when signing the app.
+
+.Example:
+[source,xml]
+<iosResourceRulesPList>plists/ResourceRules.plist</iosResourceRulesPList>
+
+.Command line usage:
+`-resourcerules <file>`
+
+=== <iosEntitlementsPList>
+
+(*iOS only*) Property list (`.plist`) file containing entitlements passed to
+`codesign` when signing the app.
+
+.Example:
+[source,xml]
+<iosEntitlementsPList>plists/Entitlements.plist</iosEntitlementsPList>
+
+.Command line usage:
+`-entitlements <file>`
+
+[id="command-line-usage"]
+== Command Line Usage
+
+This section describes how to carry out some of the most common actions using
+the `robovm` command line tool. For a complete usage reference for the options
+supported by the `robovm` tool run
+
+[source,bash]
+----
+$ robovm -help
+----
+
+=== Working with robovm.xml files
+
+Almost everything can be done directly from the command line using the
+options of the `robovm` command but it is still recommended to use an
+<<config-reference,XML configuration file>> called `robovm.xml` to configure
+the compiler.
+
+The `-dumpconfig` option can be used to create a `robovm.xml` file. This
+creates a `robovm.xml` file for the demo app in <<demo-app>>:
+
+[source,bash]
+----
+$ robovm -arch thumbv7 -os ios -cp "$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar:bin/" -dumpconfig robovm.xml IOSDemo
+----
+
+Once we have the `robovm.xml` file we only have to specify it on the command
+line to launch the app. This would launch the app on a connected device since
+the `robovm.xml` file specifies the `thumbv7` architecture:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -run
+----
+
+TIP: You can load multiple configurations by specifying `-config` multiple
+times. The latter ones take precedence.
+
+We can override the configuration read from a `robovm.xml` file by specifying the options we want to override after the `robovm.xml` file has been read in. To launch on the iOS simulator we need to build for the `x86` architecture so we use the `-arch` option *after* the configuration file has been specified:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -arch x86 -run
+----
+
+We can even "edit" the `robovm.xml` file by combining `-config` and `-dumpconfig`. This adds a new classpath entry:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -cp foo.jar -dumpconfig robovm-new.xml
+$ mv robovm-new.xml robovm.xml
+----
+
+=== Expanding properties in robovm.xml files
+
+XML configuration files (and also `Info.plist` files) will be searched for `${...}` patterns. Such patterns will be replaced with properties loaded using the `-properties` command line option which reads in `.properties` file. Individual properties can also be specified directly on the command line using the `-Pname=value` option.
+
+=== Launching apps
+
+To launch an app using the command line tool you simply specify the `-run`
+command line option. RoboVM will use the configured target OS (`-os`) and
+architecture (`-arch`) to determine how to launch the app.
+
+To launch in the iOS simulator use `-os ios` `-arch x86`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch x86 -run com.example.MainClass
+----
+
+To launch on an iOS device in 32-bit mode use `-os ios` `-arch thumbv7`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch thumbv7 -run com.example.MainClass
+----
+
+To launch on an iOS device in 64-bit mode use `-os ios` `-arch arm64`:
+
+[source,bash]
+----
+$ robovm -cp ... -os ios -arch arm64 -run com.example.MainClass
+----
+
+RoboVM also supports building Mac OS X console apps. This is what you get if
+you don't specify any `-os` or `-arch` (or use `-os macosx` `-arch x86`):
+
+[source,bash]
+----
+$ robovm -cp ... -run com.example.MainClass
+----
+
+=== Packaging for App Store/Ad-Hoc distribution
+
+The `-createipa` option is used to create an
+http://en.wikipedia.org/wiki/.ipa_(file_extension)[IPA file] which can be
+submitted to the App Store or distributed to beta tester or throughout an
+enterprise.
+
+NOTE: Before you can do this you will have to have your signing certificates
+and provisioning profiles in order. Apple has some
+https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40012582-CH1-SW1[great
+resources] that describe how to enroll in the iOS developers program and
+create the certificates and provisioning profiles required for App Store
+distribution.
+
+
+This will create an IPA file signed with the code signing certificate matching
+_iPhone Distribution_ and using the provisioning profile named __My
+Distribution Profile__. The IPA will be stored in `~/Desktop/IPA/`:
+
+[source,bash]
+----
+$ robovm -config robovm.xml -signidentity 'iPhone Distribution' -provisioningprofile 'My Distribution Profile' -d ~/Desktop/IPA/ -createipa
+----
+
+TIP: The `-signingidentiy` option matches against the start of the certificate
+name. Alternatively you can use a certificate fingerprint. If the
+`-signingidentiy` value is enclosed in `/` a regexp search will be done
+against the certificate name instead. Run the command `security find-identity
+-v -p codesigning` or use the _KeyChain Access_ OS X app to view your
+installed certificates.
+
+CAUTION: The IPA creation also creates a `.dSYM` folder in the folder you
+specify with `-d`. The `.dSYM` contains the debug symbols of your app. It is
+required if you want to symbolicate a crash report generated by your app. To
+symbolicate you need the exact `.dSYM` so *make sure you back this up*.
+
+The IPA is now ready to be distributed. To submit the IPA file to the App
+Store you would use the _Application Loader_ application that comes with
+Xcode. The _Application Loader_ application can easily be located using
+_Spotlight_.

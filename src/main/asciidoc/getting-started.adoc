@@ -1,0 +1,175 @@
+[id=getstarted]
+== Getting Started
+
+In this section you'll learn how to install RoboVM and make sure the toolchain
+works correctly by creating a very simple demo app.
+
+TIP: Wanna run RoboVM on Linux? You can build Linux console apps using RoboVM
+at this time. Please see the
+https://github.com/robovm/robovm/wiki/Get-started-on-Linux[RoboVM GitHub wiki]
+for instructions.
+
+=== Prerequisites
+
+In order to use RoboVM the following is required:
+
+* A Mac running Mac OS X {osxversion} or later
+* http://www.oracle.com/technetwork/java/javase/downloads/index.html[Oracle's
+  Java SE JDK 7]
+* https://itunes.apple.com/us/app/xcode/id497799835?mt=12[Xcode {xcodeversion} from the
+  Mac App Store]
+
+IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s
+Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as
+adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To
+check which Java version Eclipse is running in go to _Eclipse -> About
+Eclipse_, then click _Installation Details_ and open the _Configuration_ tab.
+Find the `java.version` property and make sure it is 1.7 or higher.
+
+IMPORTANT: The default max heap setting for Eclipse may be too low. In order
+to increase it *you need to change the -Xmx setting used when launching
+Eclipse*. To do this locate your Eclipse installation folder, right-click the
+Eclipse file and select Show Package Contents. Open the `eclipse.ini` file
+located in `Contents/MacOS` in a text editor and change the -Xmx value to 2G
+or more. Restart Eclipse.
+
+NOTE: The first time you install Xcode and every time you update to a new
+version you have to open it once to agree to the Xcode terms.
+
+[id="install-eclipse-plugin"]
+=== RoboVM for Eclipse Plugin Installation
+
+Once your system meets all the requirements you install the plugin by
+selecting _Install New Software_ from the Eclipse _Help_ menu, enter the
+following update site into the _Work with_ field and click _Next_:
+
+----
+http://download.robovm.org/eclipse/
+----
+
+[[img-eclipse-install-new-software]]
+.Eclipse _Install New Software_ dialog
+image::eclipse-install-new-software.png[]
+
+NOTE: The RoboVM for Eclipse plugin is known to work with Eclipse 4.3 (Kepler)
+and later. We recommend you use Eclipse version 4.4 (Luna) or later.
+
+[id="install-cli-tools"]
+=== Command Line Tools Installation
+
+To install the RoboVM command line tools just
+http://download.robovm.org/robovm-{appversion}.tar.gz[download the latest
+package], extract it and add the `robovm-{appversion}/bin/` folder to your
+`$PATH` environment variable and set the `$ROBOVM_HOME` environment variable:
+
+[source,bash,subs="attributes"]
+----
+$ curl -O 'http://download.robovm.org/robovm-{appversion}.tar.gz'
+$ tar xvfz robovm-{appversion}.tar.gz
+$ export ROBOVM_HOME=$(cd robovm-{appversion} ; pwd -P)
+$ echo 'export ROBOVM_HOME="'"$ROBOVM_HOME"'"' >> ~/.profile
+$ echo 'export PATH="$PATH:'$ROBOVM_HOME'/bin"' >> ~/.profile
+----
+
+If everything is working correctly you should see the command line usage help
+text when you run
+----
+$ robovm -help
+----
+
+NOTE: If you change your `~/.profile` file you have to restart your shell or
+open a new window or tab in Terminal for the changes to take effect.
+
+[id=demo-app]
+=== Your First iOS App
+
+You should now be all set to run your first iOS app using RoboVM. In this section we will walk you through how to run a simple app <<iosdemo-eclipse>> and <<iosdemo-command-line>>.
+
+[id="iosdemo-eclipse"]
+==== In Eclipse
+
+Create a new project using _File -> New -> Project..._ and select the _RoboVM
+iOS Project_ wizard in the list.
+
+[[img-ios-project-wizard]]
+.The _RoboVM iOS Project wizard_
+image::eclipse-ios-project-wizard.png[]
+
+Enter `IOSDemo` as _Project name_, _App name_ and _Main class_. Enter
+`org.robovm.IOSDemo` as _App id_. Click _Finish_.
+
+[[img-create-project]]
+.The _New RoboVM iOS Project_ dialog
+image::eclipse-create-project.png[]
+
+Now let's create that main class we specified in the new project dialog.
+Create a new class and call it `IOSDemo` with no package name. Copy and paste
+the code below into the newly created file replacing whatever Eclipse auto
+generated for you.
+
+[source,java]
+----
+include::IOSDemo.java[]
+----
+
+Finally, launch the app in the iOS simulator by right clicking the project you
+created and select _Run As... -> iOS Simulator App (iPhone)_. This will run the
+app on a simulated iPhone.
+
+[[img-simulator]]
+.The IOSDemo app running in the iOS simulator
+image::simulator.png[width=300]
+
+NOTE: To run the app on an actual device you would use the _Run As... -> iOS
+Device App_ choice instead. Please note that this requires that the device has
+been set up for development. Please refer to
+https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/LaunchingYourApponDevices/LaunchingYourApponDevices.html[Apple's
+documentation] for further information.
+
+Check out the <<where-to-go-next>> section for pointers on where to go next.
+
+[id="iosdemo-command-line"]
+==== From the Command Line
+
+We'll start off by creating a few directories:
+
+[source,bash,subs="attributes"]
+----
+$ mkdir IOSDemo
+$ cd IOSDemo/
+$ mkdir src bin
+----
+
+Next create a new file called `IOSDemo.java` in the `src/` directory with the following contents:
+
+[source,java]
+----
+include::IOSDemo.java[]
+----
+
+Compile `IOSDemo.java` using `javac`:
+
+[source,bash,subs="attributes"]
+----
+$ javac -cp "$ROBOVM_HOME/lib/robovm-rt.jar:$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar" -d bin/ src/IOSDemo.java
+----
+
+Compile the Java bytecode into native code and launch the app using:
+
+[source,bash,subs="attributes"]
+----
+$ robovm -verbose -arch x86 -os ios -cp "$ROBOVM_HOME/lib/robovm-objc.jar:$ROBOVM_HOME/lib/robovm-cocoatouch.jar:bin/" -run IOSDemo
+----
+
+[[img-simulator]]
+.The IOSDemo app running in the iOS simulator
+image::simulator.png[width=300]
+
+[id="where-to-go-next"]
+=== Where to go from here?
+
+* Check out the <<the-robovm-for-eclipse-plugin>> section.
+* If you'd rather use the command line you should check out the <<command-line-usage>> section.
+* For more example projects have a look at the
+  https://github.com/robovm/robovm-samples[RoboVM iOS samples project on GitHub].
+
