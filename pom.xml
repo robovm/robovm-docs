@@ -36,6 +36,7 @@
               </attributes>
               <backend>html5</backend>
               <compact>true</compact>
+              <sourceHighlighter>prettify</sourceHighlighter>
             </configuration>
           </execution>
         </executions>
