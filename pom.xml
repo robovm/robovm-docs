@@ -32,6 +32,7 @@
               <attributes>
                 <revdate>${maven.build.timestamp}</revdate>
                 <revnumber>${project.version}</revnumber>
+                <stylesheet>../../../stylesheets/foundation.css</stylesheet>
                 <!-- <appversion>${robovm.version}</appversion> -->
               </attributes>
               <backend>html5</backend>
