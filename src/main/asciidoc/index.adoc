@@ -12,6 +12,8 @@ include::introduction.adoc[]
 
 include::getting-started.adoc[]
 
+include::samples.adoc[]
+
 include::configuration-reference.adoc[]
 
 include::advanced-topics.adoc[]
