@@ -12,22 +12,6 @@ include::introduction.adoc[]
 
 include::getting-started.adoc[]
 
-include::under-the-hood.adoc[]
-
 include::configuration-reference.adoc[]
 
-include::eclipse-plugin.adoc[]
-
-include::maven-plugin.adoc[]
-
-include::jni.adoc[]
-
-include::bro.adoc[]
-
-include::cross-platform-development.adoc[]
-
-include::using-nightly-builds.adoc[]
-
-include::using-ram-disks.adoc[]
-
-include::hacking-on-robovm.adoc[]
+include::advanced-topics.adoc[]

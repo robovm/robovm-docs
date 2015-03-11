@@ -1,5 +1,5 @@
 [id=bro]
-== The Bro Java to Native Bridge
+=== The Bro Java to Native Bridge
 
 Bro is a RoboVM specific API that enables Java code to call directly into
 native code without using JNI. It has been inspired by
@@ -41,9 +41,9 @@ and
 http://pubs.opengroup.org/onlinepubs/009695399/functions/dlsym.html[`dlsym()`]
 to find matching symbols.
 
-=== Primitive type marshaling
+==== Primitive type marshaling
 
-==== Primitive Java types
+===== Primitive Java types
 
 Native integer types (e.g. `char`, `int32_t`, `float`) are mapped to Java
 integer types of the same size:
@@ -85,14 +85,14 @@ integer types of the same size:
 NOTE: Unsigned types (e.g. `uint32_t`) are mapped to the signed Java type of
 the same bit size.
 
-==== Platform dependent primitive types
+===== Platform dependent primitive types
 
 Some native types have varying bit sizes depending on the target platform.
 E.g. the C `long` type is usually a 32-bit integer on 32-bit platforms but a
 64-bit integer on 64-bit platforms. To support such types Bro provides three
 different annotations:
 
-===== @MachineSizedFloat
+====== @MachineSizedFloat
 
 `@MachineSizedFloat` is used to bind floating point types which are 32-bit on
 32-bit platforms and 64-bit on 64-bit platforms. The `CGFloat` type in Apple's
@@ -125,7 +125,7 @@ converting a native value to a Java value. This operation may result in loss
 of precision. The same situation occurs when using `@MachineSizedFloat double`
 on 32-bit platforms and passing a Java value to native code.
 
-===== @MachineSizedSInt
+====== @MachineSizedSInt
 
 `@MachineSizedSInt` is used to bind signed integer types which are 32-bit on
 32-bit platforms and 64-bit on 64-bit platforms. The `NSInteger` type in
@@ -151,7 +151,7 @@ public native @MachineSizedSInt long abs(
 NOTE: The method parameter or return type annotated with `@MachineSizedSInt`
 must have the Java type `long`.
 
-===== @MachineSizedUInt
+====== @MachineSizedUInt
 
 `@MachineSizedUInt` is used to bind signed integer types which are 32-bit on
 32-bit platforms and 64-bit on 64-bit platforms. The `NSUInteger` type in
@@ -178,7 +178,7 @@ public native @MachineSizedUInt long max(
 NOTE: The method parameter or return type annotated with `@MachineSizedUInt`
 must have the Java type `long`.
 
-==== Pointers
+====== Pointers
 
 Pointers are passed as Java `long` values annotated with the Bro `@Pointer`
 annotation. The Bro compiler will handle the 64-bit <--> 32-bit conversions on
@@ -198,7 +198,7 @@ public native @Pointer long malloc(
     @MachineSizedUInt long size);
 ----
 
-===== Primitive type pointer classes
+====== Primitive type pointer classes
 
 Bro provides special pointer classes for each of the Java primitive types
 which makes it easier to work with pointers to primitive types. Using these
@@ -227,7 +227,7 @@ public static void main(String[] args) {
 }
 ----
 
-=== Structs
+==== Structs
 
 C `struct` types are mapped to Java by extending the bro http://apidocs.robovm.com/latest/org/robovm/rt/bro/Struct.html[`Struct`] class. Each
 member of the C `struct` is bound using a getter method and a setter method
@@ -275,7 +275,7 @@ public static void main(String[] args) {
 }
 ----
 
-==== sizeof(struct)
+===== sizeof(struct)
 
 The size in bytes of a `Struct` can easily be queried by calling the static
 `sizeOf()` method on the `Struct` sub-class:
@@ -286,7 +286,7 @@ public class CGRect extends Struct<CGRect> { ... }
 System.out.format("sizeof(CGRect) = %d\n", CGRect.sizeOf());
 ----
 
-==== @ByRef and @ByVal
+===== @ByRef and @ByVal
 
 The `@ByRef` and `@ByVal` annotations can be used to control how a `Struct`
 object is returned from a method or passed as a parameter to a method.
@@ -300,7 +300,7 @@ by annotating the class with `@ByVal`:
 public class Person extends Struct<Person> { ... }
 ----
 
-==== Nested structs
+===== Nested structs
 
 `Struct` classes can contain other `Struct` objects as members, either by
 value or by reference (i.e. by pointer). The default is `@ByRef` with the same
@@ -365,7 +365,7 @@ public class TestUnion extends Struct<TestUnion> {
 }
 ----
 
-==== Native array members
+===== Native array members
 
 Bro provides the `@Array` annotation which is used to bind array struct
 members. The `@Array` annotation specifies the dimensions of the member's
@@ -530,7 +530,7 @@ public class Gradient extends Struct<Gradient> {
 }
 ----
 
-==== Unbounded native array members
+===== Unbounded native array members
 
 For unbounded native array members one should use one of the pointer classes
 in the
@@ -559,7 +559,7 @@ NOTE: There's no setter for the `chars` member as that would have required the
 length to be known at compile time. Setting the individual bytes of `chars`
 has to be done through the `BytePtr` returned by the getter.
 
-==== Struct memory handling
+===== Struct memory handling
 
 When creating an instance of a `Struct` class Bro actually allocates two
 memory regions: one for the Java object and one for the actual struct data.
@@ -595,7 +595,7 @@ instance is referenced on the Java side the struct data can't be collected.
 TIP: The memory region allocated to hold a struct's data will always be zeroed
 out regardless of whether using the Java heap or the native heap.
 
-=== Native arrays
+==== Native arrays
 
 This allocates an array of 10 `CGRect` instances:
 
@@ -638,7 +638,7 @@ one could do:
 IntPtr myInts = Struct.allocate(IntPtr.class, 100);
 ----
 
-=== Enums
+==== Enums
 
 Simple C `enum` constants are mapped using Java `Enum` types which implement
 the bro
@@ -702,7 +702,7 @@ There are `ValuedEnum` marshalers for marshaling signed and unsigned 8-, 16-,
 TIP: The `@Marshaler` annotation can also be placed on a particular method return
 type or parameter type to only change the marshaler for that specific value.
 
-=== Bits
+==== Bits
 
 Bro provides a class called
 http://apidocs.robovm.com/1.0.0-SNAPSHOT/org/robovm/rt/bro/Bits.html[`Bits`]
@@ -801,24 +801,24 @@ classes in the `Bits` interface].
 TIP: The `@Marshaler` annotation can also be placed on a particular method return
 type or parameter type to only change the marshaler for that specific value.
 
-=== Native functions
+==== Native functions
 
-=== Global values
+==== Global values
 
-=== Callback methods
+==== Callback methods
 
-=== Type marshalers
+==== Type marshalers
 
 Type marshalers are used by Bro to convert from native types into Java types
 and vice versa.
 
-==== Marshaler lookup
+===== Marshaler lookup
 
-==== Value marshalers
+===== Value marshalers
 
-==== Array marshalers
+===== Array marshalers
 
-==== Pointer marshalers
+===== Pointer marshalers
 
 Pointer marshalers marshal pointers to native objects to/from some Java object
 that wraps that pointer. The general contract for a pointer marshaler class
@@ -854,12 +854,12 @@ class.
 
 TIP: Marshaler method names are unimportant, the signatures are what matters.
 
-==== Builtin marshalers
+===== Builtin marshalers
 
-=== Binding linked in libraries
+==== Binding linked in libraries
 
-=== Binding Objective-C
+==== Binding Objective-C
 
-=== Objective-C/Java Memory Management
+==== Objective-C/Java Memory Management
 
-=== The bro-gen tool
+==== The bro-gen tool

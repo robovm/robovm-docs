@@ -4,12 +4,12 @@ Mobile app developers targeting both Android and iOS face many challenges.
 When comparing the native development environments of these two platforms,
 i.e. the toolchains provided by Google and Apple respectively, one quickly
 finds that they differ substantially. Android development, as defined by
-Google, is based on the Eclipse IDE and the Java programming language. iOS
-development, according to Apple, on the other hand is based on the Xcode IDE
-and the Objective-C programming language. These differences rule out any code
-reuse between the platforms. Also, not many developers are proficient in both
-environments. In the end almost every multi-platform app is developed using
-separate development teams and separate codebases for each platform.
+Google, is based on the Intellij IDEA IDE and the Java programming language.
+iOS development, according to Apple, on the other hand is based on the Xcode
+IDE and the Objective-C programming language. These differences rule out any
+code reuse between the platforms. Also, not many developers are proficient in
+both environments. In the end almost every multi-platform app is developed
+using separate development teams and separate codebases for each platform.
 
 The ultimate goal of the RoboVM project is to solve this problem without
 compromising on neither developer nor app-user experience. With RoboVM
@@ -37,9 +37,9 @@ can be shared.
   iOS APIs] through a Java to Objective-C bridge enabling the development of
   apps with truly native UIs and with full hardware access.
 * Integrates with the most popular tools such as
-  https://www.eclipse.org/[Eclipse], http://maven.apache.org/[Maven] and
-  http://www.gradle.org/[Gradle].
-* App Store ready.
+  https://www.eclipse.org/[Eclipse], https://www.eclipse.org/[Intellij IDEA], 
+  http://maven.apache.org/[Maven] and http://www.gradle.org/[Gradle].
+* App Store ready, with hundreds of apps already in the store
 
 === Limitations
 

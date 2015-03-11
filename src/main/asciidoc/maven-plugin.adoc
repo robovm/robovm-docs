@@ -1,8 +1,0 @@
-[id="maven-integration"]
-== Maven Integration
-
-////
-TBW. Describes Maven configuration and supported goals. How to run on console,
-iOS simulator, iOS device. How to package IPA for App Store or Ad-Hoc
-distribution. Run JUnit tests.
-////

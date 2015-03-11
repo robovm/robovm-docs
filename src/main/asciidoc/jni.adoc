@@ -1,2 +1,0 @@
-[id=jni]
-== Using the Java Native Interface (JNI)

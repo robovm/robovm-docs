@@ -1,5 +1,5 @@
 [id="nightly-builds"]
-== Using the latest nightly build
+=== Using the latest nightly build
 
 WARNING: Nightly builds can be unstable. Use at your own risk!
 
@@ -8,22 +8,22 @@ The builds are uploaded to http://download.robovm.org and `SNAPSHOT` versions
 of all Maven artifacts are pushed to Maven Central's snapshots repository as
 well as `SNAPSHOT` builds of the Maven and Gradle plugins.
 
-=== Command line tools
+==== Command line tools
 
 Download the latest `nightlies/robovm-<version>-SNAPSHOT-<build>.tar.gz` from
 http://download.robovm.org and then follow the instructions in
 <<install-cli-tools>> to install and use it.
 
-=== Eclipse plugin
+==== Eclipse plugin
 
-Follow the instructions in <<install-eclipse-plugin>> but use the following
+Follow the instructions in <<getting-started-eclipse>> but use the following
 update site:
 
 ----
 http://download.robovm.org/nightlies/eclipse/
 ----
 
-=== Maven
+==== Maven
 
 Use `SNAPSHOT` version dependencies for the RoboVM dependencies in your
 `pom.xml`. Also make sure you use the corresponding `SNAPSHOT` version of the
@@ -88,7 +88,7 @@ your `pom.xml`:
 </pluginRepositories>
 ----
 
-=== Gradle
+==== Gradle
 
 Use `SNAPSHOT` version dependencies for the RoboVM dependencies in your
 `build.gradle`. Also make sure you use the corresponding `SNAPSHOT` version of

@@ -1,7 +1,7 @@
-== Under the hood
+=== Under the hood
 
 
-=== The bytecode compiler
+==== The bytecode compiler
 
 At the heart of RoboVM is its
 http://en.wikipedia.org/wiki/Ahead-of-time_compilation[ahead-of-time
@@ -39,7 +39,7 @@ be used with 3rd party libraries in standard JAR files without any need for
 the original source code enabling the use of proprietary and closed-source
 libraries.
 
-=== Incremental compilation
+==== Incremental compilation
 
 The first launch of a RoboVM app, even an app as simple as the `IOSDemo` app we
 saw in <<demo-app>>, takes some time. When compiling an app the RoboVM
@@ -63,7 +63,7 @@ unable to determine that a class should be compiled. Fortunately the compiler
 can be instructed to always <<config-reference,include a particular class or
 even all classes matching a pattern>>.
 
-=== Android-based runtime class library
+==== Android-based runtime class library
 
 Any JVM needs a runtime class library. This is the library which provides the
 standard packages and classes needed by any Java program such as
