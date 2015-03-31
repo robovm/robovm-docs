@@ -1,0 +1,13 @@
+{
+	"gitbook": ">=2.0.0",
+	"theme": "./theme",
+	"title": "RoboVM User Guide",
+	"structure": {
+		"readme": "introduction.md"
+	},
+	"variables": {
+		"appVersion": "1.0.0",
+		"osxVersion": "10.9",
+		"xcodeVersion": "6.x"
+	}
+}

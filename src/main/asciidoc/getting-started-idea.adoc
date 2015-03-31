@@ -1,5 +1,0 @@
-[id="getting-started-idea"]
-=== Getting Started with Intellij IDEA/Android Studio
-_Coming Soon_!
-
-NOTE: A preliminary Intellij IDEA plugin is https://plugins.jetbrains.com/plugin/7588?pr=idea[available]. It is a wrapper around the RoboVM Gradle plugin. ETA for the official Intellij IDEA plugin is Q2 2015.
