@@ -12,6 +12,5 @@
 	* [Under the Hood](advanced-topics/compilation.md)
 	* [Using RAM Disks](advanced-topics/ramdisks.md)
 	* [Using the Latest Nightly Build](advanced-topics/nightlies.md)
-	* [Using the Latest Nightly Build](advanced-topics/nightlies.md)
 	* [The Bro Java to Native Bridge](advanced-topics/bro.md)
 	* [Command Line Usage](advanced-topics/commandline.md)
