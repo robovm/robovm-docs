@@ -1,17 +1,25 @@
 # RoboVM Documentation Project
 
-## Development
-
 Docs are written in [markdown](http://daringfireball.net/projects/markdown/syntax), and rendered using [gitbook](https://github.com/GitbookIO/gitbook).
+
+## Installation
 
 Make sure you have [node](https://nodejs.org/) installed and run
 
 ```bash
-npm install gitbook -g
-gitbook serve .
+npm install gitbook-cli -g
+gitbook versions:install latest
 ```
 
-This will start a server, watch for changes to files, and automatically refresh the browser when the build completes.
+## Development
+
+Gitbook has built-in support for building and testing out the docs as you write.
+
+To start a server, watch for changes to files, and automatically refresh the browser when the build completes, just run
+
+```bash
+gitbook serve .
+```
 
 ## Deployment
 
