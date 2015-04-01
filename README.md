@@ -4,7 +4,7 @@
 
 Docs are written in [markdown](http://daringfireball.net/projects/markdown/syntax), and rendered using [gitbook](https://github.com/GitbookIO/gitbook).
 
-Make sure you have [npm](https://www.npmjs.com/) installed and run
+Make sure you have [node](https://nodejs.org/) installed and run
 
 ```bash
 npm install gitbook -g
