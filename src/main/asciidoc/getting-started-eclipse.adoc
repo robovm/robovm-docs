@@ -1,28 +1,28 @@
 [id="getting-started-eclipse"]
 === Getting Started with Eclipse
 
-In this section you'll learn how to install Eclipse, install the RoboVM
+In this section you will learn how to install Eclipse, install the RoboVM
 Eclipse plugin, activate your commercial license, and create and run your
 first iOS application.
 
 [id="install-eclipse"]
 ==== Installing Eclipse
-With all the <<prerequisits, prerequisits>> out of the way, proceed to download a recent Eclipse
+With all the <<prerequisits, prerequisites>> out of the way, proceed to download a recent Eclipse
 build from https://www.eclipse.org/downloads/. Eclipse comes in many different
 flavors, the _Eclipse IDE for Java Developers_ package is sufficient for
 RoboVM development. Simply download the package, decompress it, and copy the
-resulting folder int `/Applications/`.
+resulting folder into `/Applications/`.
 
 IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s
 Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as
 adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To
-check which Java version Eclipse is running in go to _Eclipse -> About
+check which Java version Eclipse is running in, go to _Eclipse -> About
 Eclipse_, then click _Installation Details_ and open the _Configuration_ tab.
 Find the `java.version` property and make sure it is 1.7 or higher.
 
 IMPORTANT: The default max heap setting for Eclipse may be too low. In order
 to increase it *you need to change the -Xmx setting used when launching
-Eclipse*. To do this locate your Eclipse installation folder, right-click the
+Eclipse*. To do this, locate your Eclipse installation folder, right-click the
 Eclipse file and select _Show Package Contents_. Open the `eclipse.ini` file
 located in `Contents/MacOS` in a text editor and change the -Xmx value to 2G
 or more. Restart Eclipse.
@@ -30,7 +30,7 @@ or more. Restart Eclipse.
 [id="install-eclipse-plugin"]
 ==== Installing the Plugin
 
-With Eclipse <<install-eclipse, installed and setup>>, you ca now install the
+With Eclipse <<install-eclipse, installed and setup>>, you can now install the
 RoboVM Eclipse plugin by selecting _Install New Software_ from the Eclipse
 _Help_ menu, enter the following update site into the _Work with_ field and
 click _Next_:
@@ -104,7 +104,7 @@ console view.
 .Debugging on the simulator in Eclipse
 image::eclipse-debug-sim.png[]
 
-When starting you app in debug mode, you have the full debugging tools of
+When starting your app in debug mode, you have the full debugging tools of
 Eclipse at your disposal: you can set breakpoints, step into/out/over source
 lines, inspect and set variables and even use http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.docuser%2Freference%2Fviews%2Fdisplay%2Fref-display_view.htm[Eclipse' display view]
 
@@ -140,7 +140,7 @@ image::eclipse-unit-test.png[]
 
 ==== Deployment
 
-Once your are happy with your app and have tested it on multiple devices, it's time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive](IPA). To do so from within Ecipse, right click your project, then select _RoboVM Tools -> Package for Ad-hoc/App Store distribution..._.
+Once your are happy with your app and have tested it on multiple devices, it's time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive] (IPA). To do so from within Ecipse, right click your project, then select _RoboVM Tools -> Package for Ad-hoc/App Store distribution..._.
 
 [[img-eclipse-deploy]]
 .IPA export for ad-hoc and App Store distribution
