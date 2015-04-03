@@ -85,12 +85,12 @@ image::intellij-debug-sim.png[]
 
 ==== Deployment
 
-Once your are happy with your app and have tested it on multiple devices, it's time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive] (IPA). You can do so from within IntelliJ by selecting __Build > Create IPA__.
+Once you are happy with your app and have tested it on multiple devices, it is time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive] (IPA). You can do so from within IntelliJ by selecting __Build > Create IPA__.
 
 [[img-intellij-deploy]]
 .IPA export for ad-hoc and App Store distribution
 image::intellij-deploy.png[]
 
-Specify the output directory, your signing identiy and provisioning profile and click _OK_. You will find a file with the extension `.ipa` in the output directory, which is ready to be uploaded to iTunes Connect via the Application Loader.
+Specify the output directory, your signing identity and provisioning profile and click _OK_. You will find a file with the extension `.ipa` in the output directory, which is ready to be uploaded to iTunes Connect via the Application Loader.
 
 NOTE: Please refer to https://developer.apple.com/library/ios/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/Chapters/SubmittingTheApp.html[Apple's documentation] on how to submit your application.

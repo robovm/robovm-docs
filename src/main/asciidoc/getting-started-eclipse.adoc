@@ -15,7 +15,7 @@ resulting folder into `/Applications/`.
 
 IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s
 Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as
-adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To
+adding a Java 7 JRE to Eclipse' _Installed JREs_ dialog in _Preferences_. To
 check which Java version Eclipse is running in, go to _Eclipse -> About
 Eclipse_, then click _Installation Details_ and open the _Configuration_ tab.
 Find the `java.version` property and make sure it is 1.7 or higher.
@@ -140,12 +140,12 @@ image::eclipse-unit-test.png[]
 
 ==== Deployment
 
-Once your are happy with your app and have tested it on multiple devices, it's time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive] (IPA). To do so from within Ecipse, right click your project, then select _RoboVM Tools -> Package for Ad-hoc/App Store distribution..._.
+Once you are happy with your app and have tested it on multiple devices, it is time to publish it to the App Store. For this you need to create an http://en.wikipedia.org/wiki/.ipa_%28file_extension%29[iOSApplication Archive] (IPA). To do so from within Ecipse, right click your project, then select _RoboVM Tools -> Package for Ad-hoc/App Store distribution..._.
 
 [[img-eclipse-deploy]]
 .IPA export for ad-hoc and App Store distribution
 image::eclipse-deploy.png[]
 
-Specify the output directory, your signing identiy and provisioning profile and click _Finish_. You will find a file with the extension `.ipa` in the output directory, which is ready to be uploaded to iTunes Connect via the Application Loader.
+Specify the output directory, your signing identity and provisioning profile and click _Finish_. You will find a file with the extension `.ipa` in the output directory, which is ready to be uploaded to iTunes Connect via the Application Loader.
 
 NOTE: Please refer to https://developer.apple.com/library/ios/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/Chapters/SubmittingTheApp.html[Apple's documentation] on how to submit your application.
