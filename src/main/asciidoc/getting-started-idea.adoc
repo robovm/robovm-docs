@@ -16,11 +16,13 @@ IMPORTANT: The default max heap setting for IntelliJ is set too low by default. 
 [id="install-intellij-plugin"]
 ==== Installing the Plugin
 
-With IntelliJ <<install-intellij, setup>>, you are ready to install the RoboVM IntelliJ plugin. Open the IntelliJ _Preferences_ and select the _Plugins_ entry in the pane to the left. Click the _Browse Repositories..._ button at the bottom, and search for 'RoboVM'. Install the plugin and restart IntelliJ. 
+With IntelliJ <<install-intellij, setup>>, you are ready to install the RoboVM IntelliJ plugin. For now you can download a http://download.robovm.org.s3.amazonaws.com/nightlies/idea/org.robovm.idea-1.0.1-SNAPSHOT-plugin-dist-20150403_110806-22.jar[nightly build], then open the IntelliJ _Preferences_ and select the _Plugins_ entry in the pane to the left. Click the _Install plugin from disk_ button at the bottom, and navigate to where you downloaded the jar file. Install the plugin and restart IntelliJ.
 
-[[img-intellij-browse-repositories]]
-.IntelliJ _Browse Repositories_ dialog
-image::intellij-browse-repositories.png[]
+NOTE: In the future, you will be able to install and update the RoboVM plugin from the IntelliJ repositories.
+
+[[img-intellij-install-plugin]]
+.IntelliJ _Install plugin from disk_ dialog
+image::intellij-install-plugin.png[]
 
 [id="intellij-activate-license"] 
 ==== Activating your License 
