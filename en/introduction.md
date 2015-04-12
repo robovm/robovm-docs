@@ -1,5 +1,4 @@
 # Introduction
-> Version {{ book.appVersion }}, {{ file.mtime }}
 
 Mobile app developers targeting both Android and iOS face many challenges.
 When comparing the native development environments of these two platforms,
