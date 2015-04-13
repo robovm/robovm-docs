@@ -1,0 +1,9 @@
+.sidebar-menu li.searched > a > .fa-angle-left {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.sidebar-menu li.searched > .treeview-menu {
+ display: block;
+}

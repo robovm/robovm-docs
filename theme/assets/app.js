@@ -122,9 +122,6 @@ $.AdminLTE.options = {
  * options above.
  */
 $(function () {
-	// Summary
-	$(".article.active").closest("li.treeview").addClass( 'active' );
-
   //Easy access to options
   var o = $.AdminLTE.options;
 
