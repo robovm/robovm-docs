@@ -56,7 +56,7 @@ Some native types have varying bit sizes depending on the target platform. E.g. 
 
 `@MachineSizedFloat` is used to bind floating point types which are 32-bit on 32-bit platforms and 64-bit on 64-bit platforms. The `CGFloat` type in Apple's Cocoa and CocoaTouch APIs is an example of such a type. `CGFloat` is bound using `@MachineSizedFloat double` in RoboVM's CocoaTouch bindings. On the Java side the value is kept in a `float` or `double` and Bro will take care of the native<-->Java conversion.
 
-###### Example usage:
+##### Example usage:
 
 The C function which returns x^y^ of a `CGFloat` value
 
@@ -81,7 +81,7 @@ public native @MachineSizedFloat double pow(
 
 `@MachineSizedSInt` is used to bind signed integer types which are 32-bit on 32-bit platforms and 64-bit on 64-bit platforms. The `NSInteger` type in Apple's Cocoa and CocoaTouch APIs is an example of such a type. `NSInteger` is bound using `@MachineSizedSInt long` in RoboVM's CocoaTouch bindings. On the Java side the value is always kept in a `long` and Bro will take care of the native<-->Java conversion.
 
-###### Example usage:
+##### Example usage:
 
 The C function which returns the asbolute of an `NSInteger` value
 
@@ -103,7 +103,7 @@ public native @MachineSizedSInt long abs(
 
 `@MachineSizedUInt` is used to bind signed integer types which are 32-bit on 32-bit platforms and 64-bit on 64-bit platforms. The `NSUInteger` type in Apple's Cocoa and CocoaTouch APIs is an example of such a type. `NSUInteger` is bound using `@MachineSizedUInt long` in RoboVM's CocoaTouch bindings. On the Java side the value is always kept in a `long` and Bro will take care of the native<-->Java conversion.
 
-###### Example usage:
+##### Example usage:
 
 The C function which returns the max of two `NSUInteger` values
 
@@ -126,7 +126,7 @@ public native @MachineSizedUInt long max(
 
 Pointers are passed as Java `long` values annotated with the Bro `@Pointer` annotation. The Bro compiler will handle the 64-bit <--> 32-bit conversions on 32-bit platforms.
 
-###### Example usage:
+##### Example usage:
 
 The C `malloc()` function
 
@@ -146,7 +146,7 @@ public native @Pointer long malloc(
 
 Bro provides special pointer classes for each of the Java primitive types which makes it easier to work with pointers to primitive types. Using these classes facilitates converting between Java arrays of primitives and native memory, converting pointers to direct `java.nio.Buffer` instances and more. These classes are located in the [`org.robovm.rt.bro.ptr`](http://apidocs.robovm.com/latest/org/robovm/rt/bro/ptr/package-summary.html) package.
 
-###### Example of using the `BytePtr` class:
+##### Example of using the `BytePtr` class:
 
 The C `getenv()` function
 
@@ -178,7 +178,7 @@ C `struct` types are mapped to Java by extending the bro [`Struct`](http://apido
 
 > TIP: If the setter method is declared as returning an instance of the `Struct` class it belongs to the Bro compiler will make it return `this` making it possible to chain setter method calls.
 
-###### Example struct:
+##### Example struct:
 
 The C `struct timeval`
 
@@ -235,7 +235,7 @@ public class Person extends Struct<Person> { ... }
 
 Below is an example of how the CocoaTouch `struct CGRect` type is mapped to Java in the RoboVM Cocoa Touch bindings. A `CGRect` has two members: the `origin` is a `CGPoint` `struct` and the `size` is a `CGSize` struct.
 
-###### C:
+##### C:
 
 ```c
 struct CGRect {
@@ -244,7 +244,7 @@ struct CGRect {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class CGRect extends Struct<CGRect> {
@@ -268,7 +268,7 @@ public class CGRect extends Struct<CGRect> {
 
 A C `union` is bound just like a C `struct` but has overlapping `@StructMember` indexes:
 
-###### C:
+##### C:
 
 ```c
 union TestUnion {
@@ -278,7 +278,7 @@ union TestUnion {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class TestUnion extends Struct<TestUnion> {
@@ -297,7 +297,7 @@ Bro provides the `@Array` annotation which is used to bind array struct members.
 
 Single-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Vector {
@@ -305,7 +305,7 @@ struct Vector {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Vector extends Struct<Vector> {
@@ -318,7 +318,7 @@ public class Vector extends Struct<Vector> {
 
 Multi-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Matrix {
@@ -326,7 +326,7 @@ struct Matrix {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Matrix extends Struct<Matrix> {
@@ -343,7 +343,7 @@ An alternative to using Java arrays is to use a sub-class of `java.nio.Buffer` i
 
 Single-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Vector {
@@ -351,7 +351,7 @@ struct Vector {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Vector extends Struct<Vector> {
@@ -364,7 +364,7 @@ public class Vector extends Struct<Vector> {
 
 Multi-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Matrix {
@@ -372,7 +372,7 @@ struct Matrix {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Matrix extends Struct<Matrix> {
@@ -389,7 +389,7 @@ A third option is to use one of the pointer classes in the [`org.robovm.rt.bro.p
 
 Single-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Vector {
@@ -397,7 +397,7 @@ struct Vector {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Vector extends Struct<Vector> {
@@ -410,7 +410,7 @@ public class Vector extends Struct<Vector> {
 
 Multi-dimensional array:
 
-###### C:
+##### C:
 
 ```c
 struct Matrix {
@@ -418,7 +418,7 @@ struct Matrix {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Matrix extends Struct<Matrix> {
@@ -431,7 +431,7 @@ public class Matrix extends Struct<Matrix> {
 
 It's also possible to have arrays of structs in a `Struct`:
 
-###### C:
+##### C:
 
 ```c
 struct Color {
@@ -442,7 +442,7 @@ struct Gradient {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class Color extends Struct<Color> { ... }
@@ -456,7 +456,7 @@ public class Gradient extends Struct<Gradient> {
 
 For unbounded native array members one should use one of the pointer classes in the [`org.robovm.rt.bro.ptr`](http://apidocs.robovm.com/latest/org/robovm/rt/bro/ptr/package-summary.html) package combined with the `@ByVal` annotation:
 
-###### C:
+##### C:
 
 ```c
 struct PascalString {
@@ -465,7 +465,7 @@ struct PascalString {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public class PascalString extends Struct<PascalString> {
@@ -532,7 +532,7 @@ IntPtr myInts = Struct.allocate(IntPtr.class, 100);
 
 Simple C `enum` constants are mapped using Java `Enum` types which implement the bro [`ValuedEnum`](http://apidocs.robovm.com/latest/org/robovm/rt/bro/ValuedEnum.html) interface. Here's an example:
 
-###### C:
+##### C:
 
 ```c
 enum {
@@ -544,7 +544,7 @@ enum {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public enum NSTextAlignment implements ValuedEnum {
@@ -570,7 +570,7 @@ public enum NSTextAlignment implements ValuedEnum {
 
 By default Bro marshals a `ValuedEnum` as a signed 32-bit value. The default can be changed by specifying an explicit `@Marshaler` on the enum type. Here's how to marshal `NSTextAlignment` values as platform dependent (32-bit on 32-bit platforms, 64-bit on 64-bit platforms) signed integer values:
 
-###### Overriding the default marshaler for a `ValuedEnum`:
+##### Overriding the default marshaler for a `ValuedEnum`:
 
 ```java
 @Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)
@@ -587,7 +587,7 @@ There are `ValuedEnum` marshalers for marshaling signed and unsigned 8-, 16-, 32
 
 Bro provides a class called [`Bits`](http://apidocs.robovm.com/1.0.0-SNAPSHOT/org/robovm/rt/bro/Bits.html) that can be used to bind bitmask constants:
 
-###### C:
+##### C:
 
 ```c
 enum {
@@ -599,7 +599,7 @@ enum {
 };
 ```
 
-###### Java:
+##### Java:
 
 ```java
 public final class UIPopoverArrowDirection
@@ -638,13 +638,13 @@ public final class UIPopoverArrowDirection
 
 `Bits` values can be ORed using the `Bits.with(...)` methods in a manner very similar to how `java.util.EnumSet.of(...)` works:
 
-###### C:
+##### C:
 
 ```c
 int upDown = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
 ```
 
-###### Java:
+##### Java:
 
 ```java
 UIPopoverArrowDirection upDown = UIPopoverArrowDirection.with(
@@ -655,7 +655,7 @@ UIPopoverArrowDirection upDown = UIPopoverArrowDirection.with(
 
 By default Bro marshals a `Bits` instance as an unsigned 32-bit value. The default can be changed by specifying an explicit `@Marshaler` on the class. Here's how to marshal `UIPopoverArrowDirection` values as platform dependent (32-bit on 32-bit platforms, 64-bit on 64-bit platforms) unsigned integer values:
 
-###### Overriding the default marshaler for a `Bits`:
+##### Overriding the default marshaler for a `Bits`:
 
 ```java
 @Marshaler(Bits.AsMachineSizedIntMarshaler.class)

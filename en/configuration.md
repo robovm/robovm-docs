@@ -4,14 +4,14 @@ The recommended way to build RoboVM apps is to use a `robovm.xml` file to config
 
 The `robovm.xml` file is usually accompanied by a `robovm.properties` file. The `robovm.xml` file will be searched for these properties and any matches will be replaced with the actual value from the properties file. Properties are referenced using the same `${...}` syntax as used by Maven, Gradle and Ant. Here's and example:
 
-###### robovm.properties:
+##### robovm.properties:
 
 ```
 app.executable=IOSDemo
 app.name=IOSDemo
 ```
 
-###### robovm.xml:
+##### robovm.xml:
 
 ```xml
 <config>
@@ -35,13 +35,13 @@ app.name=IOSDemo
 
 Specifies where to install the generated executable and other files. The default is `<working-dir>/<executableName>`. For iOS apps the app will always be created in a sub-folder in the specified `<installDir>` folder named like the `CFBundleExecutable` value in the app´s `Info.plist.xml` file and with `.app` appended.
 
-###### Example:
+##### Example:
 
 ```xml
 <installDir>target/MyApp</installDir>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-d <dir>`
 
@@ -49,13 +49,13 @@ Specifies where to install the generated executable and other files. The default
 
 Specifies the name of the executable to be generated.
 
-###### Example:
+##### Example:
 
 ```xml
 <executableName>MyAppExe</executableName>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-o <name>`
 
@@ -63,13 +63,13 @@ Specifies the name of the executable to be generated.
 
 Specifies whether to use dynamic JNI. With this enabled native methods will be dynamically linked at runtime. Native methods in classes in the boot classpath will always use static JNI. On iOS only static JNI is supported and this option is ignored. The default is `false`.
 
-###### Example:
+##### Example:
 
 ```xml
 <useDynamicJni>true</useDynamicJni>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-dynamic-jni`
 
@@ -77,13 +77,13 @@ Specifies whether to use dynamic JNI. With this enabled native methods will be d
 
 Specifies whether the default `robovm-rt.jar` should be automatically added to the bootclasspath. The default is `true`
 
-###### Example:
+##### Example:
 
 ```xml
 <skipRuntimeLib>false</skipRuntimeLib>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-skiprt`
 
@@ -91,13 +91,13 @@ Specifies whether the default `robovm-rt.jar` should be automatically added to t
 
 This is the equivalent of the `-jar` command line option to the `java` command. The jar file will be added to the classpath and RoboVM will use the `Main-Class` set in the `META-INF/MANIFEST.MF` file in the jar file as `<mainClass>` value. Either this or `<mainClass>` must be specified.
 
-###### Example:
+##### Example:
 
 ```xml
 <mainJar>lib/my-app.jar</mainJar>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-jar <file>`
 
@@ -105,13 +105,13 @@ This is the equivalent of the `-jar` command line option to the `java` command. 
 
 Specifies the fully-qualified name of the class containing the `main(String[])` method that will be called when starting the app. Either this or `<mainJar>` must be specified.
 
-###### Example:
+##### Example:
 
 ```xml
 <mainClass>com.example.MyApp</mainClass>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 Specified after all RoboVM compiler options but before any program options.
 
@@ -119,13 +119,13 @@ Specified after all RoboVM compiler options but before any program options.
 
 Specifies the cacerts file to be included in the app. RoboVM includes the same CA cerificates as included in Android 4.4.3. Allowed values are `none` and `full`. Default is `full` but no cacerts will be included unless the code actually needs them.
 
-###### Example:
+##### Example:
 
 ```xml
 <cacerts>none</cacerts>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-cacerts <value>`
 
@@ -133,13 +133,13 @@ Specifies the cacerts file to be included in the app. RoboVM includes the same C
 
 Specifies the name of the OS to build for. Allowed values are `auto`, `linux`, `macosx` and `ios`. Default is `auto` which normally means to build for the current host OS.
 
-###### Example:
+##### Example:
 
 ```xml
 <os>ios</os>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-os <name>`
 
@@ -147,13 +147,13 @@ Specifies the name of the OS to build for. Allowed values are `auto`, `linux`, `
 
 Specifies the name of the CPU architecture to compile for. Allowed values are `auto`, `x86`, `x86_64`, `thumbv7`, `arm64`. Default is `auto` which  normally means to build for the current host's CPU architecture.
 
-###### Example:
+##### Example:
 
 ```xml
 <arch>thumbv7</arch>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-arch <name>`
 
@@ -169,7 +169,7 @@ An alternative syntax using `#` is also supported. This is useful when
 specifying patterns on the command line as it prevents the shall from
 expanding `*` characters.
 
-###### Example:
+##### Example:
 
 ```xml
 <forceLinkClasses>
@@ -179,7 +179,7 @@ expanding `*` characters.
 </forceLinkClasses>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-forcelinkclasses <list>`
 
@@ -191,7 +191,7 @@ Specifies, in nested `<lib>` elements, static libraries (with extension `.a`), o
 
 If `force="true"` has been specified for a `<lib>` poining at a static library the entire static library will be linked in regardless of whether the symbols in it are referenced by the rest of the app's code or not. This uses the `-force_load` command line linker option when building for Mac OS X and iOS and `--whole-archive` when building for Linux. The default is `force="true"`.
 
-###### Example:
+##### Example:
 
 ```xml
 <libs>
@@ -201,7 +201,7 @@ If `force="true"` has been specified for a `<lib>` poining at a static library t
 </libs>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-libs <list>`
 
@@ -217,7 +217,7 @@ Specifies, in nested `<symbol>` elements, symbols that should be exported when l
 * `?` matches one character.
 * `[abc]`, `[a-z]` matches one character from the specified set of characters.
 
-###### Example:
+##### Example:
 
 ```xml
 <exportedSymbols>
@@ -226,7 +226,7 @@ Specifies, in nested `<symbol>` elements, symbols that should be exported when l
 </exportedSymbols>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-exportedsymbols <list>`
 
@@ -236,7 +236,7 @@ Specifies, in nested `<symbol>` elements, symbols that should be exported when l
 
 Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that should be linked against when linking the final executable.
 
-###### Example:
+##### Example:
 
 ```xml
 <frameworks>
@@ -245,7 +245,7 @@ Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that sho
 </frameworks>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-frameworks <list>`
 
@@ -255,7 +255,7 @@ Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that sho
 
 Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that should be weakly linked against when linking the final executable. Weakly linking against a framework means that all symbols in the framework will be marked as weakly linked. This allows apps to be built against one version of a framework which defines a particular symbol and later run against a different version of that framework which doesn't have that symbol defined. If that symbol had been strongly linked the app would immediately crash at launch.
 
-###### Example:
+##### Example:
 
 ```xml
 <weakFrameworks>
@@ -264,7 +264,7 @@ Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that sho
 </weakFrameworks>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-weakframeworks <list>`
 
@@ -274,7 +274,7 @@ Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that sho
 
 Specifies, in nested `<path>` elements, framework search paths used when searching for custom frameworks.
 
-###### Example:
+##### Example:
 
 ```xml
 <frameworkPaths>
@@ -282,7 +282,7 @@ Specifies, in nested `<path>` elements, framework search paths used when searchi
 </frameworkPaths>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-frameworkpaths <list>`
 
@@ -292,7 +292,7 @@ Specifies, in nested `<path>` elements, framework search paths used when searchi
 
 Specifies files and directories that should be copied to the installation directory. A resource can be specified using a single path:
 
-###### Example:
+##### Example:
 
 ```xml
 <resources>
@@ -304,7 +304,7 @@ Specifies files and directories that should be copied to the installation direct
 
 A resource be also be specified with a base directory, a target path and include and exclude filters (similar to Maven's `<resource>` element):
 
-###### Example:
+##### Example:
 
 ```xml
 <resources>
@@ -442,7 +442,7 @@ The resulting texture atlas can be used via SpriteKit's `SKTextureAtlas` or manu
 **/.DS_Store
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-resources <list>`
 
@@ -458,7 +458,7 @@ Specifies, in nested elements, additional configuration options for various comm
 
 Specifies configuration options for the `TextureAtlas` tool. This tool is used for processing `.atlas` folders with image files into valid texture atlases.
 
-###### Example:
+##### Example:
 
 ```xml
 <tools>
@@ -499,7 +499,7 @@ Specifies whether the dimensions of the resulting texture atlas should be power 
 
 Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and ZIP archives to search for class files to be compiled by the RoboVM compiler. Classes in these entries will be loaded by the boot classloader at runtime.  Used to locate the `+java.*+` and `+javax.*+` classes. Default is `<robovm-home>/lib/robovm-rt.jar`.
 
-###### Example:
+##### Example:
 
 ```xml
 <bootclasspath>
@@ -507,7 +507,7 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 </bootclasspath>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-bootclasspath <list>`
 `-bootcp <list>`
@@ -521,7 +521,7 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 
 Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and ZIP archives to search for class files to be compiled by the RoboVM compiler. Classes in these entries will be loaded by the system classloader at runtime.
 
-###### Example:
+##### Example:
 
 ```xml
 <classpath>
@@ -530,7 +530,7 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 </classpath>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-classpath <list>`
 `-cp <list>`
@@ -543,13 +543,13 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 
 Specifies the target to build for. Either `auto`, `console` or `ios`. The default is `auto` which means use `<os>` to decide.
 
-###### Example:
+##### Example:
 
 ```xml
 <targetType>ios</targetType>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-target <name>`
 
@@ -557,7 +557,7 @@ Specifies the target to build for. Either `auto`, `console` or `ios`. The defaul
 
 (*iOS only*) Specifies the version number of the iOS SDK to build against. If not specified the latest SDK that can be found will be used.
 
-###### Example:
+##### Example:
 
 ```xml
 <iosSdkVersion>8.0</iosSdkVersion>
@@ -570,13 +570,13 @@ Specifies the target to build for. Either `auto`, `console` or `ios`. The defaul
 
 (*iOS only*) `Info.plist` file to be used by the app. If not specified a simple `Info.plist` will be generated with a `CFBundleIdentifier` based on the `<mainClass>` or `<executableName>`.
 
-###### Example:
+##### Example:
 
 ```xml
 <iosInfoPList>plists/Info.plist</iosInfoPList>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-plist <file>`
 
@@ -586,13 +586,13 @@ Specifies the target to build for. Either `auto`, `console` or `ios`. The defaul
 
 (*iOS only*) Property list (`.plist`) file containing resource rules passed to `codesign` when signing the app.
 
-###### Example:
+##### Example:
 
 ```xml
 <iosResourceRulesPList>plists/ResourceRules.plist</iosResourceRulesPList>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-resourcerules <file>`
 
@@ -600,12 +600,12 @@ Specifies the target to build for. Either `auto`, `console` or `ios`. The defaul
 
 (*iOS only*) Property list (`.plist`) file containing entitlements passed to `codesign` when signing the app.
 
-###### Example:
+##### Example:
 
 ```xml
 <iosEntitlementsPList>plists/Entitlements.plist</iosEntitlementsPList>
 ```
 
-###### Command line usage:
+##### Command line usage:
 
 `-entitlements <file>`

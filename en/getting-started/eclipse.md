@@ -32,7 +32,7 @@ If you have [purchased a subscription](http://www.robovm.com/pricing/) for one o
 
 ## Creating a Project
 
-You can now create your first RoboVM project! Select __File -> New -> RoboVM iOS Project__. The project wizard will appear:
+You can now create your first RoboVM project! Select _File -> New -> RoboVM iOS Project_. The project wizard will appear:
 
 ![New Project Wizard](/images/eclipse-project-wizard.png)
 
