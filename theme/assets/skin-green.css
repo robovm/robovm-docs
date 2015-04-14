@@ -20,17 +20,17 @@
 .skin-green .main-header .navbar .navbar-custom-menu > .nav {
   margin-right: 10px;
 }
-.skin-green .main-header .navbar .sidebar-toggle {
+.skin-green .main-header .sidebar-toggle {
   color: #ffffff;
 }
-.skin-green .main-header .navbar .sidebar-toggle:hover {
+.skin-green .main-header .sidebar-toggle:hover {
   color: #f6f6f6;
   background: rgba(0, 0, 0, 0.1);
 }
-.skin-green .main-header .navbar .sidebar-toggle {
+.skin-green .main-header .sidebar-toggle {
   color: #fff;
 }
-.skin-green .main-header .navbar .sidebar-toggle:hover {
+.skin-green .main-header .sidebar-toggle:hover {
 	background-color: rgba(0, 0, 0, 0.1);
 }
 @media (max-width: 767px) {
