@@ -55,10 +55,15 @@
       </section>
     </div>
     <footer class="main-footer">
-      <div class="pull-right hidden-xs">
-        <!--<b>Version</b> 1.0.0-SNAPSHOT-->
+      <div class="pull-right">
+			{% if progress.current.next and progress.current.next.path %}
+			<a href="{{ basePath }}/{{ progress.current.next.path|contentLink }}" class="navigation">{{ progress.current.next.title }} <i class="fa fa-angle-right"></i></a>
+			{% endif %}
       </div>
-      <strong>Copyright &copy; 2014-2015 <a href="http://robovm.org">RoboVM AB</a>.</strong>
+
+			{% if progress.current.prev and progress.current.prev.path %}
+			<a href="{{ basePath }}/{{ progress.current.prev.path|contentLink }}" class="navigation"><i class="fa fa-angle-left"></i> {{ progress.current.prev.title }}</a>
+			{% endif %}
     </footer>
   </div>
 {% endblock %}
