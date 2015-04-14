@@ -1,0 +1,24 @@
+<ul id="book-summary" class="sidebar-menu">
+{% for chapter in summary.chapters %}
+	{% if chapter.articles.length > 0 %}
+	<li class="treeview {% if chapter.path == _input %}active{% endif %}" data-path="{{ chapter.path|contentLink }}">
+		<a href="{{ basePath }}/{{ chapter.path|contentLink }}">
+			<i class="fa fa-circle-o"></i> <span>{{ chapter.title }}</span>
+			<i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+		{% for article in chapter.articles %}
+			<li class="article {% if article.path == _input %}active{% endif %}" data-path="{{ article.path|contentLink }}"><a href="{{ basePath }}/{{ article.path|contentLink }}"><i class="fa fa-angle-double-right"></i>{{ article.title }}</a></li>
+		{% endfor %}
+		</ul>
+	</li>
+	{% else %}
+	<li class="{% if chapter.path == _input %}active{% endif %}" data-path="{{ chapter.path|contentLink }}">
+		<a href="{{ basePath }}/{{ chapter.path|contentLink }}">
+			<i class="fa fa-circle-o"></i>
+			<span>{% if chapter.introduction and not chapter.title %}Introduction{% else %}{{ chapter.title }}{% endif %}</span>
+		</a>
+	</li>
+	{% endif %}
+{% endfor %}
+</ul>

@@ -1,0 +1,105 @@
+{% extends "./layout.html" %}
+
+{% block head %}
+    {{ super() }}
+    {% if progress.current.next and progress.current.next.path %}
+    <link rel="next" href="{{ basePath }}/{{ progress.current.next.path|contentLink }}" />
+    {% endif %}
+    {% if progress.current.prev and progress.current.prev.path %}
+    <link rel="prev" href="{{ basePath }}/{{ progress.current.prev.path|contentLink }}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block description %}
+	{% if progress.current.level == "0" %}{{ description }}{% endif %}
+{% endblock %}
+
+{% block content %}
+  <div id="book" class="wrapper" data-basepath="{{ basePath }}">
+    <header class="main-header">
+			<a href="{{ basePath }}" class="logo"><img class="brand" src="{{ staticBase }}/images/logo.png"></img></a>
+      <nav class="navbar navbar-static-top" role="navigation">
+      </nav>
+    </header>
+    <aside class="main-sidebar">
+      <section class="sidebar">
+        <div id="book-search" class="sidebar-form">
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search..." />
+            <span class="input-group-btn">
+							<button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+						</span>
+          </div>
+        </div>
+        {% include "includes/summary.html" %}
+      </section>
+    </aside>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <h1>
+					User Guide
+					<small>Version 1.0.0-SNAPSHOT</small>
+				</h1>
+      </section>
+      <section class="content">
+        {% for section in content %}
+        <section class="{{ section.type }}" id="section-{{ section.id }}">
+          {% if section.type == "normal" %} {% autoescape false %}{{ section.content }}{% endautoescape %} {% endif %}
+        </section>
+        {% endfor %}
+      </section>
+    </div>
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0.0-SNAPSHOT
+      </div>
+      <strong>Copyright &copy; 2014-2015 <a href="http://robovm.org">RoboVM AB</a>.</strong>
+    </footer>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  <script src="{{ staticBase }}/jquery.min.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/lodash.min.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/lunr.min.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/fastclick.min.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/jquery.slimscroll.min.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+  <script src="{{ staticBase }}/app.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/sidebar.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/callouts.js" type="text/javascript"></script>
+  <script src="{{ staticBase }}/footnotes.js" type="text/javascript"></script>
+	{% for resource in plugins.resources.js %}
+    {% if resource.url %}
+    <script src="{{ resource.url }}"></script>
+    {% else %}
+    <script src="{{ staticBase }}/plugins/{{ resource.path }}"></script>
+    {% endif %}
+	{% endfor %}
+{% endblock %}
+
+{% block style %}
+	<link href="{{ staticBase }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="{{ staticBase }}/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/default.min.css">
+	<link href="{{ staticBase }}/AdminLTE.css" rel="stylesheet" type="text/css" />
+	<link href="{{ staticBase }}/skin-green.css" rel="stylesheet" type="text/css" />
+	<link href="{{ staticBase }}/app.css" rel="stylesheet" type="text/css" />
+
+	{% for resource in plugins.resources.css %}
+	{% if resource.url %}
+		<link rel="stylesheet" href="{{ resource.url }}">
+	{% else %}
+		<link rel="stylesheet" href="{{ staticBase }}/plugins/{{ resource.path }}">
+	{% endif %}
+	{% endfor %}
+	{% for style in styles %}
+		<link rel="stylesheet" href="{{ basePath }}/{{ style }}">
+	{% endfor %}
+{% endblock %}
