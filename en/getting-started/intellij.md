@@ -8,19 +8,23 @@ This section shows how to build and test RoboVM iOS applications using IntelliJ 
 
 With all the [prerequisites](../getting-started/introduction.md) out of the way, proceed to download the latest IntelliJ version from https://www.jetbrains.com/idea/download/. The IDE comes in two different flavors, Ultimate and Community, and both work perfectly with the RoboVM plugin.
 
-> IMPORTANT: IntelliJ *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Locate your IntelliJ installation folder, right-click the IntelliJ application and select _Show Package Contents_. Open the `Info.plist` file located in `Contents` by double clicking it and make sure the _JVMVersion_ entry under _JVMOptions_ is set to 1.7+.
+There are three __important__ steps that must be completed in order to properly setup IntelliJ for working with RoboVM.
 
-> IMPORTANT: The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. To do this, locate your IntelliJ installation folder, right-click the IntelliJ application, and select __Show Package Contents__. Open the `idea.vmoptions` file located in `Contents/bin` in a text editor and change the -Xmx value to 2G or more.
+1. IntelliJ _MUST_ be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Locate your IntelliJ installation folder, right-click the IntelliJ application and select _Show Package Contents_. Open the `Info.plist` file located in `Contents` by double clicking it and make sure the _JVMVersion_ entry under _JVMOptions_ is set to 1.7+.
+
+2. The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. To do this, locate your IntelliJ installation folder, right-click the IntelliJ application, and select _Show Package Contents_. Open the `idea.vmoptions` file located in `Contents/bin` in a text editor and change the -Xmx value to 1G or more.
+
+3. You can now configure a JDK by navigating to _Configure > Project Defaults > Project Structure_ on the _Welcome to IntelliJ IDEA_ dialog. Select _SDKs_ in the left pane, click the plus sign, and choose JDK. IntelliJ will be smart enough to find your JDK installations, so just select the one you want to use.
 
 > IMPORTANT: for Interface Builder integration to work, *you need to enable automatic project compilation*. Open the IntelliJ IDEA _Preferences_, select __Build, Execution, Deployment -> Compiler__ and check the __Make project automatically__ checkbox. This will automatically compile any source files after you save modifications. 
 
 ### Installing the Plugin
 
-With IntelliJ setup, you are ready to install the RoboVM IntelliJ plugin. For now you can download a [nightly build](http://download.robovm.org/nightlies/idea/org.robovm.idea-1.0.1-SNAPSHOT-plugin-dist-20150413_022328-38.jar), then open the IntelliJ _Preferences_ and select the _Plugins_ entry in the pane to the left. Click the _Install plugin from disk_ button at the bottom, and navigate to where you downloaded the jar file. Install the plugin and restart IntelliJ.
-
-> NOTE: In the future, you will be able to install and update the RoboVM plugin from the IntelliJ repositories.
+With IntelliJ setup, you are ready to install the RoboVM IntelliJ plugin. Open the IntelliJ _Preferences_ and select the _Plugins_ entry in the pane to the left. Click the _Browse repositories_ button at the bottom, and search for RoboVM.
 
 ![Install plugin from disk dialog](/images/intellij-install-plugin.png)
+
+> NOTE: You can use a nightly build by downloading the latest IDEA plugin from [http://download.robovm.org/](http://download.robovm.org/). Then, instead of clicking _Browse repositories_ on the plugins dialog, use the _Install plugin from disk_ option and navigate to the downloaded jar file.
 
 ## Activating your License 
 
@@ -36,7 +40,7 @@ as debugging support or Interface Builder integration. Select _License Manager_ 
 
 ## Creating a New Project
 
-Creating a new iOS project from within IntelliJ is just like any other project type. Selecting __File > New > Project__ will open the dialog shown below.
+Creating a new iOS project from within IntelliJ is just like any other project type. Selecting __File > New > Project__ will open the dialog shown below, where you should choose _RoboVM iOS App without storyboards_.
 
 ![New Project Wizard](/images/intellij-project-wizard.png)
 
