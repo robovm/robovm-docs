@@ -117,3 +117,18 @@ Behind the scenes, RoboVM has to do additional work to make the bridge between y
 All of this happens in the background. Every time you save changes to a relevant file in your project, RoboVM will update the corresponding Xcode project. You can view this work in the RoboVM console in Eclipse or IDEA:
 
 ![images/ib-integator.png](images/ib-integator.png)
+
+## Xcode Basics
+Both the RoboVM plugin for Eclipse and the plugin for Intellij IDEA allow you to open storyboard files from within the respective IDE. Simply double click the `Main.storyboard` file in the `resources/Base.lproj/` folder. You can also open the Xcode project of your app by right clicking your RoboVM module/project and selecting _Open Xcode Project_ from the context menu.
+
+![images/xcode.png](images/xcode.png)
+
+1. The __Navigator Area__ allows you to view the files within your Xcode project.
+2. The __Editor Area__ displays the content of a file selected in the navigator area, using a content type specific UI.
+3. The __Utility Area__ displays various properties of a selected object. An object can be a file selected in the navigator area or a UI view selected in the storyboard editor.
+
+You can collapse the navigator and utility areas via the toolbar in the top right corner of Xcode
+
+![images/collapse.png](images/collapse.png) 
+
+> NOTE: to run your app on a simulator or device, switch back to your Java IDE and run it from there. Running your app via Xcode is not supported.
