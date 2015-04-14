@@ -6,9 +6,11 @@ In this section you'll learn how to install Eclipse, install the RoboVM Eclipse 
 
 With all the [prerequisites](../getting-started/introduction.md) out of the way, proceed to download a recent Eclipse build from https://www.eclipse.org/downloads/. Eclipse comes in many different flavors, the _Eclipse IDE for Java Developers_ package is sufficient for RoboVM development. Simply download the package, decompress it, and copy the resulting folder int `/Applications/`.
 
-> IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To check which Java version Eclipse is running in go to _Eclipse -> About Eclipse_, then click _Installation Details_ and open the _Configuration_ tab. Find the `java.version` property and make sure it is 1.7 or higher.
+There are some __important__ steps that must be completed in order to properly setup Eclipse for working with RoboVM.
 
-> IMPORTANT: The default max heap setting for Eclipse may be too low. In order to increase it *you need to change the -Xmx setting used when launching Eclipse*. To do this locate your Eclipse installation folder, right-click the Eclipse file and select _Show Package Contents_. Open the `eclipse.ini` file located in `Contents/MacOS` in a text editor and change the -Xmx value to 2G or more. Restart Eclipse.
+1. Eclipse _MUST_ be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To check which Java version Eclipse is running in go to _Eclipse -> About Eclipse_, then click _Installation Details_ and open the _Configuration_ tab. Find the `java.version` property and make sure it is 1.7 or higher.
+
+2. The default max heap setting for Eclipse may be too low. In order to increase it *you need to change the -Xmx setting used when launching Eclipse*. To do this locate your Eclipse installation folder, right-click the Eclipse file and select _Show Package Contents_. Open the `eclipse.ini` file located in `Contents/MacOS` in a text editor and change the -Xmx value to 2G or more. Restart Eclipse.
 
 ## Installing the Plugin
 
@@ -21,6 +23,8 @@ http://download.robovm.org/eclipse/
 ![Eclipse Install New Software dialog](/images/eclipse-install-new-software.png)
 
 Follow the on-screen instructions until installation is complete and restart Eclipse.
+
+> NOTE: You can use a nightly build by using `http://download.robovm.org/nightlies/eclipse/` as the software site instead of the one listed above.
 
 ## Activating your License 
 
@@ -61,7 +65,7 @@ When starting you app in debug mode, you have the full debugging tools of Eclips
 
 RoboVM supports running and debugging JUnit tests for console and simulator apps. Let's add a new unit test to our project.
 
-Create a new source folder which will contain all your unit tests by right clicking the project and selecting __File -> New -> Source Folder__. In the dialog, enter `src/test/java`, then click _Finish_. Copy the following source code to your clipboard, then select the `src/test/java` folder in Eclipse and paste the clipboard contents.
+Create a new source folder which will contain all your unit tests by right clicking the project and selecting _File -> New -> Source Folder_. In the dialog, enter `src/test/java`, then click _Finish_. Copy the following source code to your clipboard, then select the `src/test/java` folder in Eclipse and paste the clipboard contents.
 
 ```java
 import static org.junit.Assert.*;
