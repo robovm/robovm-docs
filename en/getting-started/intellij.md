@@ -1,4 +1,6 @@
-# Getting Started with Intellij IDEA <small><a href="https://youtu.be/pne0rSB0_Lo"><i class="fa fa-video-camera"></i></a></small>
+# Getting Started with Intellij IDEA
+
+{% youtube %}https://youtu.be/pne0rSB0_Lo{% endyoutube %}
 
 This section shows how to build and test RoboVM iOS applications using IntelliJ IDEA. It will explain how to use IntelliJ to activate your commercial license, create new iOS projects, build an iOS application and then compile, test and debug using the tools and interfaces you are already familiar with.
 
