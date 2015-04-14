@@ -24,7 +24,8 @@
 }
 
 .content img {
-	padding: 20px;
+	padding: 10px 0 10px 0;
+	max-width: 100%;
 }
 
 .content-wrapper p {
