@@ -39,6 +39,7 @@ You can now create your first RoboVM project! Select _File -> New -> RoboVM iOS 
 Perform these steps to define your project:
 
 1. Fill in your _Project Name_
+1. From the Template combobox select _RoboVM iOS App without storyboards_
 1. Specify the package and name of your _Main Class_, e.g. _com.mycompany.myapp.Main_
 1. Specify the _App Name_. This is the name used when your app is installed to an iOS device or simulator
 1. Specify the _App ID_. This must be a unique identifier, usually your package name

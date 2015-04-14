@@ -7,7 +7,7 @@
 	* [Getting Started with Gradle](getting-started/gradle.md)
 	* [Project and Code Structure](getting-started/structure.md)
 * [Walkthroughs](walkthroughs/introduction.md)
-    * [Interface Builder Basics](walkthroughs/ib-basics.md)
+    * [Interface Builder Basics](walkthroughs/ib-basics/ib-basics.md)    	
 * [Samples](samples.md)
 * [Configuration Reference](configuration.md)
 * [Advanced Topics](advanced-topics/introduction.md)
