@@ -8,7 +8,9 @@ With all the [prerequisites](../getting-started/introduction.md) out of the way,
 
 > IMPORTANT: IntelliJ *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Locate your IntelliJ installation folder, right-click the IntelliJ application and select _Show Package Contents_. Open the `Info.plist` file located in `Contents` by double clicking it and make sure the _JVMVersion_ entry under _JVMOptions_ is set to 1.7+.
 
-> IMPORTANT: The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. To do this, locate your IntelliJ installation folder, right-click the IntelliJ application, and select _Show Package Contents_. Open the `idea.vmoptions` file located in `Contents/bin` in a text editor and change the -Xmx value to 2G or more.
+> IMPORTANT: The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. To do this, locate your IntelliJ installation folder, right-click the IntelliJ application, and select __Show Package Contents__. Open the `idea.vmoptions` file located in `Contents/bin` in a text editor and change the -Xmx value to 2G or more.
+
+> IMPORTANT: for Interface Builder integration to work, *you need to enable automatic project compilation*. Open the IntelliJ IDEA _Preferences_, select __Build, Execution, Deployment -> Compiler__ and check the __Make project automatically__ checkbox. This will automatically compile any source files after you save modifications. 
 
 ### Installing the Plugin
 
