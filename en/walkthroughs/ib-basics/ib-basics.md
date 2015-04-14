@@ -431,7 +431,7 @@ Add the following code to `GreetingsController`:
     }
 ```
 
-To define an outlet in your Java-based view controller, create a setter (and optionally a getter) method following the Java bean naming conventions. The setter method must take exactly one parameter of the type of the UI view you want to assign to the outlet. In this case, the type is `UITextField`. In case of the label, the type is `UILabel`. You can also specify a super type, like `UIView`. The optional getter must not take any parameter and return a type according to the same typing rules as for the setter.
+To define an outlet in your Java-based view controller, create a setter (and optionally a getter) method following the Java bean naming conventions, annotated with `@IBOutlet`. The setter method must take exactly one parameter of the type of the UI view you want to assign to the outlet. In this case, the type is `UITextField`. In case of the label, the type is `UILabel`. You can also specify a super type, like `UIView`. The optional getter must not take any parameter and return a type according to the same typing rules as for the setter.
 
 After you save the Java source file, RoboVM will update the corresponding Objective-C header file `GreetingsController.h`:
 
@@ -442,7 +442,7 @@ After you save the Java source file, RoboVM will update the corresponding Object
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 ```
 
-The Java setter name is stripped of the `set` prefix and used as the name for the outlet in the Objective-C header.
+RoboVM added a property to header file. The Java setter name is stripped of the `set` prefix and used as the name for the outlet in the Objective-C header.
 
 Let's assign the text field to this outlet:
 1. In Xcode, select the view controller in the outline view or canvas
@@ -451,8 +451,8 @@ Let's assign the text field to this outlet:
 2. Click on the port next to the `textField` outlet and drag a line to the text field on the canvas or in the outline view
  ![images/add-outlet.png](images/add-outlet.png)
 
-The text field is now assigned to the outlet:
-![images/add-outlet.png](images/add-outlet.png) 
+The text field is now assigned to the outlet in our controller:
+![images/outlet.png](images/outlet.png) 
 
 You can remove the assignement by clicking on the `x` in the connections inspector.
 
@@ -461,6 +461,43 @@ Let's start the app and see if the outlet is assigned:
 2. Create a run configuration for the simulator or device
 3. Start the run configuration in debug mode
 
-And indeed, the breakpoint is hit, and the passed in UITextField is the one we defined in the storyboard:
+And indeed, the breakpoint is hit, and the passed in `UITextField` is the one we defined in the storyboard:
 
 ![images/debug-outlet.png](images/debug-outlet.png)
+
+### Adding Actions
+Our Java-based view controller also has to react to events, such as a click on a button or when the content of a text field changes. We want to process changes to the text field value in addition to clicks on the `Click Me!` button. To achieve this, we need to create an action on the view controller.
+
+Add the following code to the `GreetingsController`:
+```java
+    @IBAction
+    private void textChanged() {
+        label.setText("I see you typing!");
+    }
+```
+
+To define an action in your view controller, create a method annotated with `@IBAction`. The method can have one, two or zero parameters. The first optional parameter is the sender of the event, e.g. our `UITextField`. The second optional parameter is a `UIEvent` which holds additional data for the event. In our case we went for the zero parameter action.
+
+After you save your Java source file, RoboVM will update the corresponding Objective-C header file `GreetingsController.h`:
+
+```objc
+/**
+ * IBAction textChanged
+ * Selector: textChanged
+ */
+-(IBAction) textChanged;
+```
+
+RoboVM added a method to the header file. The Java method name is used as the name for the action.
+
+Let's assign the text change event of the text field to this action:
+1. In Xcode, select the view controller in the outline view or canvas
+2. Open the connections inspector
+3. Click on the port next to the `textChanged` outlet and drag a line to the text field on the canvas or in the outline view
+  ![images/add-action.png](images/add-action.png)
+
+4. From the popup dialog select `Value Changed`
+ ![images/value-changed.png](images/value-changed.png)
+
+The text changed event is now assigned to the action in our controller:
+ ![images/action.png](images/action.png)
