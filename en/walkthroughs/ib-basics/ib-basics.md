@@ -1,6 +1,8 @@
 # Interface Builder Basics
 > NOTE: You will need to have a valid license key to use Interface Builder integration. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
 
+{% youtube %}https://www.youtube.com/watch?v=mfkYnTlR1m8{% endyoutube %}
+
 This walkthrough takes you through the process of creating a simple user interface using [Interface Builder](https://developer.apple.com/xcode/interface-builder/) with RoboVM.
 
 Interface Builder is part of Xcode and allows you to create the user interfaces of your iOS apps via a WYSIWYG editor. User interfaces are usually defined in so called __storyboards__. A single storyboard can contain multiple __scenes__, each corresponding to a specific screen of your application. A scene is controlled by a __view controller__ which interacts with __views__ within the scene, such as buttons, labels or text fields.
@@ -29,10 +31,10 @@ Our app will allow a user to enter her name and click on the `Click Me!` button 
 Before you continue with this walkthrough, we recommend going through the [Getting Started Guide](/getting-started/introduction.md) which shows you how to properly setup your development environment of choice.
 
 ## Creating the Project
-The RoboVM plugins for Intellij IDEA and Eclipse both come with project templates that support Interface Builder.
+The RoboVM plugins for IntelliJ IDEA and Eclipse both come with project templates that support Interface Builder.
 
 
-### Intellij IDEA
+### IntelliJ IDEA
 ![images/idea-project-creation.png](images/idea-project-creation.png)
 
 1. Go to __ File -> New -> Project...___
@@ -94,7 +96,7 @@ public class Main extends UIApplicationDelegateAdapter {
 }
 ```
 
-The `UIApplicationDelegate` implementation does not explicitely setup any controllers or UI, as oposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI described by the file. On startup, your app will display the scene that is assigned to be the main entry point in the storyboard.
+The `UIApplicationDelegate` implementation does not explicitely setup any controllers or UI, as opposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI described by the file. On startup, your app will display the scene that is assigned to be the main entry point in the storyboard.
 
 ### The View Controller
 Every scene in a storyboard has a `UIViewController` associated with it, responsible for implementing the logic of that scene. When the first scene of the main storyboard is loaded, iOS will also automatically instantiate the corresponding `UIViewController` associated with the scene.
@@ -147,7 +149,7 @@ All of this happens in the background. Every time you save changes to a relevant
 ## Xcode Basics
 
 ### Opening the Xcode Project
-Both the RoboVM plugin for Eclipse and the plugin for Intellij IDEA allow you to open storyboard files from within the respective IDE.
+Both the RoboVM plugin for Eclipse and the plugin for IntelliJ IDEA allow you to open storyboard files from within the respective IDE.
 
 * In Eclipse/IDEA, double click the `Main.storyboard` file in the `resources/Base.lproj/` folder _OR_ 
 * In Eclipse/IDEA, right clicking your RoboVM module/project and selecting _Open Xcode Project_ from the context menu.
@@ -167,7 +169,7 @@ Select the storyboard file in the navigator. The editor area will show you a WYS
 
 ![images/storyboard.png](images/storyboard.png)
 
-1. The __Outline View__ shows the contents of every scene in the storyboard in form of a tree. It is collapsable via the button in the bottom right corner.
+1. The __Outline View__ shows the contents of every scene in the storyboard in form of a tree. It is collapsible via the button in the bottom right corner.
 2. The __Canvas__ allows you to visually modify your scenes.
 3. The __Auto-layout Tools__ allow you to apply layout constraints to your UI elements.
 
@@ -189,7 +191,7 @@ We want our user to be able to enter her name.
 Add a text field to the scene:
 
 1. Type `text` into the search bar at the bottom of the object library
-2. Drag the text field from the object library onto the camera
+2. Drag the text field from the object library onto the scene
 3. Position the text field above the button, centering it horizontally by using the blue guides that appear
 4. Resize the text field to the left and right edge of the scene. Stop when you hit the blue padding guides on the left and right side.
 
@@ -225,7 +227,7 @@ One way of previewing your UI is to start your app on a simulator or device. Ano
 
   ![images/assistant-editor.png](images/assistant-editor.png)
 
-2. In the breadcrump part of the assistant editor, select the first crump, then select `Preview (1)`, then select your storyboard file
+2. In the breadcrumb part of the assistant editor, select the first crump, then select `Preview (1)`, then select your storyboard file
 
   ![images/breadcrump.png](images/breadcrump.png)
 
@@ -374,7 +376,7 @@ public class GreetingsController extends UIViewController {
 
 Once you save your changes, RoboVM will update the Xcode project accordingly.
 
-> NOTE: Intellij IDEA does not compile classes automatically when you change the source files. See the [Getting Started Guide for Intellij IDEA](/getting-started/intellij.md) on how to configure this behaviour!
+> NOTE: IntelliJ IDEA does not compile classes automatically when you change the source files. See the [Getting Started Guide for IntelliJ IDEA](/getting-started/intellij.md) on how to configure this behaviour!
 
 Open Xcode, expand the `Sources` and click on the `GreetingsController.h` file. It will open in the editor area.
 
@@ -554,6 +556,6 @@ Our application looks like this:
 ![images/final-result.png](images/final-result.png)
 
 ## Conclusion
-In this walkthrough you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, you did not have to touch any Objective-C code, RoboVM took good care of that!
+In this walkthrough you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, RoboVM allowed you to do all your coding in Java!
 
 With your new knowledge, you can now check out the other walkthroughs as well as Apple's official documentation!
