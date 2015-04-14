@@ -66,7 +66,7 @@ public class HelloRoboVM extends UIApplicationDelegateAdapter { // [:4:]
 
 Let's take a look at the `MyViewController` class, the work horse of our application.
 
-> NOTE: iOS UIs can be created programmatically, as demonstrated here, or graphically, using XCode's [Interface Builder](https://developer.apple.com/xcode/interface-builder/). RoboVM currently only supports the programmatic creation of user interfaces. We'll provide Interface Builder integration in Q2 2015.
+> NOTE: iOS UIs can be created programmatically, as demonstrated here, or graphically, using XCode's [Interface Builder](https://developer.apple.com/xcode/interface-builder/). RoboVM supports both ways of creating a UI. Check the rest of the documentation on how to use Interface Builder with RoboVM!
 
 ## The View Controller
 

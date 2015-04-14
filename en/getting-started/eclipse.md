@@ -4,7 +4,7 @@ In this section you'll learn how to install Eclipse, install the RoboVM Eclipse 
 
 ## Installing Eclipse
 
-With all the prerequisites out of the way, proceed to download a recent Eclipse build from https://www.eclipse.org/downloads/. Eclipse comes in many different flavors, the _Eclipse IDE for Java Developers_ package is sufficient for RoboVM development. Simply download the package, decompress it, and copy the resulting folder int `/Applications/`.
+With all the [prerequisites](../getting-started/introduction.md) out of the way, proceed to download a recent Eclipse build from https://www.eclipse.org/downloads/. Eclipse comes in many different flavors, the _Eclipse IDE for Java Developers_ package is sufficient for RoboVM development. Simply download the package, decompress it, and copy the resulting folder int `/Applications/`.
 
 > IMPORTANT: Eclipse *MUST* be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Running Eclipse itself in Java 7 is not the same as adding a Java 7 JRE to Eclipe's _Installed JREs_ dialog in _Preferences_. To check which Java version Eclipse is running in go to _Eclipse -> About Eclipse_, then click _Installation Details_ and open the _Configuration_ tab. Find the `java.version` property and make sure it is 1.7 or higher.
 
