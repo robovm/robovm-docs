@@ -109,7 +109,7 @@ import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
 import org.robovm.objc.annotation.IBOutlet;
 
-@CustomClass("MyViewController") // [:2:]
+@CustomClass("MyViewController") // [:3:]
 public class MyViewController extends UIViewController {
     private UILabel label;
     private int clickCount;
