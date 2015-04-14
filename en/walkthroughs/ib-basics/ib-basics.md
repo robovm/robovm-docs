@@ -20,7 +20,9 @@ We will transform the boring template from this:
 
 ![images/end-result.png](images/end-result.png)
 
-To this:
+To this amazing application:
+
+![images/final-result.png](images/final-result.png)
 
 Our app will allow a user to enter her name and click on the `Click Me!` button to see a nice personalized greeting.
 
@@ -496,8 +498,62 @@ Let's assign the text change event of the text field to this action:
 3. Click on the port next to the `textChanged` outlet and drag a line to the text field on the canvas or in the outline view
   ![images/add-action.png](images/add-action.png)
 
-4. From the popup dialog select `Value Changed`
+4. From the popup dialog select `Editing Changed`
  ![images/value-changed.png](images/value-changed.png)
 
 The text changed event is now assigned to the action in our controller:
  ![images/action.png](images/action.png)
+
+When the user types in the text field, the `GreetingsController#textChanged()` method will be called:
+
+## Finishing Touches
+Our app is almost complete. The only thing left to do is changed the controller code such that we assign a greeting text to the label when the `Click Me!` button is pressed. The final code of `GreetingsController` looks like this:
+
+```java
+package com.mycompany.myapp;
+
+import org.robovm.apple.uikit.UILabel;
+import org.robovm.apple.uikit.UITextField;
+import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBAction;
+import org.robovm.objc.annotation.IBOutlet;
+
+@CustomClass("GreetingsController")
+public class GreetingsController extends UIViewController {
+    private UILabel label;
+    private UITextField textField;
+
+    @IBOutlet
+    public void setTextField(UITextField textField) {
+        this.textField = textField;
+    }
+
+    @IBOutlet
+    public void setLabel(UILabel label) {
+        this.label = label;
+    }
+
+    @IBAction
+    private void clicked() {
+        String name = textField.getText();
+        if (name.isEmpty()) {
+            name = "Unknown";
+        }
+        label.setText("Hello " + name + "!");
+    }
+
+    @IBAction
+    private void textChanged() {
+        label.setText("I see you typing!");
+    }
+}
+```
+
+Our application looks like this:
+![images/final-result.png](images/final-result.png)
+
+## Conclusion
+In this walkthrough you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, you did not have to touch any Objective-C code, RoboVM took good care of that!
+
+With your new knowledge, you can now check out the other walkthroughs as well as Apple's official documentation!
