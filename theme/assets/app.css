@@ -13,6 +13,16 @@
 	font-weight: bold;
 }
 
+.main-header .sidebar-toggle {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	.main-header .sidebar-toggle {
+		display: block;
+	}
+}
+
 .sidebar-menu li.searched > a > .fa-angle-left {
 	-webkit-transform: rotate(-90deg);
 	-ms-transform: rotate(-90deg);
