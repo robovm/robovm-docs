@@ -36,15 +36,17 @@ To create a project in Eclipse, go to __File -> New -> RoboVM iOS Project__.
 
 In the dialog, specify your project and iOS App Settings. Make sure to select the _RoboVM iOS Single View App_ template from the template selection. Finally, click _Finish_. The RoboVM Plugin will then create your project with support for Interface Builder.
 
-## Project & Code Structure
+## Project Structure
 The project structure of a storyboard-based project is similar to the structure of a code-only project, as described in the [Getting Started Guide](/getting-started/structure.md). The biggest changes are:
 
 1. In the `Info.plist.xml` file, a new key called `UIMainStoryboardFile` was added, with a value of `Main`. This is the name of the storyboard file that will get loaded automatically when app is started.
-2. [app icons](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/AppIcons.html) as well as [launch images](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/LaunchImages.html#//apple_ref/doc/uid/TP40006556-CH22-SW1) have been moved to `resources/Images.xcassets` so we can directly edit them in Xcode.
-3. A new folder called `resources/Base.lproj/` was added, containing any interface builder files, such as storyboards. There is already a file called `Main.storyboard` in there, which corresponds to the `UIMainStoryboardFile` that's specified in the `Info.plist.xml` file.  
-4. The main class (`Main.java`) and the view controller class (`MyViewController.java`) are significantly simpler!
+2. [App icons](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/AppIcons.html) as well as [launch images](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/LaunchImages.html#//apple_ref/doc/uid/TP40006556-CH22-SW1) have been moved to `resources/Images.xcassets` so we can directly edit them in Xcode.
+3. A new folder called `resources/Base.lproj/` was added, containing any interface builder files, such as storyboards. There is already a file called `Main.storyboard` in there, which corresponds to the `UIMainStoryboardFile` that's specified in the `Info.plist.xml` file.
 
-The main class will look something like this:
+## Code Structure & App Startup
+By specifying a `UIMainStoryboardFile` in the `Info.plist.xml` file, iOS will automatically load the storyboard on startup and display the scene from the storyboard that's defined as the storyboard entry point. All the UI views will be set up automatically, so neither the `UIApplicationDelegate` nor the `UIViewController` have to perform this task. This significantly simplies the code compared to creating UIs purely via code.
+
+The main class looks like this:
 ```java
 package com.mycompany.myapp;
 
@@ -70,11 +72,11 @@ public class Main extends UIApplicationDelegateAdapter {
 }
 ```
 
-The `UIApplicationDelegateAdapter` implementation does not explicitely setup any controllers or UI, as oposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI the file describes.
+The `UIApplicationDelegate` implementation does not explicitely setup any controllers or UI, as oposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI the file describes.
 
 Every scene in a storyboard has a `UIViewController` associated with it, responsible for implementing the logic of that scene. When the first scene of the main storyboard is loaded, iOS will also automatically instantiate the corresponding `UIViewController` associated with the scene.
 
-When opening up `MyViewController.java` you can see that the controller is significantly simpler.
+When opening up `MyViewController.java` you can see that the controller is significantly simpler as well:
 ```java
 package com.mycompany.myapp;
 
@@ -105,4 +107,13 @@ public class MyViewController extends UIViewController {
 
 [:2:] Instead of assigning listeners to views, like for receiving button clicks, the controller uses __actions__ to get notified about such events. This is achieved by annotating controller methods with the `@IBAction` annotation. This allows us to react to events of UI views from within our code.
 
-[:3:] When designing interfaces with Interface Builder, we visually connect views and their events with outlets and actions of the view controller. In order for Interface Builder to know about available outlets and actions, it needs to know 
+[:3:] When designing interfaces with Interface Builder, we visually connect views and their events with outlets and actions of the view controller. In order for this to work, Interface Builder needs to know the view controllers Objective-C class name. This can be signified via the `@CustomClass` annotation, which lets you specify the name by which Interface Builder will refer to the view controller.
+
+Behind the scenes, RoboVM has to do additional work to make the bridge between your Java code and Interface Builder work:
+
+* The plugin creates an Xcode project with references to the `Info.plist.xml` file, resources and view controllers.
+* The plugin has to translate a controller's Java class, its actions and outlets into Objective-C header files. Xcode and Interface Builder use this information to figure out which actions and outlets are available from a view controller.
+
+All of this happens in the background. Every time you save changes to a relevant file in your project, RoboVM will update the corresponding Xcode project. You can view this work in the RoboVM console in Eclipse or IDEA:
+
+![images/ib-integator.png](images/ib-integator.png)
