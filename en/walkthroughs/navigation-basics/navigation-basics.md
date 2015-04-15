@@ -12,14 +12,16 @@ Based on the single view project template, we will create an app that:
 * Lets the user enter a name in a text field
 * Lets the user press a button so the app remembers that name
 * Lets the user view a list of names the app remembered so far
+* Lets the user edit already remembered names
 
-Our app will consist of two scenes:
-* The start scene will have a text field to enter a name to remember, a button that lets the user tell the app to remember the name, and another button to show the names the app remembered so far.
-* The second scene will show a list of remembered names as well as a back button to navigate back to the start screen.
+Our app will consist of three scenes:
+* The main scene will have a text field to enter a name to remember, a button that lets the user tell the app to remember the name, and another button to show the names the app remembered so far.
+* The name list scene will show a list of remembered names as well as a back button to navigate back to the start screen.
+* The editing scene will be shown when an item in the list is selected and let the user edit that item.
 
 The final app will look like this:
 
->NOTE: Fix me!
+![images/final-result.png](images/final-result.png)
 
 In this tutorial, we are picking up speed a little bit. You should already know the basics of Xcode and Interface Builder, how to add views to a scene and auto-layout them, and how to wire up your scene to your view controller via outlets and actions. Revisit [Interface Builder Basics](../ib-basics/ib-basics.md) if these concepts are not familiar to you yet.
 
@@ -237,15 +239,17 @@ You can see the change in the canvas:
 ![images/main-scene-navbar](images/main-scene-navbar.png)
 
 ## Adding a Segue
-To navigate from one content view controller to another, we use [segues](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). A segue defines how a new view controller is pushed onto the navigation stack of the navigation controller.
+To navigate from one content view controller to another, we use [segues](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). A segue defines a transition from one controller to the next.
 
 Segues are indicated via arrows between scenes in Interface Builder. You can add a segue from a UI view on one scene to another scene. You can also programmatically apply a segue.
 
 A Segue has a source controller and a destination controller. The segue will perform a transition between the source and destination controller. Additionally, a segue has an identifier which we can use to handle segue transitions programmatically.
 
-There are different types of segues which you can find in [Apple's documentation](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). In this walkthrough we'll use __Show Segues__. 
+There are different types of segues which you can find in [Apple's documentation](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). In this walkthrough we'll use __Show Segues__ and __Modal Segues__.
 
-Show segues push a new view controller on the navigation stack, and generally have navigation and/or toolbars. The life-time of the new view controller will be managed by the navigation controller.
+Show segues push a new view controller on the navigation stack, and generally have navigation and/or toolbars. The life-time of the new view controller will be managed by the navigation controller. Navigating from a list entry to a detail view is a good candidate for a show segue.
+
+Modal segues are used when the scene you want to display isn't really part of the hierarchical content of your app and will not receive a navigation or toolbar. You have to manage the life-time of the new view controller yourself. Navigating from a list entry to a scene that lets you edit that entry is a good candiate for a modal segue.
 
 Let's add a show segue between the `Show Remembered Names` button and the name list scene:
 1. In Xcode, select the `Show Remembered Names` button
@@ -302,3 +306,231 @@ You can now run the app:
 
 Here's the name list after entering a few fantasy names:
 ![images/name-list.png](images/name-list.png)
+
+## Editing List Entries
+A user might want to edit entries in the list, for example if she made a typing error when adding a name to the list.
+
+### Adding an Editing Scene
+Let's add a new scene that will let the user edit an item in the list. The scene will contain a text field, pre-filled with the name from the list:
+1. In Xcode, drag a view controller from the object library onto the canvas to the left of the name list scene
+2. From the object library drag a text field onto the canvas so it aligns with the top margin of the super view
+3. Expand the text field to the left and red margins of the super view
+4. Add a constraints to pin the text field to the top, left and right margins of the super view
+
+You should end up with the following:
+![images/edit-scene.png](images/edit-scene.png)
+
+### Adding a Segue from a Table Cell to the Editing Scene
+Next we want to add a segue so that if a table cell (and hence name) is touched, the editing scene is loaded, displaying the selected name for editing. The segue we create will be a modal segue, as we will perform some editing instead of showing a drill-down scene.
+
+1. In the outline view or canvas, select the table view cell of the name list scene
+2. Ctrl-drag a line from the table view cell to the editing scene
+ ![images/cell-segue.png](images/cell-segue.png)
+3. From the context menu, select __Selection Segue -> Present Modally__
+ ![images/modal-segue.png](images/modal-segue.png)
+4. Select the new segue in the canvas
+5. In the attributes inspector, set the segue identifier to `EditName`
+
+If you run your app, add a name and select it from the list, you well end up in the editing scene:
+![images/dead-end.png](images/dead-end.png)
+
+This is a bit of a dead-end. We can't navigate back to where we came from, and we also don't push any data to manipulate to the editing scene. Let's fix that.
+
+### Adding a Navigation Bar to the Editing Scene
+Since we are showing the editing scene via a modal segue, the scene does not get a navigation bar. We can fix that by embedding the editing scene in a view controller:
+1. Select the editing scene view controller in the outline view or canvas
+2. In the top menu, go to __Editor -> Embed In -> Navigation Controller__
+
+Our editing scene is now embeded in a navigation controller and has its own navigation bar.
+![images/embed-editing.png](images/embed-editing.png)
+
+But wait, our text field is now gone! Actually, it's still there, but the auto-layout hasn't updated the canvas frame of the text field automatically. We can see that there's an auto-layout problem in the outline view: a yellow arrow reminds us that something is wrong. To resolve the issue:
+1. Click the yellow arrow in the outline view
+2. Click the yellow triangle in the next view
+3. Click 'Fix Misplacement'
+
+Our text field is not placed below the navigation bar as expected. Let's quickly add some space between the text field and the navigation bar:
+1. Drag the text field down-wards a little until you see a horizontal blue guide line, keeping it centered horizontally
+2. Click on the _Resolve Auto-Layout Issues_ button at the bottom right of the canvas
+3. Select __Selected Views -> Update Constraints__
+
+This will modify the spacing of the top edge constraint we added previously.
+![images/fixed-text-field.png](images/fixed-text-field.png)
+
+### Adding Bar Buttons
+Next we want to add a `Cancel` button on the left side of the navigation bar and a `Save` button on the right side of the navigation bar. We can't add a normal `UITextButton` to a navigation bar. Instead we need to add a __Bar Button Item__:
+1. From the object library, drag a bar button item onto the left side of the navigation bar. A blue outline will indicate where you can place the button.
+2. Double-click the button and enter `Cancel` as its label
+3. From the object library, drag a bar button item onto the right side of the navigation bar. A blue outline will indicate where you can place the button.
+4. Double-click the button and enter `Save` as its label
+5. Select the navigation item in the outline view or canvas and set its title to `Edit Name` in the attributes inspector
+
+You should end up with a scene like this:
+![images/nav-bar-done.png](images/nav-bar-done.png)
+
+If you run the app, you can add a few names, then select one from the list. However, we do not pass the "model" over to the editing scene yet. The `Cancel` and `Save` buttons to nothing either.
+
+### Passing Data from the Name List Scene to the Editing Scene
+It's time to pass the selected name from the name list scene to the editing scene. First we need to create a new view controller for the editing scene:
+1. In Eclipse/IDEA, create a new class called `EditingController`
+2. Copy the following code to the class file
+
+```java
+package com.mycompany.myapp;
+
+import org.robovm.apple.uikit.UITextField;
+import org.robovm.apple.uikit.UIViewController;
+import org.robovm.objc.annotation.CustomClass;
+import org.robovm.objc.annotation.IBOutlet;
+
+@CustomClass("EditingController")
+public class EditingController extends UIViewController { // [:1:]
+    private UITextField textField; // [:2:]
+    private String nameToEdit; // [:3:]
+    private int index; // [:4:]
+
+    public void setNameToEdit(String nameToEdit, int index) { // [:5:]
+        this.nameToEdit = nameToEdit;
+        this.index = index;
+    }
+
+    public String getEditedName() { // [:5:]
+        return textField.getText();
+    }
+
+	public int getIndex() { // [:6:]
+        return index;
+    }
+
+    @IBOutlet
+    public void setTextField(UITextField textField) { // [:7:]
+        this.textField = textField;
+    }
+
+    @Override
+    public void viewDidLoad() { // [:8:]
+        super.viewDidLoad();
+        textField.setText(nameToEdit);
+    }
+}
+```
+
+[:1:] The `EditingController` subclasses `UIViewController` as it will become the controller of our editing scene.
+
+[:2:] `textField` stores a reference to the `UITextField` via which the user will edit the selected name. We'll receive that reference via an outlet.
+
+[:3:] `nameToEdit` stores the name the user wants to edit.
+
+[:4:] `index` stores the index of the name in the model. We'll need that later for saving the changes to the name list.
+
+[:5:] The `setNameToEdit()` method will be called by the name list controller, so that the editing controller knows which name to edit.
+
+[:6:] The `getEditedName()` method returns the modified name as entered into the text field by the user. We'll call this when we save the changes.
+
+[:7:] The `getIndex()` method returns the list index of the name that's being edited. We'll call this when we save the changes.
+
+[:8:] The `setTextField()` method is an outlet via which we get a reference to the text field in the editing scene.
+
+[:9:] Finally, we override `viewDidLoad()`. At this point we have received the reference to the text field via the outlet and the name list controller will have told us which name to edit. We then simply set the name as the text of the text field in `viewDidLoad()`.
+
+Let's wire our view controller and its outlet to the editing scene:
+1. In Xcode, select the editing scene view controller in the outline view or canvas
+2. In the identity inspector, set `EditingController` as the class of the view controller
+3. Open the connections inspector and drag a line from the `textField` outlet dock to the text field on the canvas
+
+With all of this setup, we can now pass the selected name from the name list scene to the editing scene. Just like before, we override the `prepareForSegue()` method of the source controller of the segue, in this case the `NameListController`:
+1. In Eclipse/IDEA, open the `NameListController`
+2. Add the following method to the class
+```java
+    @Override
+    public void prepareForSegue(UIStoryboardSegue segue, NSObject sender) {
+        super.prepareForSegue(segue, sender);
+        if(segue.getIdentifier().equals("EditName")) { // [:1:]
+            int selectedRow = (int)getTableView().getIndexPathForSelectedRow().getRow(); // [:2:]
+            String name = names.get(selectedRow); // [:3:]
+            UINavigationController navController = (UINavigationController)segue.getDestinationViewController(); // [:4:]
+            EditingController editingController = (EditingController)navController.getVisibleViewController(); // [:5:]
+            editController.setNameToEdit(name, selectedRow); // [:6:]
+        }
+    }
+```
+
+[:1:] We fist check if we got the correct segue by checking the identifier.
+
+[:2:] Next, we fetch the currently selected row from the table view.
+
+[:3:] With the row index in hand, we can fetch the selected name from the model.
+
+[:4:] We get the `UIViewController` which is the destination of the segue. This navigation controller has our editing controller on its stack.
+
+[:5:] From the navigation controller, we fetch our `EditingController`, which is the controller the navigation controller is currently showing.
+
+[:6:] Finally, we set the name and index on the editing controller, so the user can edit the name.
+
+If you run the app, add a name and select it in the list, you can now edit it. However, you still can not get back to the list view and save the modifications.
+
+### Adding an Unwind Segue
+When you present a scene modally, you are in charge of providing navigational elements. Our editing scene has two buttons that both should "unwind" back to the name list scene. To achieve this unwinding, we need to add an unwind segue. Unwind segues are also called exit segues. Unwind segues generally allow you to "go back" multiple steps in your navigation hierarchy with a single unwind action.
+
+You can only unwind to view controllers that have a special action taking an `UIStoryboardSegue`. Since we want to unwind back to the name list, let's add an unwind action:
+1. In Eclipse/IDEA, open the `NameListController` class
+2. Add the following method to the class
+```java
+    @IBAction
+    public void unwindToNameList(UIStoryboardSegue segue) {
+
+    }
+``
+
+Unwind actions receives a `UIStoryboardSegue` as the sender. Unwind actions do not take a second parameter as oposed to other actions, like button click actions which also take a `UIEvent`.
+
+We can now add an unwind segue for both the `Close` and `Save` buttons in the editing scene:
+1. In Xcode, select the `Close` button in the outline view or canvas
+2. Ctrl-drag from the `Close` button to the exit symbol of the editing scene
+ ![images/add-unwind-segue.png](images/add-unwind-segue.png)
+3. From the context menu, select `unwindToNameList`
+4. In the outline view, select the __Unwind Segue to Scene Exit Placeholder__
+5. In the attributes inspector, set the identifier to `EditCancel`
+4. Select the `Save` button and repeat the last four steps, using `EditSave` as the identifier of the segue
+
+If you run the app, add a name and select it from the list, you can now use the `Cancel` or `Save` button to go back to the name list. However, modifications you make in the editing scene are not reflected in the model nor in the table view.
+
+### Updating the Model & Table View after Editing
+Our last job is it to handle the modifications by the user in the editing scene and update the model and table view. When the user is done editing the name, she can either press the `Cancel` or the `Save` button. This will trigger the unwind segue and call the `unwindToNameList()` method on the `NameListController`. This is the place where we can save the modifications and update the table view:
+
+1. In Eclipse/IDEA, open the `NameListController`
+2. Update the `unwindToNameList()` method with the following code
+```java
+    @IBAction
+    public void unwindToNameList(UIStoryboardSegue segue) {
+        if(segue.getIdentifier().equals("EditSave")) { // [:1:]
+            EditingController editingController = (EditingController)segue.getSourceViewController(); // [:2:]
+            String name = editingController.getEditedName().trim(); // [:3:]
+            if(!name.isEmpty()) { // [:4:]
+                names.set(editingController.getIndex(), name);  // [:5:]
+                getTableView().reloadData(); // [:6:]
+            }
+        }
+    }
+``
+
+[:1:] We first check which unwind segue was triggered based on the segue's identifier. We ignore the `EditCancel` segue which is triggered when the user clicks the `Cancel` button. We only react to the `EditSave` segue, which is triggered when the user presses the `Save` button.
+
+[:2:] Next we get the `EditingController`, which is the source controller of this segue.
+
+[:3:] We fetch the edited name from the editing controller.
+
+[:4:] Perform some sanity checking.
+
+[:5:] Update the model.
+
+[:6:] And tell the table view to reload the data.
+
+Our app is now complete! If you run it, you can add names, view them in a list, and edit them.
+
+![images/final-result.png](images/final-result.png)
+
+## Conclusion
+In this walkthrough you got to know the basics navigation controllers, table views and their controllers, segues and how to pass data between controllers.
+
+With your new knowledge, you can now check out the other walkthroughs as well as Apple's official documentation!
