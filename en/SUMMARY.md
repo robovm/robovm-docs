@@ -8,6 +8,7 @@
 	* [Project and Code Structure](getting-started/structure.md)
 * [Walkthroughs](walkthroughs/introduction.md)
     * [Interface Builder Basics](walkthroughs/ib-basics/ib-basics.md)    	
+    * [Scene Navigation Basics](walkthroughs/navigation-basics/navigation-basics.md)    	
 * [Samples](samples.md)
 * [Configuration Reference](configuration.md)
 * [Advanced Topics](advanced-topics/introduction.md)
