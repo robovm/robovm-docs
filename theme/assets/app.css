@@ -84,13 +84,46 @@
 	font-size: 19px;
 }
 
+.callout {
+	border-left: 10px solid;
+}
+
 .callout p {
+	color: #333;
 	font-size: 17px;
 }
 
 .callout h4 {
+	color: #333;
 	font-size: 22px;
+	font-weight: 700;
 }
+
+.callout a {
+	color: #3f8cbc;
+}
+
+.callout a:hover {
+	color: #73aed2;
+}
+
+.callout.callout-danger {
+  background-color: #fff !important;
+  border-color: #cb4d90;
+}
+.callout.callout-warning {
+  background-color: #fff !important;
+  border-color: #f6ad68;
+}
+.callout.callout-info {
+  background-color: #fff !important;
+  border-color: #448b98;
+}
+.callout.callout-success {
+  background-color: #fff !important;
+  border-color: #96ce3b;
+}
+
 
 pre {
 	font-size: 16px;
