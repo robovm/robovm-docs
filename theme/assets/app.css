@@ -124,6 +124,9 @@
   border-color: #96ce3b;
 }
 
+.main-footer {
+	height: 60px;
+}
 
 pre {
 	font-size: 16px;
