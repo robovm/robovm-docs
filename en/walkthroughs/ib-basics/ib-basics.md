@@ -29,7 +29,7 @@ To this amazing application:
 
 Our app will allow a user to enter her name and click on the `Click Me!` button to see a nice personalized greeting.
 
-Before you continue with this walkthrough, we recommend going through the [Getting Started Guide](/getting-started/introduction.md) which shows you how to properly setup the development environment of choice.
+Before you continue with this walkthrough, we recommend going through the [Getting Started Guide](/getting-started/introduction.md), which demonstrates how to properly setup the development environment of your choice.
 
 ## Creating the Project
 
@@ -103,7 +103,7 @@ public class Main extends UIApplicationDelegateAdapter {
 }
 ```
 
-The `UIApplicationDelegate` implementation does not explicitely setup any controllers or UI, as opposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI described by the file. On startup, the app will display the scene that is assigned to be the main entry point in the storyboard.
+The `UIApplicationDelegate` implementation does not explicitly setup any controllers or UI, as opposed to what was demonstrated in the [Getting Started Guide](/getting-started/structure.md) section. Instead, iOS will look into the `Info.plist.xml` file, find the `UIMainStoryboardFile` entry and automatically load the UI described by the file. On startup, the app will display the scene that is assigned to be the main entry point in the storyboard.
 
 ### The View Controller
 
@@ -150,7 +150,7 @@ Behind the scenes, RoboVM has to do additional work to make the bridge between J
 * RoboVM translates a controller's Java class, its actions, and outlets into Objective-C header files. 
 * RoboVM synchronizes changes between Xcode and the project bi-directionally, such as modifications to the `Info.plist.xml` file or changes to a view controller class.
 
-All of this happens in the background. Every time you save changes to a relevant file in the project, RoboVM will update the Xcode or RoboVM project. You can catch a glimpse at this in the RoboVM console in Eclipse or IDEA:
+All of this happens in the background. Every time you save changes to a relevant file in the project, RoboVM will update the Xcode or RoboVM project. You can catch a glimpse of this in the RoboVM console in Eclipse or IDEA:
 
 ![images/ib-integator.png](images/ib-integator.png)
 
@@ -216,7 +216,7 @@ Once an element is selected, you can view and modify its properties in the __Ins
 
 ![images/inspector.png](images/inspector.png)
 
-Via the inspector you can change view type dependent properties, such as font, color, background images and so forth.
+Via the inspector you can change view type dependent properties, such as font, color, and background images.
 
 We want to indicate to our user that she has to enter her name in order for brilliant things to happen.
 
@@ -236,7 +236,7 @@ The result should look something like this:
 
 One way of previewing the UI is to start the app on a simulator or device. Another way to quickly preview it is to use the __Assistant Editor__ functionality:
 
-1. Click on the assistant editor button in the top left toolbar.
+1. Click on the assistant editor button in the top right toolbar.
 
   ![images/assistant-editor.png](images/assistant-editor.png)
 
@@ -248,21 +248,23 @@ You will see something like this:
 
 ![images/preview.png](images/preview.png)
 
-Click on the plus icon in the bottom left corner of the preview to add other device types.
+Within this preview area, there are a few actions you can now take to customize the views:
 
-Select a device and click the rotate button at the bottom of its frame to switch between portrait and landscape.
+* Click on the plus icon in the bottom left corner of the preview to add other device types.
 
-Delete a device by selecting it and then pressing the delete key.
+* Select a device and click the rotate button at the bottom of its frame to switch between portrait and landscape.
 
-> NOTE: Previews are nice while iterating on your UI, but you should always test on a simulator or device. To run the app on a simulator or device, switch back to the Java IDE and run it from there. Running your app via Xcode is not supported.
+* Delete a device by selecting it and then pressing the delete key.
+
+> NOTE: Previews are nice while iterating on your UI, but you should always test on a simulator or device. To run the app on a simulator or device, switch back to the Java IDE and run it from there. Launching your app via Xcode is not supported.
 
 ### Applying basic auto-layout constraints
 
 Our app doesn't look great in the preview because the constraints on the UI views are not what we want. Let's try to fix this.
 
-Interface Builder helps you design UIs for different screen sizes via auto-layout. Auto-layout uses __contraints__ to size and position UI views. A constraint puts the position and/or size of a UI view in relation to something else. This can be the view's content, another UI view to which it should be placed relatively to, and so on.
+Interface Builder helps you design UIs for different screen sizes via auto-layout. Auto-layout uses __constraints__ to size and position UI views. A constraint puts the position and/or size of a UI view in relation to other elements or the scene itself.
 
-Before applying contraints, let's define what our scene should look like:
+Before applying constraints, let's define what our scene should look like:
 
 * The `Click Me!` button should be centered vertically and horizontally. 
 * The text field should be centered horizontally. It's left and right edges should be pinned to the left and right edges of the super view (which stretches the whole screen), with some spacing. It should also be placed relative to the top of the button, again with some spacing.
@@ -353,7 +355,7 @@ Preview the app in the Assistant Editor with a few device types:
 
 ![images/final-preview.png](images/final-preview.png)
 
-This looks what we wanted!
+This looks like what we wanted!
 
 ### Specifying a Scene's View Controller
 
@@ -423,17 +425,16 @@ Open Xcode, expand the `Sources` and click on the `GreetingsController.h` file. 
 @end
 ```
 
-This file was auto-generated by RoboVM when you saved the modifications to the Java class. It is what allows Interface Builder to know about our controllers, their outlets, and their actions.
+This file was auto-generated by RoboVM when you saved the modifications to the Java class. This is what allows Interface Builder to know about our controllers, their outlets, and their actions.
 
 Since we changed the name of the view controller, we need to reassign it in our scene:
 
 1. In Xcode, open the `Main.storyboard` file by clicking on it in the navigator.
 2. Select the view controller in the canvas by clicking the scene's title bar or in the outline.
 3. In the utility area, open the __Identity Inspector__.
- 
-![images/identity-inspector.png](images/identity-inspector.png)
+4. In the class field, select `GreetingsController` from the _Class_ drop-down.
 
-4. In the class field, specify `GreetingsController`. You can select it from the drop-down.
+![images/identity-inspector.png](images/identity-inspector.png)
 
 When iOS loads the application, it will first load the main storyboard, which in turn will load the scene and trigger the instantiation of the `GreetingsController` class, both on the native and on the Java-side!
 
@@ -499,7 +500,7 @@ Add the following code to the `GreetingsController`:
     }
 ```
 
-To define an action in a view controller, create a method annotated with `@IBAction`. The method can have one, two or zero parameters. The first optional parameter is the sender of the event, e.g. our `UITextField`. The second optional parameter is a `UIEvent` which holds additional data for the event. In our case we went for the zero parameter action.
+To define an action in a view controller, create a method annotated with `@IBAction`. The method can have zeron, one, or two parameters. The first _optional_ parameter is the sender of the event, e.g. our `UITextField`. The second optional parameter is a `UIEvent` which holds additional data for the event. In our case we went for the zero parameter action.
 
 After you save a Java source file, RoboVM will update the corresponding Objective-C header file `GreetingsController.h`:
 
@@ -579,4 +580,4 @@ Our application looks like this:
 
 In this walkthrough you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, RoboVM allowed you to do all your coding in Java!
 
-With your new knowledge, you can now check out the other walkthroughs, as well as Apple's official documentation!
+With your new knowledge you can now check out the other walkthroughs, as well as Apple's official documentation, to discover more!
