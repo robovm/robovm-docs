@@ -2,6 +2,8 @@
 
 > NOTE: You will need to have a valid license key to use Interface Builder integration. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
 
+{% youtube %}https://www.youtube.com/watch?v=1HHAy1o3NaM{% endyoutube %}
+
 This tutorial takes you through the process of creating multiple scenes, setting up the navigation between them and passing data to and from scenes.
 
 At the end of this guide you will have an understanding of:
