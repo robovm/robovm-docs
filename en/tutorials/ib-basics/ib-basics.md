@@ -4,13 +4,13 @@
 
 {% youtube %}https://www.youtube.com/watch?v=mfkYnTlR1m8{% endyoutube %}
 
-This walkthrough takes you through the process of creating a simple user interface with RoboVM using [Interface Builder](https://developer.apple.com/xcode/interface-builder/).
+This tutorial takes you through the process of creating a simple user interface with RoboVM using [Interface Builder](https://developer.apple.com/xcode/interface-builder/).
 
 Interface Builder is part of Xcode and allows the creation of user interfaces for iOS apps via a WYSIWYG editor. User interfaces are usually defined in so called __storyboards__. A single storyboard can contain multiple __scenes__, each corresponding to a specific screen of your application. A scene is controlled by a __view controller__ which interacts with __views__ within the scene, such as buttons, labels, and text fields.
 
 To accommodate different screen sizes, __[auto-layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html)__ can be used, which lets you define the relationships between UI elements, such as their size and relative spacing.
 
-At the end of the walkthrough you'll have an understanding of:
+At the end of the tutorial you'll have an understanding of:
 
  * How to create storyboard-based RoboVM iOS App
  * How the project is structured
@@ -29,7 +29,7 @@ To this amazing application:
 
 Our app will allow a user to enter her name and click on the `Click Me!` button to see a nice personalized greeting.
 
-Before you continue with this walkthrough, we recommend going through the [Getting Started Guide](/getting-started/introduction.md), which demonstrates how to properly setup the development environment of your choice.
+Before you continue with this tutorial, we recommend going through the [Getting Started Guide](/getting-started/introduction.md), which demonstrates how to properly setup the development environment of your choice.
 
 ## Creating the Project
 
@@ -578,6 +578,6 @@ Our application looks like this:
 
 ## Conclusion
 
-In this walkthrough you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, RoboVM allowed you to do all your coding in Java!
+In this tutorial you got to know the basics of RoboVM's Interface Builder integration. Using storyboards results in very concise code. Modifying the UI visually is also a lot easier than coding it by hand. Finally, RoboVM allowed you to do all your coding in Java!
 
-With your new knowledge you can now check out the other walkthroughs, as well as Apple's official documentation, to discover more!
+With your new knowledge you can now check out the other tutorials, as well as Apple's official documentation, to discover more!

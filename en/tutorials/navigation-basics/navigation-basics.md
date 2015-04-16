@@ -2,7 +2,7 @@
 
 > NOTE: You will need to have a valid license key to use Interface Builder integration. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
 
-This walkthrough takes you through the process of creating multiple scenes, setting up the navigation between them and passing data to and from scenes.
+This tutorial takes you through the process of creating multiple scenes, setting up the navigation between them and passing data to and from scenes.
 
 At the end of this guide you will have an understanding of:
 
@@ -143,7 +143,7 @@ When you enter a name in the text field and press the `Remember Name` button, th
 
 The goal of our app is to display list of remembered names. For this we can use a [`UITableView`](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TableView_iPhone/AboutTableViewsiPhone/AboutTableViewsiPhone.html#//apple_ref/doc/uid/TP40007451-CH1-SW1), a view specifically tailored towards displaying lists of things. A `UITableView` is controlled by a [`UITableViewController`](https://developer.apple.com/library/prerelease/ios/documentation/UserExperience/Conceptual/TableView_iPhone/TableViewAndDataModel/TableViewAndDataModel.html#//apple_ref/doc/uid/TP40007451-CH5-SW1), which provides the view with the items to display, based on some data source.
 
->NOTE: In this walkthrough, we'll only glance over the details of table views. The next walkthrough will give you a deeper understanding of both `UITableView` and `UITableViewController`.
+>NOTE: In this tutorial, we'll only glance over the details of table views. The next tutorial will give you a deeper understanding of both `UITableView` and `UITableViewController`.
 
 Let's create a second scene with a `UITableView` and a `UITableViewController`:
 
@@ -269,7 +269,7 @@ Segues are indicated via arrows between scenes in Interface Builder. You can add
 
 A Segue has a source controller and a destination controller. The segue will perform a transition between the source and destination controller. Additionally, a segue has an identifier which we can use to handle segue transitions programmatically.
 
-There are different types of segues which you can find in [Apple's documentation](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). In this walkthrough we'll use __Show Segues__ and __Modal Segues__.
+There are different types of segues which you can find in [Apple's documentation](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/chapters/StoryboardSegue.html). In this tutorial we'll use __Show Segues__ and __Modal Segues__.
 
 Show segues push a new view controller on the navigation stack, and generally have navigation and/or toolbars. The life-time of the new view controller will be managed by the navigation controller. Navigating from a list entry to a detail view is a good candidate for a show segue.
 
@@ -586,6 +586,6 @@ Our app is now complete! If you run it, you can add names, view them in a list, 
 
 ## Conclusion
 
-In this walkthrough you got to know the basics navigation controllers, table views and their controllers, segues and how to pass data between controllers.
+In this tutorial you got to know the basics navigation controllers, table views and their controllers, segues and how to pass data between controllers.
 
-With your new knowledge you can now check out the other walkthroughs, as well as Apple's official documentation, to discover more!
+With your new knowledge you can now check out the other tutorials, as well as Apple's official documentation, to discover more!
