@@ -136,6 +136,23 @@ pre {
 	font-size: 16px;
 }
 
+.video {
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 25px;
+	margin-bottom: 25px;
+	height: 0;
+}
+
+.video iframe {
+  border: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
 #components > h3 {
 	font-size: 25px;  
 	color: #000;
