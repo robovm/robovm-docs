@@ -502,7 +502,7 @@ Add the following code to the `GreetingsController`:
     }
 ```
 
-To define an action in a view controller, create a method annotated with `@IBAction`. The method can have zeron, one, or two parameters. The first _optional_ parameter is the sender of the event, e.g. our `UITextField`. The second optional parameter is a `UIEvent` which holds additional data for the event. In our case we went for the zero parameter action.
+To define an action in a view controller, create a method annotated with `@IBAction`. The method can have zero, one, or two parameters. The first _optional_ parameter is the sender of the event, e.g. our `UITextField`. The second optional parameter is a `UIEvent` which holds additional data for the event. In our case we went for the zero parameter action.
 
 After you save a Java source file, RoboVM will update the corresponding Objective-C header file `GreetingsController.h`:
 
