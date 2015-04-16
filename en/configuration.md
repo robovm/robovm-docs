@@ -515,7 +515,7 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 
 > NOTE: `-bootclasspath` can either be specified multiple times on the command line, each specifying a single value or specified once with multiple `:` separated values.
 
-> CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the `robovm.xml` file will be ignored. Instead the classpaths of the IDE or build tool with be used.
+> CAUTION: When running RoboVM in an IDE like Eclipse and IntelliJ, or from a build tool such as Maven and Gradle the `<bootclasspath>` and `<classpath>` elements in the `robovm.xml` file will be ignored. Instead the classpaths of the IDE or build tool with be used.
 
 ## &lt;classpath&gt;
 
@@ -537,7 +537,7 @@ Specifies, in nested `<classpathentry>` elements, directories, JAR archives, and
 
 > NOTE: `-classpath` can either be specified multiple times on the command line, each specifying a single value or specified once with multiple `:` separated values.
 
-> CAUTION: When running RoboVM in an IDE like Eclipse or from a build tool such as Maven or Gradle the `<bootclasspath>` and `<classpath>` elements in the `robovm.xml` file will be ignored. Instead the classpaths of the IDE or build tool with be used.
+> CAUTION: When running RoboVM in an IDE like Eclipse and IntelliJ, or from a build tool such as Maven and Gradle the `<bootclasspath>` and `<classpath>` elements in the `robovm.xml` file will be ignored. Instead the classpaths of the IDE or build tool with be used.
 
 ## &lt;targetType&gt;
 

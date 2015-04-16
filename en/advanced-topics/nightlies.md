@@ -16,6 +16,10 @@ Follow the instructions in [getting-started-eclipse](../getting-started/eclipse.
 http://download.robovm.org/nightlies/eclipse/
 ```
 
+## IntelliJ Plugin
+
+Follow the instructions in [getting-started-intellij](../getting-started/intellij.md), but download the latest nightly from `http://download.robovm.org/` instead of installing from the IntelliJ repositories.
+
 ## Maven
 
 Use `SNAPSHOT` version dependencies for the RoboVM dependencies in your `pom.xml`. Also make sure you use the corresponding `SNAPSHOT` version of the `robovm-maven-plugin`:
