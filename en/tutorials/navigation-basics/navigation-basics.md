@@ -37,7 +37,7 @@ We will use the default single view app template project as our starting point.
 
 ### IntelliJ IDEA
 
-1. Go to __ File -> New -> Project...___.
+1. Go to __File -> New -> Project...__.
 2. In the dialog, select _RoboVM_ from the left hand list.
 3. Select _RoboVM iOS Single View App_ and click _Next_.
 4. Fill out the basic information about your app and click _Next_.
@@ -123,7 +123,7 @@ We loosely follow the [Model-View-Controller](https://developer.apple.com/librar
 
 [:4:] Next, we have an `@IBOutlet` via which we will inject the text field into the controller.
 
-[:5:] Finally, we have an `@IBAction` that lets us react to a click on the `Remember Name` button. We do some sanity checking on the contents of the text field, e.g. if the users has entered anything at all. If that check passes, we store the name in our "model" and reset the text field contents.
+[:5:] Finally, we have an `@IBAction` that lets us react to a click on the `Remember Name` button. We do some sanity checking on the contents of the text field, e.g. if the user has entered anything at all. If that check passes, we store the name in our "model" and reset the text field contents.
 
 > NOTE: The constructors of view controllers instantiated via storyboards are currently not called. To initialize your controllers, override the `viewDidLoad()` method and perform any setup there. You can follow the progress on this issue on the [issue tracker](https://github.com/robovm/robovm/issues/894).
 
@@ -143,7 +143,7 @@ When you enter a name in the text field and press the `Remember Name` button, th
 
 ## Setting up the Second Scene
 
-The goal of our app is to display list of remembered names. For this we can use a [`UITableView`](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TableView_iPhone/AboutTableViewsiPhone/AboutTableViewsiPhone.html#//apple_ref/doc/uid/TP40007451-CH1-SW1), a view specifically tailored towards displaying lists of things. A `UITableView` is controlled by a [`UITableViewController`](https://developer.apple.com/library/prerelease/ios/documentation/UserExperience/Conceptual/TableView_iPhone/TableViewAndDataModel/TableViewAndDataModel.html#//apple_ref/doc/uid/TP40007451-CH5-SW1), which provides the view with the items to display, based on some data source.
+The goal of our app is to display a list of remembered names. For this we can use a [`UITableView`](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TableView_iPhone/AboutTableViewsiPhone/AboutTableViewsiPhone.html#//apple_ref/doc/uid/TP40007451-CH1-SW1), a view specifically tailored towards displaying lists of things. A `UITableView` is controlled by a [`UITableViewController`](https://developer.apple.com/library/prerelease/ios/documentation/UserExperience/Conceptual/TableView_iPhone/TableViewAndDataModel/TableViewAndDataModel.html#//apple_ref/doc/uid/TP40007451-CH5-SW1), which provides the view with the items to display, based on some data source.
 
 >NOTE: In this tutorial, we'll only glance over the details of table views. The next tutorial will give you a deeper understanding of both `UITableView` and `UITableViewController`.
 
@@ -185,7 +185,7 @@ public class NameListController extends UITableViewController {
 		int row = (int)indexPath.getRow();
         UITableViewCell cell = tableView.dequeueReusableCell("NameListCell"); // [:7:]
         if(cell == null) {
-            cell = new UITableViewCell(UITableViewCellStyle.Default, "NameListCell"); [:8:]
+            cell = new UITableViewCell(UITableViewCellStyle.Default, "NameListCell"); // [:8:]
         }
         cell.getTextLabel().setText(names.get(row)); // [:9:]
         return cell;
@@ -207,7 +207,7 @@ public class NameListController extends UITableViewController {
 
 [:7:] To reduce resources required to display a long, potentially infinite table view, we can ask the table view to give us a reusable cell by calling `UITableView#dequeueReusableCell()`. The table view pools cells internally. You can have custom cell types in your application which are assigned a name. You can design these cells in Interface Builder. The default cell type is sufficient for us, as it is able to display a text in a label. We need to give this cell type, also called a prototype cell, a name in Interface Builder later, so we can dequeue it via that name in the table view controller.
 
-[:8:] If the table view has no cells pooled yet, we need to create one ourself. We use a default cell with the same identifier that is used for dequeuing.
+[:8:] If the table view has no cells pooled yet, we need to create one ourselves. We use a default cell with the same identifier that is used for dequeuing.
 
 [:9:] Once we have a `UITableViewCell`, we can set the name for that row as the label of the cell.
 
@@ -225,7 +225,7 @@ Let's test our controller. The storyboard entry point currently points to our ma
 1. In Xcode, drag the storyboard entry point arrow from the main scene over to the list scene.
  ![images/entry-point.png](images/entry-point.png)
 2. In Eclipse/IDEA, create a run configuration if you don't have one yet, and start the app on the simulator or device.
-3. After you are done inspecting the scene in the simulator or on the device, __move the storyboard entry point arrow back to the main scene__!
+3. After you are done inspecting the scene, __move the storyboard entry point arrow back to the main scene__!
 
 You should see this:
 
@@ -243,7 +243,7 @@ You should see this in the canvas:
 
 ![images/embed.png](images/embed.png)
 
-The navigation controller is now the storyboard entry point. Our main scene controller is the root view controller of the navigation controller, that means it is the first controller to be displayed.
+The navigation controller is now the storyboard entry point. Our main scene controller is the root view controller of the navigation controller, which means it is the first controller to be displayed.
 
 ## Modifying the Navigation Bar Title
 
@@ -253,7 +253,7 @@ Looking at the main scene, you can see that Interface Builder is displaying a na
 
 Navigation bars enable users to navigate the hierarchy of scenes. Users start at the root view controller managed by the navigation controller and drill down further into new content view controllers. The navigation controller manages a stack of these content view controllers and will push and pop them as necessary depending on user input.
 
-For each scene that's managed by a navigation controller, you can specify how the navigation and toolbar should look like. For our main scene, we want to have a descriptive name displayed in the navigation bar:
+For each scene that is managed by a navigation controller, you can specify how the navigation and toolbar should look like. For our main scene, we want to have a descriptive name displayed in the navigation bar:
 1. In Xcode, select the __Navigation Item__ of the main scene in the outline view or the canvas.
 2. In the attributes inspector, enter `RemembR`, the hip name of our app, as the title.
 
@@ -417,7 +417,7 @@ If you run the app, you can add a few names, then select one from the list. Howe
 
 ### Passing Data from the Name List Scene to the Editing Scene
 
-It's time to pass the selected name from the name list scene to the editing scene. First we need to create a new view controller for the editing scene:
+It is time to pass the selected name from the name list scene to the editing scene. First we need to create a new view controller for the editing scene:
 
 1. In Eclipse/IDEA, create a new class called `EditingController`.
 2. Copy the following code to the class file.
@@ -464,7 +464,7 @@ public class EditingController extends UIViewController { // [:1:]
 
 [:1:] The `EditingController` subclasses `UIViewController` as it will become the controller of our editing scene.
 
-[:2:] `textField` stores a reference to the `UITextField` via which the user will edit the selected name. We'll receive that reference via an outlet.
+[:2:] `textField` stores a reference to the `UITextField` via which the user will edit the selected name. We will receive that reference via an outlet.
 
 [:3:] `nameToEdit` stores the name the user wants to edit.
 
@@ -474,7 +474,7 @@ public class EditingController extends UIViewController { // [:1:]
 
 [:6:] The `getEditedName()` method returns the modified name as entered into the text field by the user. We'll call this when we save the changes.
 
-[:7:] The `getIndex()` method returns the list index of the name that's being edited. We'll call this when we save the changes.
+[:7:] The `getIndex()` method returns the list index of the name that is being edited. We will call this when we save the changes.
 
 [:8:] The `setTextField()` method is an outlet via which we get a reference to the text field in the editing scene.
 
@@ -500,12 +500,12 @@ With all of this setup, we can now pass the selected name from the name list sce
             String name = names.get(selectedRow); // [:3:]
             UINavigationController navController = (UINavigationController)segue.getDestinationViewController(); // [:4:]
             EditingController editingController = (EditingController)navController.getVisibleViewController(); // [:5:]
-            editController.setNameToEdit(name, selectedRow); // [:6:]
+            editingController.setNameToEdit(name, selectedRow); // [:6:]
         }
     }
 ```
 
-[:1:] We fist check if we got the correct segue by checking the identifier.
+[:1:] We first check if we got the correct segue by checking the identifier.
 
 [:2:] Next, we fetch the currently selected row from the table view.
 
