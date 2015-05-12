@@ -283,6 +283,8 @@ You can now set a breakpoint in the compiler sources as well. Let's try that:
 
 Great, now you can debug all parts of RoboVM. You can also modify the source files while the Eclipse instance is running. Changes will be hotswapped automatically (within limits)!
 
+>NOTE: Make sure to revert changes to `MANIFEST.MF` before you do command line builds via Maven!
+
 ## Workflow Java Source
 1. Start the Eclipse instance, make sure `ROBOVM_DEV_ROOT` and `robovm.useDebugLibs` are set as described above
 2. Create/import test RoboVM projects as you need them
