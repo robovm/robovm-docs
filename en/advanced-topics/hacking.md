@@ -22,30 +22,30 @@ In this article, we'll cover how to work on RoboVM via Eclipse on Mac OS X. It i
 
 For development on Mac OS X via Eclipse, you need to install:
 
-* [Brew](http://brew.sh/), a package manager for Mac OS X
-* [CMake](http://www.cmake.org/) +2.8.8 (`brew install cmake`)
-* JDK +7, both [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [OpenJDK](http://openjdk.java.net/) will work
-* Maven +3.x (`brew install maven`)
-* [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12), install it via the Mac App Store
-* Git & Clang will be installed when you install Xcode
-* [Eclipse Luna or newer](http://www.eclipse.org/downloads/), download the *Eclipse IDE for Java EE Developers* package
+* [Brew](http://brew.sh/), a package manager for Mac OS X.
+* [CMake](http://www.cmake.org/) +2.8.8 (`brew install cmake`).
+* JDK +7, both [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [OpenJDK](http://openjdk.java.net/) will work.
+* Maven +3.x (`brew install maven`).
+* [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12), install it via the Mac App Store.
+* Git & Clang will be installed when you install Xcode.
+* [Eclipse Luna or newer](http://www.eclipse.org/downloads/), download the *Eclipse IDE for Java EE Developers* package.
 
 >NOTE: You **must** use the **Eclipse IDE for Java EE Developers** package, otherwise you'll run into all kinds of issues regarding plugins and m2e.
 
 Once you have installed all of the above, follow these steps:
 
-1. Set the JAVA_HOME environment variable to point to your JDK root directory (e.g. `/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home`)
-2. Open Xcode, agree to the Xcode terms and make sure the command line utilities are properly installed
+1. Set the JAVA_HOME environment variable to point to your JDK root directory (e.g. `/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home`).
+2. Open Xcode, agree to the Xcode terms and make sure the command line utilities are properly installed.
 
 ## Checking out the Code
-RoboVM is composed of multiple parts, each contained in separate [Github repositories](https://github.com/robovm). When hacking on RoboVM, you are interested in three of these repositories:
+RoboVM is composed of multiple parts, each contained in separate [Github repositories](https://github.com/robovm). When hacking on RoboVM, you are interested in four of these repositories:
 
 1. [robovm](https://github.com/robovm/robovm), contains the compiler, class library and native VM code.
 2. [robovm-templates](https://github.com/robovm/robovm-templates), contains RoboVM template projects and a class to create those templates on disk
 2. [robovm-dist](https://github.com/robovm/robovm-dist), packages up the compiler and creates a `tar.gz` package. This can be used for RoboVM command line development.
 3. [robovm-eclipse](https://github.com/robovm/robovm-eclipse), the RoboVM Eclipse plugin. Uses the output of the `robovm-dist` project.
 
-Let's checkout the compiler, the distribution project, and the Eclipse plugin project. In the terminal:
+Let's checkout the compiler, the templates project, the distribution project, and the Eclipse plugin project. In the terminal:
 
 ```bash
 # this is going to be our workspace directory later on
@@ -58,9 +58,7 @@ git clone https://github.com/robovm/robovm-dist.git
 git clone https://github.com/robovm/robovm-eclipse.git
 ```
 
->NOTE: If you plan on sending us patches for RoboVM, fork these three repositories on Github and clone your forks instead! See this [guide about keeping your forks in synch](https://help.github.com/articles/configuring-a-remote-for-a-fork/) with our master repositories (upstream).
-
->NOTE: When packaing a custom RoboVM distribution via the `robovm-dist` project, the distribution Maven assembly will copy the binaries from `robovm/vm/binaries`, not `robovm/vm/target/binaries`. Invoke `robovm/vm/copy-binaries.sh` first. That will copy your custom native binaries from `robovm/vm/target/binaries` to `robovm/vm/binaries` for distribution.
+>NOTE: If you plan on sending us patches for RoboVM, fork these four repositories on Github and clone your forks instead! See this [guide about keeping your forks in synch](https://help.github.com/articles/configuring-a-remote-for-a-fork/) with our master repositories (upstream).
 
 ## Building the native VM libraries
 RoboVM has quite a bit of native C/C++ code in it. Before you can start working on RoboVM, you'll first have to build this native code locally:
@@ -74,7 +72,9 @@ This will take quite a while, as it build release and debug builds of all native
 
 The resulting binaries will end up in the folder `robovm/vm/target/binaries`.
 
->NOTE: if you don't work on the native code, call the `robovm/vm/fetch-binaries.sh` script. Then copy the folders in `robovm/vm/binaries/` over to `robovm/vm/target/`, so you end up with a `robovm/vm/target/binaries/` folder. This will download the latest snapshot native binaries from our build servers. Repeat this process every time you update your fork with upstream.
+>NOTE: When packaing a custom RoboVM distribution via the `robovm-dist` project, the distribution Maven assembly will copy the binaries from `robovm/vm/binaries`, not `robovm/vm/target/binaries`. Invoke `robovm/vm/copy-binaries.sh` first. That will copy your custom native binaries from `robovm/vm/target/binaries` to `robovm/vm/binaries` for distribution.
+
+>NOTE: If you don't work on the native code, call the `robovm/vm/fetch-binaries.sh` script. Then copy the folders in `robovm/vm/binaries/` over to `robovm/vm/target/`, so you end up with a `robovm/vm/target/binaries/` folder. This will download the latest snapshot native binaries from our build servers. Repeat this process every time you update your fork with upstream.
 
 ## Building on the Command Line via Maven
 Building via Maven is pretty simple:
@@ -99,7 +99,7 @@ cd ../robovm-dist
 mvn clean install
 ```
 
-This will create a `tar.gz` file in `robovm-dist/package/target` that you can use to work with RoboVM from the command line.
+This will create a `tar.gz` file in `robovm-dist/package/target` that you can use to work with RoboVM from the [command line](commandline.html).
 
 ```
 cd ../robovm-eclipse
@@ -113,35 +113,35 @@ This will take the distribution tar.gz and package it with the RoboVM Eclipse pl
 ## Importing to Eclipse
 The RoboVM projects we build in the last section can also be directly imported into Eclipse:
 
-1. Open Eclipse and set the workspace directory to `robovm-workspace`
+1. Open Eclipse and set the workspace directory to `robovm-workspace`.
 3. Click *Browse* and select the `robovm-workspace` directory. You should see this selection of projects:
    ![images/hacking-import.png](images/hacking-import.png)
-4. Click *Finish*
-5. Eclipse will ask you to install a variety of m2e-connectors. Simply click *Finish* and *OK* in the dialogs that pop up. This will install all the required connectors
+4. Click *Finish*.
+5. Eclipse will ask you to install a variety of m2e-connectors. Simply click *Finish* and *OK* in the dialogs that pop up. This will install all the required connectors:
    ![images/hacking-connectors.png](images/hacking-connectors.png)
 
 >NOTE: If the last step fails for some reason, install the connectors manually. First, delete the (hidden) `.metadata` folder in `robovm-workspace`. Open up Eclipse again, and import the projects as described above. In step 5, click `Cancel`. Next go to `Eclipse -> Preferences`. Select *Maven -> Discovery* from the side bar. Click on *Open Catalog*. Enter *buildhelper*  in the search box, then install the buildhelper connector. Repeat this with the search term *tycho* and install the Tycho Configurator connector.
 
->NOTE: the *org.robovm.eclipse.feature*  project will still have an error after going through all these steps above. Sadly, there's no m2e connector for the Maven Ant plugin. The error is not a problem for development though.
+>NOTE: The *org.robovm.eclipse.feature*  project will still have an error after going through all these steps above. Sadly, there's no m2e connector for the Maven Ant plugin. The error is not a problem for development though.
 
 ## Projects Walkthrough
 Before we try to run and debug anything, let's look at all these projects:
 
-* *org.robovm.eclipse.feature*, *org.robovm.eclipse.ui* and *org.robovm.eclipse.update-site* contain the Eclipse plugin code and configuration. The UI project contains the actual code. Interesting classes are 'RoboVMPlugin', the main entry point of the plugin, and AbstractLaunchConfigurationDelegate', responsible firing of compilation when a run configuration is being executed.
-* *robovm-cacerts* contains various certificate related things and does usually not need to be touched
-* *robovm-compiler* is the workhorse. It provides the compiler infrastructur. `AppCompiler` is a good class to start looking at.
-* *robovm-libimobiledevice*  contains bindings to [libimobiledevice](http://www.libimobiledevice.org/), a library that lets us deploy apps to a connected device. `AppLauncher` covers most of the work this project provides.
-* *robovm-llvm* contains bindings for [LLVM](http://www.llvm.org), the compiler infrastructure we use to translate Java byte code to machine code.
-* *robovm-rt*  contains the class library of RoboVM which is based on Android's class library.
-* *robovm-objc* contains the Objective-C bridge of RoboVM called Bro (pronounced like *brew*, swedish for bridge)
-* *robovm-cocoatouch* contains the bindings for iOS APIs. These are generated semi-automatically.
-* *robovm-xxx-template* are RoboVM project templates 
-* *robovm-templater* is a project that depends on the templates and knows how to extract them to disk and replace values in files like robovm.xml etc. `Templater` is the class that does this magic.
+* **org.robovm.eclipse.feature**, **org.robovm.eclipse.ui** and **org.robovm.eclipse.update-site** contain the Eclipse plugin code and configuration. The UI project contains the actual code. Interesting classes are 'RoboVMPlugin', the main entry point of the plugin, and AbstractLaunchConfigurationDelegate', responsible compilation when a run configuration is being executed.
+* **robovm-cacerts** contains various certificate related things and does usually not need to be touched
+* **robovm-compiler** is the workhorse. It provides the compiler infrastructur. `AppCompiler` is a good class to start looking at. All of RoboVM's native code is also contained in this project, see `robovm/vm` and `robovm/rt`.
+* **robovm-libimobiledevice**  contains bindings to [libimobiledevice](http://www.libimobiledevice.org/), a library that lets us deploy apps to a connected device. `AppLauncher` covers most of the work this project provides.
+* **robovm-llvm** contains bindings for [LLVM](http://www.llvm.org), the compiler infrastructure we use to translate Java byte code to machine code.
+* **robovm-rt**  contains the class library of RoboVM which is based on Android's class library.
+* **robovm-objc** contains the Objective-C bridge of RoboVM called Bro (pronounced like *brew*, swedish for bridge).
+* **robovm-cocoatouch** contains the bindings for iOS APIs. These are generated semi-automatically.
+* **robovm-xxx-template** are RoboVM project templates 
+* **robovm-templater** is a project that depends on the templates and knows how to extract them to disk and replace values in files like robovm.xml etc. `Templater` is the class that does this magic. It is used by the Eclipse and IDEA plugins to create new projects.
 
 ## Running & Debugging
 With our current setup we can already run and debug the RoboVM Eclipse plugin:
 
-* Right click the *org.robovm.eclipse.ui*  project, select *Run As -> Eclipse Application*. This creates a new run configuration and launches an Eclipse instance with the RoboVM Eclipsep lugin installed.
+* Right click the **org.robovm.eclipse.ui**  project, select *Run As -> Eclipse Application*. This creates a new run configuration and launches an Eclipse instance with the RoboVM Eclipse plugin installed.
 * Play around a little, create a new RoboVM iOS project, compile it, etc.
 
 However, if you set a breakpoint in say one of the compiler project's classes, it won't get hit. Also, if you modify either the Java sources of the other projects, or the native code in `robovm/vm`, the changes will not be reflected in the RoboVM Eclipse plugin project.
@@ -186,23 +186,23 @@ We now see that instead of e.g. `librobovm-rt.a` we now link `librobovm-rt-dbg.a
 
 ### Native Code Workflow
 1. Start the Eclipse instance via the run configuration, make sure `ROBOVM_DEV_ROOT` and `robovm.debugLibs` are set. Leave the instance running.
-1. Edit the native code in `robovm/vm` or `robovm/rt` with an editor/IDE of your choice
-2. Compile the changes via `robovm/vm/build.sh`
-3. Compile a RoboVM project in the Eclipse instance to test your native code changes
+1. Edit the native code in `robovm/vm` or `robovm/rt` with an editor/IDE of your choice.
+2. Compile the changes via `robovm/vm/build.sh`.
+3. Compile a RoboVM project in the Eclipse instance to test your native code changes.
 4. Attach Xcode or LLDB to the RoboVM app while it is running. Note that you can start RoboVM console apps directly via LLDB to catch early native code execution.
 
 Debugging native code on a device is sadly a lot more involved and won't be described here. In general, testing on the console and simulator are usually enough to smash native code bugs. If not, call a professional.
 
 ## Wiring up the Eclipse projects
-So far we know how to test native code changes. On the Java-side of things, we can only set breakpoints in the plugin's source code, but not in the compiler sources. To fix this, we need to
+So far we know how to test native code changes. On the Java-side of things, we can only set breakpoints in the plugin's source code, but not in the compiler sources. To fix this, we need to:
 
 1. Let the plugin UI project depend on the other projects in the workspace.
 2. Modify temporarily modify the `MANIFEST.MF` file of the in `robovm-eclipse/ui/META-INF/`.
 
-You will get a few compilation errors. To fix these, we also need to modify the MANIFEST.XML file:
+You will get a few compilation errors. To fix these, we also need to modify the `MANIFEST.MF` file:
 
-1. Open the `MANIFEST.XML` file in the *org.robovm.eclipse.ui* project's `META-INF` folder
-2. In the editor window, select the `MANIFEST.XML` tab at the bottom of the editor.
+1. Open the `MANIFEST.MF` file in the **org.robovm.eclipse.ui** project's `META-INF` folder
+2. In the editor window, select the `MANIFEST.MF` tab at the bottom of the editor.
 3. Replace the content of the file with the following, make sure to rewrite the absolute paths for your file system!
 
 ```
@@ -260,28 +260,28 @@ This will make Eclipse resolve classes in these paths instead off fetching them 
 Next, we need to wire up all the projects and JARs as dependencies of our plugin project.
 
 1. Right-click the plugin UI project, select *Properties*
-2. In the side-bar, select *Java Build Path*, then select the *Libraries* tab
-3. Remove all JARs except for the *commons-compress.jar*
-4. Add each JAR referenced in the `MANIFEST.XML` file as an external JAR. Copy the path of each entry, then click `Add external JAR`, then hit *CMD + G* to directly enter the absolute path of the JAR. You should end up with this:
+2. In the side-bar, select *Java Build Path*, then select the *Libraries* tab.
+3. Remove all JARs except for the *commons-compress.jar*.
+4. Add each JAR referenced in the `MANIFEST.MF` file as an external JAR. Copy the path of each entry, then click `Add external JAR`, then hit *CMD + G* to directly enter the absolute path of the JAR. You should end up with this:
    ![images/hacking-jarhell.png](images/hacking-jarhell.png)
-5. Select the *Projects* tab
-3. Click *Add* and add all projects except the *robovm-dist-compiler* project.
+5. Select the *Projects* tab.
+3. Click *Add* and add all projects except the *robovm-dist-compiler* project:
    ![images/hacking-projects.png](images/hacking-projects.png)
-6. Close the dialog
+6. Close the dialog.
 
 You can now set a breakpoint in the compiler sources as well. Let's try that:
 
 1. Open `AppCompiler.java` in the *robovm-compiler* project.
 2. Set a breakpoint in the `AppCompiler#compile()` method.
-3. Run the Eclipse instance
-4. Compile a RoboVM project
+3. Run the Eclipse instance.
+4. Compile a RoboVM project.
 5. The breakpoint will be hit, but Eclipse doesn't know where to look for the source:
    ![images/hacking-nosource.png](images/hacking-nosource.png)
-6. Click on the *Edit Source Lookup Path* button
-7. Click *Add*, select *Java Project*, select all projects and click *OK*
+6. Click on the *Edit Source Lookup Path* button.
+7. Click *Add*, select *Java Project*, select all projects and click *OK*:
    ![images/hacking-lookup.png](images/hacking-lookup.png)
 
-Great, now you can debug all parts of RoboVM. You can also modify the source files while the Eclipse instance is running. Changes will be hotswapped automatically (within limits)!
+Great, now you can debug all parts of RoboVM, including the compiler and iOS API bindings. You can also modify the source files while the Eclipse instance is running. Changes will be hotswapped automatically (within limits)!
 
 >NOTE: Make sure to revert changes to `MANIFEST.MF` before you do command line builds via Maven!
 
