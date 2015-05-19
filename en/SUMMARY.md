@@ -10,6 +10,7 @@
     * [Interface Builder Basics](tutorials/ib-basics/ib-basics.md)    	
     * [Scene Navigation Basics](tutorials/navigation-basics/navigation-basics.md)    	
 * [Samples](samples.md)
+* [APIs & Javadoc](javadoc.md)
 * [Configuration Reference](configuration.md)
 * [Advanced Topics](advanced-topics/introduction.md)
 	* [Under the Hood](advanced-topics/compilation.md)
