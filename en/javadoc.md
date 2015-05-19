@@ -38,8 +38,3 @@ Third party libraries such as ORMs or dependency injection frameworks make use o
 If a class is not directly referenced via code, but only via reflection, RoboVM will not compile it into your app. Trying to load such a class via reflection at runtime will thus result in an error.
 
 You can explicitely specify classes or entire packages that RoboVM should compile into your application, even if they are not explicitely referenced. You can use the `<forceLink>` tag in your `robovm.xml` file to achieve this. See the [configuration reference](configuration.md) for more details.
-
-### Java API Level
-RoboVM currently supports Java API level 7, essentially the same support as is available on Android. Third party libraries that require an API level higher than 7 will currently not work.
-
->NOTE: RoboVM does support Java 8 languages features such as lambdas. Support for Java 8 APIs such as streams is on our roadmap.
