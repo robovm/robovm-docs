@@ -1,39 +1,60 @@
-# Introduction
+![images/robovm-logo.png](images/robovm-logo.png)
 
-Mobile app developers targeting both Android and iOS face many challenges.
-When comparing the native development environments of these two platforms,
-i.e. the toolchains provided by Google and Apple respectively, one quickly
-finds that they differ substantially. Android development, as defined by
-Google, is based on the Intellij IDEA IDE and the Java programming language.
-iOS development, according to Apple, on the other hand is based on the Xcode
-IDE and the Objective-C programming language. These differences rule out any
-code reuse between the platforms. Also, not many developers are proficient in
-both environments. In the end almost every multi-platform app is developed
-using separate development teams and separate codebases for each platform.
+## Mobile is Tough
+Targeting mobile means developing for both **Android and iOS**, which together cover 96% of the mobile app market. Mobile development comes with quite a few challenges:
 
-The ultimate goal of the RoboVM project is to solve this problem without
-compromising on neither developer nor app-user experience. With RoboVM
-developing for both iOS and Android becomes less challenging; the same Java
-developers can build both versions of the app and a large part of the codebase
-can be shared.
+* Each platform has a **different ecosystem and development tools**. 
+* You usually need **one team per platform**.
+* Teams are **not able to share code** between platforms or the backend. 
+* All of this leads to **increased development cost and time-to-market**.
 
-## Features
+## Why RoboVM?
+We love mobile. We love the Java ecosystem. If you feel like we do, you will love RoboVM:
 
-* Brings Java and other JVM languages, such as [Scala](http://www.scala-lang.org/), [Clojure](http://clojure.org/), [Groovy](http://groovy.codehaus.org/) and [Kotlin](http://kotlinlang.org/), to iOS devices.
-* Translates Java bytecode into machine code [ahead-of-time](http://en.wikipedia.org/wiki/Ahead-of-time_compilation) for fast execution directly on the CPU without any overhead. The main target is iOS and the ARM processor (32-bit and 64-bit) but there is also support for Mac OS X and Linux running on x86 CPUs (both 32-bit and 64-bit).
-* Doesn't impose any restrictions on the Java platform features accessible to the developer, such as reflection or file I/O.
-* Supports standard JAR files which lets the developer reuse the vast ecosystem of 3rd party Java libraries.
-* Provides access to the [full native iOS APIs](https://developer.apple.com/technologies/ios/cocoa-touch.html) through a Java to Objective-C bridge enabling the development of apps with truly native UIs and with full hardware access.
-* Integrates with the most popular tools such as
-  [Eclipse](https://www.eclipse.org/), [Intellij IDEA](https://www.jetbrains.com/idea/), [Maven](http://maven.apache.org/) and [Gradle](http://www.gradle.org/).
-* App Store ready, with hundreds of apps already in the store.
+* **Create truly native mobile apps** for iOS and Android.
+* Use **libraries, tools and languages** from the vast **Java ecosystem**.
+* **Share code** between platforms.
 
-## Limitations
+## Think of Your Users, Go Native
+Your users deserve the best experience. We believe this is only possible by making your apps truly native.
 
-There are a few limitations in RoboVM, mainly due to restrictions in the iOS
-platform:
+Truly native apps need a **native user interface**. With RoboVM, you get **access to all native APIs** of both Android and iOS, straight from your Java code. Whatever is possible in Objective-C is possible in Java as well.
 
-* Loading custom bytecode at runtime is not supported. All class files comprising the app have to be available at compile time on the developer machine.
-* The [Java Native Interface](http://en.wikipedia.org/wiki/Java_Native_Interface) technology as used on the desktop or on servers usually loads native code from dynamic libraries but Apple does not permit custom dynamic libraries to be shipped with an iOS app. RoboVM supports a variant of JNI based on static libraries.
+RoboVM also integrates nicely with **[Xcode's Interface Builder](https://developer.apple.com/xcode/interface-builder/)**, which lets you create user interfaces in a **[WYSIWYG fashion](tutorials/ib-basics/ib-basics.md)**. 
 
-> NOTE: RoboVM has *full* support for reflection.
+The final piece of the puzzle is **native performance**. On iOS, RoboVM compiles your **JVM byte code to machine code** using **[LLVM](http://www.llvm.org)**. That's also used to compile C/C++/Objective-C on iOS. RoboVM apps are **[on par or exceeding the performance of Objective-C apps](https://medium.com/@harrycheung/cross-platform-mobile-performance-testing-d0454f5cd4e9)**.
+
+In short, with RoboVM, you are a **first-class citizen on iOS and Android**, and your users will love you for it.
+
+## Use the Tools You Love!
+With RoboVM, we want to give you as much freedom as possible when it comes to tooling.
+
+On the language front, RoboVM allows you to use **Java** or alternative JVM languages like **[Scala](http://www.scala-lang.org/)**, **[Kotlin](http://kotlinlang.org/)** or **[Clojure](http://clojure.org/)** on iOS and Android.
+
+Your IDE needs are also covered. RoboVM integrates with **[Eclipse](getting-started/eclipse.md)**, **[IntelliJ IDEA](getting-started/intellij.md)** and **[Netbeans](https://dukescript.com/update/2015/05/15/on-device-debugging.html)**. And if you like to work without an IDE, you can use RoboVM from the **[command line](advanced-topics/commandline.md)** as well.
+
+Nobody is perfect, and neither is code. RoboVM gives you **full debugging support**, both on the simulator as well as on a connected device from within your IDE of choice.
+
+Build & dependency management systems make your life as a developer easier: RoboVM supports both **[Maven](getting-started/maven.md)** and **[Gradle](getting-started/gradle.md)**. Add **[Jenkins](https://jenkins-ci.org/)** to the mix, and you got yourself continuous integration and deployment.
+
+Speaking of dependencies: RoboVM let's you reuse the vast amount of **[3rd party libraries](javadoc.md)** availabe from Maven Central or other repositories. Via **[Bro](advanced-topics/bro.md)** you can access Objective-C based 3rd party libraries directly from Java. No JNI involved!
+
+## Sharing is Caring
+Using the same tools for Android, iOS and backend development is already a big plus. But you can go one step further.
+
+With RoboVM, you can **share large portitions of your code** between iOS, Android and your backend. This includes any **platform-independent code**, such as your business logic. By designing your native UIs according to **[MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)** or **[MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel)**, you can also share the C or VM of your UI code.
+
+If this is still not enough sharing for your taste, you can use **[JavaFX](http://javafxports.org/)** to share not only your platform independent code, but also your UI code across iOS, Android and desktop environments.
+
+RoboVM also powers **[libGDX](http://libgdx.badlogicgames.com)**, a very popular game development framework. It lets you target iOS, Android, Blackberry, Windows, Linux, Mac OS X and WebGL-enabled browsers with a single shared code base.
+
+## Ready?
+Here's our 5 step program to happiness:
+
+1. **[Sign up](https://account.robovm.com/#/register)** for a free 14-day trial.
+2. Get up to speed with our **[Getting Started Guide](getting-started/introduction.md)**.
+3. Follow our **[Tutorials & Scrceencasts](tutorials/introduction.md)**.
+4. Dissect our **[Samples](samples.md)**.
+5. Talk to us on our **[Mailing List](https://groups.google.com/forum/#!forum/robovm)** or drop us a line at **[hello@robovm.com](mailto:hello@robovm.com)**
+
+Happy Coding!
