@@ -15,8 +15,8 @@ We love mobile. We love the Java ecosystem. If you feel like we do, you will lov
 * Use **libraries, tools and languages** from the vast **Java ecosystem**.
 * **Share code** between platforms.
 
-## Think of Your Users, Go Native
-Your users deserve the best experience. We believe this is only possible by making your apps truly native.
+## Native UX, Native Performance
+Your users deserve the best experience. Creating truly native apps is one way to achieve this.
 
 Truly native apps need a **native user interface**. With RoboVM, you get **access to all native APIs** of both Android and iOS, straight from your Java code. Whatever is possible in Objective-C is possible in Java as well.
 
