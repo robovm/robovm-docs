@@ -3,3 +3,4 @@ In this section you find multiple tutorials that should get you up to speed with
 
  * [Interface Builder Basics](ib-basics/ib-basics.md), demonstrates basic usage of interface builder
  * [Scene Navigation Basics](navigation-basics/navigation-basics.md), demonstrates how to create, navigate and pass data between multiple scenes
+ * [Cross-Platform Basics](cross-platform/cross-platform.md), demonstrates how to setup and structure a project that shares code between iOS and Android
