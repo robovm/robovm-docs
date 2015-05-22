@@ -1,36 +1,63 @@
+# Cross-Platform Basics
+
+> NOTE: Although a valid license key is not needed for cross platform support, this tutorial makes use of Interface Builder integration which does. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
+
 ## Introduction
 
-One of RoboVM's greatest strengths is the opportunity to share the everything except UI code between your Android and iOS applications. The RoboVM plugin for IntelliJ includes a template to generate a cross platform project, or to add an iOS module to an existing Android project.
+One of RoboVM's greatest strengths is the opportunity to use the experience you have obtained with the JVM and Android in the creation of apps for iOS. Not only are you able to use the same familiar languages and libraries, but with a bit of planning, everything except UI and application code should be shareable between your Android and iOS applications.
 
-The basic architecture consists of platform specific modules for the UI and application layers, and a core module for the logic that will be shared. This guide introduces how to architect a cross-platform application using the native Android tools and RoboVM for iOS, while maximizing code re-use between them.
+This guide introduces how to architect a cross-platform application, while maximizing code re-use.
 
 ## Project Creation
 
-For the moment, cross-platform project creation is in BETA. We currently only support (IntelliJ)(../getting-started/intellij.md) and manually setting up your project. In the very near future, templates will be added to create a fresh cross platform project or to add a RoboVM module to an existing Android project.
+For the moment, cross-platform project creation is in BETA. We currently only support [IntelliJ](../../getting-started/intellij.md) and the Gradle build system. This tutorial also assumes you have installed and configured the Android SDK and platform tools. __TODO: Link to a guide for this!__
 
-This tutorial also assumes you already have installed and configured the Android SDK and platform tools.
+> NOTE: A project wizard will be added soon that can be used to generate a fully working cross-platform project.
 
-> NOTE: Only the Gradle build system is supported.
+For now, the only way to create a cross-platform project is to manually setup the modules from within IntelliJ. At each step, if you are having problems, open the Gradle view (View > Tool Windows > Gradle) and press the `Sync` button.
 
-### Manual
+### Android Module
 
-For now, the only way to create a cross-platform project is to manually setup the modules from within IntelliJ.
+Select File > New > Project > Android > Gradle Android Module:
 
-* New Project > Android > Gradle: Android Module
+* Page #1
+	* Application Name: Fortune
 	* Module Name: android
-	* Package Name: com.company.appname.android
-* New Module > Gradle > (name it core)
-* New Module > RoboVM > (name it ios) > (Make sure it is under ios module)
-	* Package Name: com.company.appname.ios
-	* App Id: com.company.appname
+	* Package Name: com.mycompany.fortune.android
+* Page #2
+	* Choose Blank Activity
+* Page #3
+	* Activity Name: FortuneActivity
+	* Layout Name: activity_fortune
+* Page #4
+	* Project Name: fortune
+
+### iOS Module
+
+Select File > New > Module > RoboVM > RoboVM iOS Single View App:
+
+* Page #1
+	* Package Name: com.mycompany.fortune.ios
+	* Application Name: Fortune
+	* App Id: com.company.fortune
+	* Build System: Gradle
+* Page #2
 	* Module Name: ios
-* Update settings.gradle: include ':android', ':ios', ':core'
-* Add compile project(':core') to android/build.gradle and ios/build.gradle
-* Sync
 
-### Wizard
+### Core Module
 
-> NOTE: A project wizard will be added soon.
+Select File > New > Module > Gradle
+
+* Page #1
+	* Artifact Id: core
+* Page #2
+	* Module Name: core
+
+### Configuration
+
+* Replace everything in `settings.gradle` with: `include ':android', ':ios', ':core'`
+* Open `android/build.gradle` and `ios/build.gradle`. Add `compile project(':core')` under the `dependencies` section.
+* __TODO: Either link to or spell out how to create a RoboVM Run Config__
 
 ## Simple Start
 
@@ -42,9 +69,9 @@ The app we will be creating is a version of the [unix fortune](http://en.wikiped
 
 The core module should contain code that does not depend on the Android or iOS platforms. Typically, this will be comprised of the data and business logic layers.
 
-Our model for the fortune app will start out with the simplest API possible, retrieving a random quote from a static database. In later sections we will expand that functionality to cover pulling new quotes from a web API, and saving your favorite quotes to the local database.
+Our model for the fortune app will start out with the simplest API possible, retrieving a random quote from a static database. In later sections we will expand that functionality to cover pulling new quotes from a web API, and saving your favorite quotes to a local database.
 
-In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, like local database storage.
+In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, e.g. local database storage.
 
 For now, paste the following code into a new file named `FortuneStore.java` under the core module. Make sure there is a `org.robovm.fortune.core` package to place it in.
 
