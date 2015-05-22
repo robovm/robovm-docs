@@ -17,6 +17,20 @@
 	content: attr(data-content);
 }
 
+a.anchor {
+  display: none;
+}
+
+a.anchor span {
+	font-size: 0.75em;
+	margin-left: 10px;
+}
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, 
+h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+    display: inline-block;
+}
+
 p {
 	font-size: 1.1em;
 }
