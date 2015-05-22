@@ -18,46 +18,48 @@ For now, the only way to create a cross-platform project is to manually setup th
 
 ### Android Module
 
-Select File > New > Project > Android > Gradle Android Module:
+Select File | New | Project | Android > Gradle Android Module:
 
 * Page #1
 	* Application Name: Fortune
 	* Module Name: android
-	* Package Name: com.mycompany.fortune.android
+	* Package Name: com.mycompany.crossplatform.android
 * Page #2
 	* Choose Blank Activity
 * Page #3
 	* Activity Name: FortuneActivity
 	* Layout Name: activity_fortune
 * Page #4
-	* Project Name: fortune
-
-### iOS Module
-
-Select File > New > Module > RoboVM > RoboVM iOS Single View App:
-
-* Page #1
-	* Package Name: com.mycompany.fortune.ios
-	* Application Name: Fortune
-	* App Id: com.company.fortune
-	* Build System: Gradle
-* Page #2
-	* Module Name: ios
+	* Project Name: crossplatform
 
 ### Core Module
 
-Select File > New > Module > Gradle
+Select File | New | Module | Gradle
 
 * Page #1
 	* Artifact Id: core
 * Page #2
 	* Module Name: core
 
+### iOS Module
+
+Select File | New | Module | RoboVM > RoboVM iOS Single View App:
+
+* Page #1
+	* Package Name: com.mycompany.crossplatform.ios
+	* Application Name: Fortune
+	* App Id: com.company.crossplatform
+	* Build System: Gradle
+* Page #2
+	* Module Name: ios
+
 ### Configuration
 
-* Replace everything in `settings.gradle` with: `include ':android', ':ios', ':core'`
+* Replace everything in `settings.gradle` with: `include ':core', ':android', ':ios'`
 * Open `android/build.gradle` and `ios/build.gradle`. Add `compile project(':core')` under the `dependencies` section.
+* Remove everything from the `build.gradle` file in the root directory.
 * __TODO: Either link to or spell out how to create a RoboVM Run Config__
+* Make sure the 'android' and 'ios' run configurations work correctly.
 
 ## Simple Start
 
@@ -73,10 +75,10 @@ Our model for the fortune app will start out with the simplest API possible, ret
 
 In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, e.g. local database storage.
 
-For now, paste the following code into a new file named `FortuneStore.java` under the core module. Make sure there is a `org.robovm.fortune.core` package to place it in.
+Make sure there is a `com.mycompany.crossplatform.core` package under a `src/main/java` directory in the `core` module (you may need to create these.) Create a new Java class named `FortuneStore` and paste in the following code.
 
 ```java
-package org.robovm.fortune.core;
+package com.mycompany.crossplatform.core;
 
 import java.util.Random;
 
@@ -89,7 +91,7 @@ public class FortuneStore {
             "5. RoboVM is an awesome tool for porting Android apps to iOS.",
     };
 
-    prive static Random rng = new Random();
+    private static Random rng = new Random();
 
     public String getFortune() {
         return fortunes[rng.nextInt(fortunes.length)];
@@ -113,14 +115,14 @@ For now, all you really need is a `TextView` and a `Button`:
 Replace the contents of `FortuneActivity.java` under the `android` module with the following code.
 
 ```java
-package org.robovm.fortune.android;
+package com.mycompany.crossplatform.android;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import org.robovm.fortune.core.FortuneStore;
+import com.mycompany.crossplatform.core.FortuneStore;
 
 public class FortuneActivity extends Activity {
     private FortuneStore fortunes = new FortuneStore(); // [:1:]
@@ -152,17 +154,18 @@ public class FortuneActivity extends Activity {
 
 ### iOS UI
 
-Replace the contents of `FortuneViewcontroller.java` under the `android` module with the following code.
+Rename `MyViewController.java` under the `ios` module to `FortuneViewController.java` and replace the contents with the following code:
 
 ```java
-package org.robovm.fortune.ios;
+package com.mycompany.crossplatform.ios;
 
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIViewController;
-import org.robovm.fortune.core.FortuneStore;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
 import org.robovm.objc.annotation.IBOutlet;
+
+import com.mycompany.crossplatform.core.FortuneStore;
 
 @CustomClass("FortuneViewController")
 public class FortuneViewController extends UIViewController {
