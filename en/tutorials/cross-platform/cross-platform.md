@@ -136,7 +136,7 @@ public class FortuneActivity extends Activity {
         setContentView(R.layout.activity_fortune);
 
         final TextView fortuneLabel = (TextView) findViewById(R.id.fortuneTextView); // [:2:]
-        final Button showFactButton = (Button) findViewById(R.id.nextFortuneButton); // [:2:]
+        final Button nextFortuneButton = (Button) findViewById(R.id.nextFortuneButton); // [:2:]
 
         View.OnClickListener listener = new View.OnClickListener() { // [:3:]
             @Override
@@ -144,7 +144,7 @@ public class FortuneActivity extends Activity {
                 fortuneLabel.setText(fortunes.getFortune());
             }
         };
-        showFactButton.setOnClickListener(listener);
+        nextFortuneButton.setOnClickListener(listener);
     }
 }
 ```
