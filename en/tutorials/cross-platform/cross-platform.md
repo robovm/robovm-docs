@@ -105,12 +105,15 @@ In order to design the Android UI, we will be taking advantage of the Android De
 
 For now, all you really need is a `TextView` and a `Button`:
 
-* Drag a `TextView` from the palette to the canvas.
-	* Rename it 'fortuneTextView'
-	* Configure the TextView
+* If there isn't already one, drag a `TextView` from the palette to the canvas.
+	* Align the TextView until the guides show that it is centered vertically and horizontally.
+	* Change the __id__ property to _fortuneTextView_.
+	* Change the __text__ property to _RoboVM Rocks!_ or anything you like.
+	* Change the __textSize__ property to _24sp_.
 * Drag a `Button` from the palette to the canvas.
-	* Rename it 'nextFortuneButton'
-	* Configure the Button
+	* Align the Button until it is centered horizontally and flush with the bottom guide.
+	* Change the __id__ property to _nextFortuneButton_.
+	* Change the __text__ property to _Show Next Fortune_.
 
 Replace the contents of `FortuneActivity.java` under the `android` module with the following code.
 
@@ -146,13 +149,25 @@ public class FortuneActivity extends Activity {
 }
 ```
 
-[:1:] Create the model that we created in the core module.
+[:1:] Instantiate the model class we created in the 'core' module.
 
-[:2:] Get access to the UI elements we need.
+[:2:] Obtain references by id to the text view and button we created in the Android Designer.
 
-[:3:] Hook up the click event on the button.
+[:3:] Hook up the click event of the button to show a new quote from the model.
 
 ### iOS UI
+
+In order to design the UI for the iOS app, we will make use of [Interface Builder](../ib-basics/ib-basics.md) from within Xcode. In the project view, navigate to the ios module > resources > Base.lproj, and double click on `Main.storyboard`.
+
+There should already be a label and a button, which is exactly what we need, after some minor configuration.
+
+* Click on MyViewController, and under the _Identity Inspector_ change the class to FortuneViewController.
+* Under the _Connections Inspector_, drag the 'clicked' Received Action onto the button.
+* Drag the button until the guides show it centered horizontally and aligned to the button.
+* Change the button text to be _Show Next Fortune_, and resize the button so all the text is shown.
+* Change the text of the label to whatever you like.
+* Make sure the label's text size is 24.
+* Increase the maximum number of lines to somewhere between 3-5, and make sure the label's height is tall enough.
 
 Rename `MyViewController.java` under the `ios` module to `FortuneViewController.java` and replace the contents with the following code:
 
@@ -185,11 +200,11 @@ public class FortuneViewController extends UIViewController {
 }
 ```
 
-[:1:] Create the model that we created in the core module.
+[:1:] Instantiate the model class we created in the 'core' module.
 
-[:2:] Get access to the UI elements we need.
+[:2:] Obtain a reference to the label we created in Xcode.
 
-[:3:] Hook up the click event on the button.
+[:3:] Hook up the IBAction of the button to set a new fortune on click.
 
 ## Web Request
 
