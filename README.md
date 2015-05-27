@@ -21,7 +21,7 @@ To start a server, watch for changes to files, and automatically refresh the bro
 gitbook serve .
 ```
 
-The book will be available at http://localhost:4000/en.
+The book will be available at [http://localhost:4000/en](http://localhost:4000/en).
 
 ## Deployment
 
