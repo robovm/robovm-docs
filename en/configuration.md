@@ -185,6 +185,28 @@ expanding `*` characters.
 
 > NOTE: `-forcelinkclasses` can either be specified multiple times on the command line, each specifying a single pattern or specified once with multiple `:` separated patterns. E.g. `-forcelinkclasses 'com.example.Foo:com.example.bar.**'`.
 
+## &lt;treeShaker&gt;
+
+Specifies the tree shaking algorithm to be used by the compiler. With tree shaking enabled the compiler will strip out unused methods, reducing executable file size and reducing compile and link times. The supported modes are:
+
+* `none` - Disables tree shaking. This is the default.
+* `conservative` - Only allows unused methods marked with the `@WeaklyLinked` annotation to be stripped.
+* `aggressive` - Strips out all methods which aren't reachable from the main class.
+
+Common for any mode is that constructors are always preserved as well as static initializers. Also, methods in the main class and in force linked classes will never be stripped.
+
+##### Example:
+
+```xml
+<treeShaker>conservative</treeShaker>
+```
+
+##### Command line usage:
+
+`-treeshaker <mode>`
+
+> WARNING: Tree shaking is an experimental feature.
+
 ## &lt;libs&gt;
 
 Specifies, in nested `<lib>` elements, static libraries (with extension `.a`), object files (with extension `.o`) and system libraries that should be included when linking the final executable.
