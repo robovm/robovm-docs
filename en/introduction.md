@@ -1,5 +1,3 @@
-![images/robovm-logo.png](images/robovm-logo.png)
-
 ## Mobile is Tough
 Targeting mobile means developing for both **Android and iOS**, which together cover 96% of the mobile app market. Mobile development comes with quite a few challenges:
 
