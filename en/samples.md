@@ -11,7 +11,7 @@ In this article, we'll walk you through getting the samples, compiling and runni
 | ------------------| ----------- | ---------------------------------|
 | [AppPrefs](https://github.com/robovm/robovm-samples/tree/master/AppPrefs)     | Port of Apple's [AppPrefs](https://developer.apple.com/library/ios/samplecode/AppPrefs/Introduction/Intro.html) sample | How to display your app's user configurable options (preferences) in the "Settings" system application. |
 | [BatteryStatus](https://github.com/robovm/robovm-samples/tree/master/BatteryStatus/)     | Port of Apple's [BatteryStatus](https://developer.apple.com/library/ios/samplecode/BatteryStatus/Introduction/Intro.html) sample | How to use the battery status properties and notifications provided via the iOS SDK. |
-| [ContractR](https://github.com/robovm/robovm-samples/tree/master/ContractR/) | Task tracking app | How to setup a cross-platform iOS/Android app, use SQLite |
+| [ContractR](https://github.com/robovm/robovm-samples/tree/master/ContractR/)         | Sample app for iOS, Android and JavaFX. | How to share code between an iOS and Android app using native UI in both apps. The iOS and Android projects are using a shared core project which holds the Model part of the Model View Controller pattern. Please note that the code in these projects are in need of clean-up, so please let us know when you find strange things. Please also feel free to improve this sample and let us know. |
 | [CurrentAddress](https://github.com/robovm/robovm-samples/tree/master/CurrentAddress/)     | Port of Apple's [CurrentAddress](https://developer.apple.com/library/ios/samplecode/CurrentAddress/Introduction/Intro.html) sample | How to use MapKit, displaying a map view and setting its region to current location. |
 | [DateCell](https://github.com/robovm/robovm-samples/tree/master/DateCell/)     | Port of Apple's [DateCell](https://developer.apple.com/library/ios/samplecode/DateCell/Introduction/Intro.html) | How to display formatted date objects in table cells and use UIDatePicker to edit those values. |
 | [DocInteraction](https://github.com/robovm/robovm-samples/tree/master/DocInteraction/)     | Port of Apple's [DocInteraction](https://developer.apple.com/library/ios/samplecode/DocInteraction/Introduction/Intro.html) sample | How to use UIDocumentInteractionController to obtain information about documents and how to preview them. |
@@ -32,7 +32,6 @@ In this article, we'll walk you through getting the samples, compiling and runni
 | [Touches](https://github.com/robovm/robovm-samples/tree/master/Touches/)     | Port of Apple's [Touches](https://developer.apple.com/Library/ios/samplecode/Touches/Introduction/Intro.html) sample | How to handle touches, including multiple touches that move multiple objects with UIResponder and UIGestureRecognizers. |
 | [UICatalog](https://github.com/robovm/robovm-samples/tree/master/UICatalog/)         | Port of Apple's [UICatalog](https://developer.apple.com/library/ios/samplecode/UICatalog/Introduction/Intro.html) sample | How to create and customize user interface controls found in the UIKit framework, along with their various properties and styles. |
 | [VideoRecorder](https://github.com/robovm/robovm-samples/tree/master/VideoRecorder/)         | Port of Apple's [VideoRecorder](https://developer.apple.com/library/ios/samplecode/VideoRecorder/Introduction/Intro.html) sample | How to create a custom UI for the camera variant of the UIImagePickerController and how to programmatically control video recording. |
-| [ContractR](https://github.com/robovm/robovm-samples/tree/master/ContractR/)         | Sample app for iOS, Android and JavaFX. | How to share code between an iOS and Android app using native UI in both apps. The iOS and Android projects are using a shared core project which holds the Model part of the Model View Controller pattern. Please note that the code in these projects are in need of clean-up, so please let us know when you find strange things. Please also feel free to improve this sample and let us know. |
 
 ## Getting the Samples
 To download the samples, you'll need to clone them via git:
@@ -130,3 +129,12 @@ This will compile all samples. Next, switch into a sample directory and execute 
 ```
 
 See the [RoboVM Gradle Plugin documentation](getting-started/gradle.md) for more information.
+
+# Cross-platform App ContractR
+ContractR is a special sample that shows you how to create a cross-platform app for both iOS and Android, sharing large portions of the code through a `core` project.
+
+You can open ContractR in both Eclipse or IntelliJ IDEA. However, in Eclipse, you will not be able to work with the Android project, as Android development is limited to IntelliJ IDEA or Android Studio.
+
+In Eclipse, import ContractR via the Maven `pom.xml` file in the root of the project.
+
+In IntelliJ IDEA, import ContractR via the Gradle `settings.xml` file in the root of the project. 
