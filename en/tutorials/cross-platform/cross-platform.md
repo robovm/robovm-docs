@@ -235,12 +235,7 @@ Finally, in the ios module we need to edit the `robovm.xml` file to make sure th
 <forceLinkClasses>
 	<pattern>com.android.okhttp.HttpHandler</pattern>
 	<pattern>com.android.org.conscrypt.OpenSSLProvider</pattern>
-	<pattern>org.apache.harmony.security.provider.cert.DRLCertFactory</pattern>
-	<pattern>com.android.org.bouncycastle.jce.provider.BouncyCastleProvide</pattern>
-	<pattern>org.apache.harmony.security.provider.crypto.CryptoProvider</pattern>
 	<pattern>com.android.org.conscrypt.JSSEProvider</pattern>
-	<pattern>java.util.logging.ConsoleHandler</pattern>
-	<pattern>java.util.logging.SimpleFormatter</pattern>
 </forceLinkClasses>
 ```
 
@@ -302,13 +297,13 @@ public class FortuneClient {
 }
 ```
 
-[:1:] The json that is return actually has multiple fields that we might want to have later, but you only need to provide the ones you need.
+[:1:] The json that is returned actually has multiple fields that we might want to use later, but you only need to provide the ones you need.
 
-[:2:] Retrofit needs an interface with methods for each endpoint. There are many options available, but ours is very simple. If you provide a method with a Retrofit.Callback, the http request will be asynchronous.
+[:2:] Retrofit needs an interface with methods for each endpoint. There are many options available, but ours is very simple. If you provide a method that has a `Retrofit.Callback` argument, the http request will be asynchronous.
 
 [:3:] For now, we provide a simple listener that the android and ios modules will be able to use to get the quotes when the request finishes.
 
-[:4:] In the constructor we create a service using the FortuneService interface defined earlier, which can be reused by each request.
+[:4:] In the constructor we create a service using the `FortuneService` interface defined earlier, which can be reused by each request.
 
 [:5:] For the sake of simplicity, we return the quote if the request is successful, and the error message if not.
 
@@ -321,7 +316,7 @@ private FortuneStore fortuneStore = new FortuneStore();
 private FortuneClient fortuneClient = new FortuneClient();
 ```
 
-And then update the button onClick listener to call instead of accessing the local fortune store.
+And then update the button onClick listener to use the web client instead of accessing the local fortune store.
 
 ```java
 nextFortuneButton.setOnClickListener(new View.OnClickListener() {
@@ -346,7 +341,7 @@ private static FortuneStore fortuneStore = new FortuneStore();
 private static FortuneClient fortuneClient = new FortuneClient();
 ```
 
-Now the button click will be handled pretty much like on Android as well, accept Retrofit does not yet have direct support for RoboVM. On Android, the callback defaults to being called on the main UI thread, but on iOS (for now at least) the callback will mostly be called on the background thread used to make the http request.
+The button click will be handled pretty much like on Android as well, accept Retrofit does not yet have direct support for RoboVM. On Android, the callback defaults to being called on the main UI thread, but on iOS (for now at least) the callback will most likely be called on the same thread used to make the http request.
 
 In order to update the UI on the main thread, we will use an iOS feature called the `DispatchQueue`. Change the 'clicked' method and add the following 'setFortune' method to our view controller.
 
@@ -371,7 +366,7 @@ private void setFortune(String fortune) {
 }
 ```
 
-> INFO: When you run the app in the simulator now, you may see warning when the button is clicked that certain classes are missing. Retrofit will use certain libraries if they are present, and it looks these up at runtime using reflection. These can be safely ignored.
+> INFO: When you run the app in the simulator now, you may see warnings when the button is clicked that some classes are missing. Retrofit will use certain libraries if they are present, and it looks these up at runtime using reflection. These can be ignored for now, but you may need to add these to the `forceLinkClasses` section of the robovm.xml in the future.
 
 ### Future Work
 
