@@ -6,11 +6,11 @@
 
 One of RoboVM's greatest strengths is the opportunity to use the experience you have obtained with the JVM and Android in the creation of apps for iOS. Not only are you able to use the same familiar languages and libraries, but with a bit of planning, everything except UI and application code should be shareable between your Android and iOS applications.
 
-This guide introduces how to architect a cross-platform application, while maximizing code re-use.
+This guide introduces how to architect a simple cross-platform application, while maximizing code re-use.
 
 ## Project Creation
 
-For the moment, cross-platform project creation is in BETA. We currently only support [IntelliJ](../../getting-started/intellij.md) and the Gradle build system. This tutorial also assumes you have installed and configured the Android SDK and platform tools. __TODO: Link to a guide for this!__
+For the moment, cross-platform project creation is in BETA. We currently only support [IntelliJ](../../getting-started/intellij.md) and the Gradle build system. This tutorial also assumes you have installed and configured the Android SDK and platform tools.
 
 > NOTE: A project wizard will be added soon that can be used to generate a fully working cross-platform project.
 
@@ -18,19 +18,19 @@ For now, the only way to create a cross-platform project is to manually setup th
 
 ### Android Module
 
-Select File | New | Project | Android > Gradle Android Module:
+Select File | New | Project | Android > Gradle: Android Module
 
 * Page #1
 	* Application Name: Fortune
 	* Module Name: android
-	* Package Name: com.mycompany.crossplatform.android
+	* Package Name: com.mycompany.fortune
 * Page #2
-	* Choose Blank Activity
+	* Choose Empty Activity
 * Page #3
 	* Activity Name: FortuneActivity
 	* Layout Name: activity_fortune
 * Page #4
-	* Project Name: crossplatform
+	* Project Name: fortune
 
 ### Core Module
 
@@ -41,25 +41,27 @@ Select File | New | Module | Gradle
 * Page #2
 	* Module Name: core
 
+Add a `src/main/java` directory and `com.mycompany.fortune` package within it.
+
 ### iOS Module
 
-Select File | New | Module | RoboVM > RoboVM iOS Single View App:
+Select File | New | Module | RoboVM > RoboVM iOS Single View App
 
 * Page #1
-	* Package Name: com.mycompany.crossplatform.ios
+	* Package Name: com.mycompany.fortune
 	* Application Name: Fortune
-	* App Id: com.company.crossplatform
+	* App Id: com.mycompany.fortune
 	* Build System: Gradle
 * Page #2
 	* Module Name: ios
 
-### Configuration
+Add a RoboVM iOS run configurtation.
+
+### Configure Gradle
 
 * Replace everything in `settings.gradle` with: `include ':core', ':android', ':ios'`
-* Open `android/build.gradle` and `ios/build.gradle`. Add `compile project(':core')` under the `dependencies` section.
 * Remove everything from the `build.gradle` file in the root directory.
-* __TODO: Either link to or spell out how to create a RoboVM Run Config__
-* Make sure the 'android' and 'ios' run configurations work correctly.
+* Add `compile project(':core')` under the `dependencies` section in both `android/build.gradle` and `ios/build.gradle`.
 
 ## Simple Start
 
@@ -71,30 +73,29 @@ The app we will be creating is a version of the [unix fortune](http://en.wikiped
 
 The core module should contain code that does not depend on the Android or iOS platforms. Typically, this will be comprised of the data and business logic layers.
 
-Our model for the fortune app will start out with the simplest API possible, retrieving a random quote from a static database. In later sections we will expand that functionality to cover pulling new quotes from a web API, and saving your favorite quotes to a local database.
+Our model for the fortune app will start out with the simplest API possible, retrieving a random quote from a static database. In later sections we will expand that functionality to cover pulling new quotes from a web service.
 
 In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, e.g. local database storage.
 
-Make sure there is a `com.mycompany.crossplatform.core` package under a `src/main/java` directory in the `core` module (you may need to create these.) Create a new Java class named `FortuneStore` and paste in the following code.
+Create a new Java class named `FortuneStore` and paste in the following code.
 
 ```java
-package com.mycompany.crossplatform.core;
+package com.mycompany.fortune;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class FortuneStore {
-    private String[] fortunes = {
-            "1. RoboVM is an awesome tool for porting Android apps to iOS.",
-            "2. RoboVM is an awesome tool for porting Android apps to iOS.",
-            "3. RoboVM is an awesome tool for porting Android apps to iOS.",
-            "4. RoboVM is an awesome tool for porting Android apps to iOS.",
-            "5. RoboVM is an awesome tool for porting Android apps to iOS.",
-    };
+    private List<String> fortunes = Arrays.asList(
+            "RoboVM rocks!",
+            "RoboVM is awesome!"
+    );
 
     private static Random rng = new Random();
 
     public String getFortune() {
-        return fortunes[rng.nextInt(fortunes.length)];
+        return fortunes.get(rng.nextInt(fortunes.size()));
     }
 }
 ```
@@ -108,43 +109,41 @@ For now, all you really need is a `TextView` and a `Button`:
 * If there isn't already one, drag a `TextView` from the palette to the canvas.
 	* Align the TextView until the guides show that it is centered vertically and horizontally.
 	* Change the __id__ property to _fortuneTextView_.
-	* Change the __text__ property to _RoboVM Rocks!_ or anything you like.
 	* Change the __textSize__ property to _24sp_.
 * Drag a `Button` from the palette to the canvas.
-	* Align the Button until it is centered horizontally and flush with the bottom guide.
+	* Align the Button until it is centered horizontally and near the bottom.
 	* Change the __id__ property to _nextFortuneButton_.
 	* Change the __text__ property to _Show Next Fortune_.
 
 Replace the contents of `FortuneActivity.java` under the `android` module with the following code.
 
 ```java
-package com.mycompany.crossplatform.android;
+package com.mycompany.fortune;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.mycompany.crossplatform.core.FortuneStore;
 
 public class FortuneActivity extends Activity {
-    private FortuneStore fortunes = new FortuneStore(); // [:1:]
+    private FortuneStore fortuneStore = new FortuneStore();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fortune);
 
-        final TextView fortuneLabel = (TextView) findViewById(R.id.fortuneTextView); // [:2:]
-        final Button nextFortuneButton = (Button) findViewById(R.id.nextFortuneButton); // [:2:]
+        final TextView fortuneTextView = (TextView) findViewById(R.id.fortuneTextView);
+        final Button nextFortuneButton = (Button) findViewById(R.id.nextFortuneButton);
 
-        View.OnClickListener listener = new View.OnClickListener() { // [:3:]
+        nextFortuneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fortuneLabel.setText(fortunes.getFortune());
+                fortuneTextView.setText(fortuneStore.getFortune());
             }
-        };
-        nextFortuneButton.setOnClickListener(listener);
+        });
+
     }
 }
 ```
@@ -161,18 +160,22 @@ In order to design the UI for the iOS app, we will make use of [Interface Builde
 
 There should already be a label and a button, which is exactly what we need, after some minor configuration.
 
-* Click on MyViewController, and under the _Identity Inspector_ change the class to FortuneViewController.
-* Under the _Connections Inspector_, drag the 'clicked' Received Action onto the button.
-* Drag the button until the guides show it centered horizontally and aligned to the button.
-* Change the button text to be _Show Next Fortune_, and resize the button so all the text is shown.
-* Change the text of the label to whatever you like.
-* Make sure the label's text size is 24.
-* Increase the maximum number of lines to somewhere between 3-5, and make sure the label's height is tall enough.
+* Click on the button and clear its constraints.
+	* Change the text to be _Show Next Fortune_.
+	* Resize it so all the text is shown.
+	* Move it until the guides show it centered horizontally and next to the bottom.
+	* Update the button's constraints.
+* Click on the label and clear its constraints.
+	* Make sure the label's text size is 24.
+	* Change the alignment to 'left aligned'.
+	* Increase the _Lines_ spinner to around 10.
+	* Drag the bottom edge of the label down almost all the way to the bottom to resize it.
+	* Update the label's constraints.
 
-Rename `MyViewController.java` under the `ios` module to `FortuneViewController.java` and replace the contents with the following code:
+Finally, back in IntelliJ, update the contents of `MyViewController.java` in the ios module to the following code.
 
 ```java
-package com.mycompany.crossplatform.ios;
+package com.mycompany.fortune;
 
 import org.robovm.apple.uikit.UILabel;
 import org.robovm.apple.uikit.UIViewController;
@@ -180,40 +183,202 @@ import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.IBAction;
 import org.robovm.objc.annotation.IBOutlet;
 
-import com.mycompany.crossplatform.core.FortuneStore;
-
-@CustomClass("FortuneViewController")
-public class FortuneViewController extends UIViewController {
-    private static FortuneStore fortunes = new FortuneStore(); // [:1:]
-
-    private UILabel fortuneLabel;
+@CustomClass("MyViewController")
+public class MyViewController extends UIViewController {
+    private static FortuneStore fortuneStore = new FortuneStore();
+    private UILabel label;
 
     @IBOutlet
-    public void setLabel(UILabel label) { // [:2:]
-        this.fortuneLabel = label;
+    public void setLabel(UILabel label) {
+        this.label = label;
     }
 
     @IBAction
-    private void clicked() { // [:3:]
-        fortuneLabel.setText(fortunes.getFortune());
+    private void clicked() {
+        label.setText(fortuneStore.getFortune());
     }
 }
 ```
 
 [:1:] Instantiate the model class we created in the 'core' module.
 
-[:2:] Obtain a reference to the label we created in Xcode.
+[:2:] Obtain a reference to the label we created in Interface Builder.
 
 [:3:] Hook up the IBAction of the button to set a new fortune on click.
 
 ## Web Request
 
-> NOTE: Coming Soon
+At this point, we have a simple static database of fortunes, but in a typical application we would probably pull data from a web service. A commonly used library that is used for making RESTful queries and parsing data into Java objects is [Retrofit](http://square.github.io/retrofit/).
 
-## Local Storage
+### Configuration
 
-> NOTE: Coming Soon
+First we will add Retrofit as a dependency to the core module by editing its `build.gradle` file:
+
+```groovy
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+}
+```
+
+For the android module we will need to edit the `src/main/AndroidManifest.xml` file to add a permission for using the internet. This line should go outside the `<application>` section.
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+> NOTE: If you have network issues in the android emulator, open your run configuration and click on the _emulator_ tab. Turn on _Additional command line options_ and add `-dns-server 8.8.8.8`.
+
+Finally, in the ios module we need to edit the `robovm.xml` file to make sure that RoboVM links in a few classes that Retrofit needs. See the [Configuration Reference](http://docs.robovm.com/configuration.html#-lt-forcelinkclasses-gt) for more details.
+
+```xml
+<forceLinkClasses>
+	<pattern>com.android.okhttp.HttpHandler</pattern>
+	<pattern>com.android.org.conscrypt.OpenSSLProvider</pattern>
+	<pattern>org.apache.harmony.security.provider.cert.DRLCertFactory</pattern>
+	<pattern>com.android.org.bouncycastle.jce.provider.BouncyCastleProvide</pattern>
+	<pattern>org.apache.harmony.security.provider.crypto.CryptoProvider</pattern>
+	<pattern>com.android.org.conscrypt.JSSEProvider</pattern>
+	<pattern>java.util.logging.ConsoleHandler</pattern>
+	<pattern>java.util.logging.SimpleFormatter</pattern>
+</forceLinkClasses>
+```
+
+### Fortune Client
+
+[I <3 quotes](http://www.iheartquotes.com/api) is a web service that provides a simple API to query a random quote. We will be using Retrofit to perform an asynchronous http GET, and parse the json result into a Java object.
+
+We are going to create the simplest possible Retrofit client to access this service. Add a new class called `FortuneClient` to the core module and paste in the following code.
+
+```java
+package com.mycompany.fortune;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.http.GET;
+
+public class FortuneClient {
+    private static final String API_URL = "http://www.iheartquotes.com/api/v1/";
+
+    private class Fortune { // [:1:]
+        public String quote;
+    }
+
+    private interface FortuneService { // [:2:]
+        @GET("/random?format=json")
+        void getFortune(Callback<Fortune> callback);
+    }
+
+    public static class OnFortuneListener { // [:3:]
+        public void onFortune(String fortune) {
+        }
+    }
+
+    private FortuneService service;
+
+    public FortuneClient() { // [:4:]
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(API_URL)
+                .build();
+
+        service = adapter.create(FortuneService.class);
+    }
+
+    public void getFortune(final OnFortuneListener listener) {
+        service.getFortune(new Callback<Fortune>() { // [:5:]
+            @Override
+            public void success(Fortune fortune, Response response) {
+                listener.onFortune(fortune.quote);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                listener.onFortune(error.toString());
+            }
+        });
+    }
+}
+```
+
+[:1:] The json that is return actually has multiple fields that we might want to have later, but you only need to provide the ones you need.
+
+[:2:] Retrofit needs an interface with methods for each endpoint. There are many options available, but ours is very simple. If you provide a method with a Retrofit.Callback, the http request will be asynchronous.
+
+[:3:] For now, we provide a simple listener that the android and ios modules will be able to use to get the quotes when the request finishes.
+
+[:4:] In the constructor we create a service using the FortuneService interface defined earlier, which can be reused by each request.
+
+[:5:] For the sake of simplicity, we return the quote if the request is successful, and the error message if not.
+
+### Android Updates
+
+First we need to add a `FortuneClient` to our activity just after the `FortuneStore`:
+
+```java
+private FortuneStore fortuneStore = new FortuneStore();
+private FortuneClient fortuneClient = new FortuneClient();
+```
+
+And then update the button onClick listener to call instead of accessing the local fortune store.
+
+```java
+nextFortuneButton.setOnClickListener(new View.OnClickListener() {
+	@Override
+	public void onClick(View view) {
+		fortuneClient.getFortune(new FortuneClient.OnFortuneListener() {
+			@Override
+			public void onFortune(String fortune) {
+				fortuneTextView.setText(fortune);
+			}
+		});
+	}
+});
+```
+
+### RoboVM Updates
+
+Very much like in the Android activity, we need to add a `FortuneClient` to our view controller just after the `FortuneStore`:
+
+```java
+private static FortuneStore fortuneStore = new FortuneStore();
+private static FortuneClient fortuneClient = new FortuneClient();
+```
+
+Now the button click will be handled pretty much like on Android as well, accept Retrofit does not yet have direct support for RoboVM. On Android, the callback defaults to being called on the main UI thread, but on iOS (for now at least) the callback will mostly be called on the background thread used to make the http request.
+
+In order to update the UI on the main thread, we will use an iOS feature called the `DispatchQueue`. Change the 'clicked' method and add the following 'setFortune' method to our view controller.
+
+```java
+@IBAction
+private void clicked() {
+	fortuneClient.getFortune(new FortuneClient.OnFortuneListener() {
+		@Override
+		public void onFortune(String fortune) {
+			setFortune(fortune);
+		}
+	});
+}
+
+private void setFortune(String fortune) {
+	DispatchQueue.getMainQueue().sync(new Runnable() {
+		@Override
+		public void run() {
+			label.setText(fortune);
+		}
+	});
+}
+```
+
+> INFO: When you run the app in the simulator now, you may see warning when the button is clicked that certain classes are missing. Retrofit will use certain libraries if they are present, and it looks these up at runtime using reflection. These can be safely ignored.
+
+### Future Work
+
+At this point we have a working, if somewhat simple, networked fortune app. There are many topics we haven't discussed, like storing our favorite quotes to the FortuneStore, serializing the store to disc in a cross-platform way, more robust event and error handling (perhaps using a popular Android library), and making sure our client does not crash if our views get recreated.
+
+We will be covering those topics and more in future tutorials!
 
 ## Conclusion
 
-> NOTE: Coming Soon
+With RoboVM you can use Native UX and platform libraries, at native speeds, while also staying within the comfort of the tools and JVM ecosystem that you already know. Large portions of code can now be shared between your iOS and Android app, and some libraries from the Android community already work with very little effort on your part.
