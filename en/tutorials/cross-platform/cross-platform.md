@@ -127,17 +127,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class FortuneActivity extends Activity {
-    private FortuneStore fortuneStore = new FortuneStore();
+    private FortuneStore fortuneStore = new FortuneStore(); // [:1:]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fortune);
 
-        final TextView fortuneTextView = (TextView) findViewById(R.id.fortuneTextView);
+        final TextView fortuneTextView = (TextView) findViewById(R.id.fortuneTextView); // [:2:]
         final Button nextFortuneButton = (Button) findViewById(R.id.nextFortuneButton);
 
-        nextFortuneButton.setOnClickListener(new View.OnClickListener() {
+        nextFortuneButton.setOnClickListener(new View.OnClickListener() { // [:3:]
             @Override
             public void onClick(View view) {
                 fortuneTextView.setText(fortuneStore.getFortune());
@@ -185,16 +185,16 @@ import org.robovm.objc.annotation.IBOutlet;
 
 @CustomClass("MyViewController")
 public class MyViewController extends UIViewController {
-    private static FortuneStore fortuneStore = new FortuneStore();
+    private static FortuneStore fortuneStore = new FortuneStore(); // [:1:]
     private UILabel label;
 
-    @IBOutlet
+    @IBOutlet // [:2:]
     public void setLabel(UILabel label) {
         this.label = label;
     }
 
     @IBAction
-    private void clicked() {
+    private void clicked() { // [:3:]
         label.setText(fortuneStore.getFortune());
     }
 }
