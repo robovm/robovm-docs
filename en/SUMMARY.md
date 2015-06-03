@@ -10,6 +10,8 @@
 	* [Interface Builder Basics](tutorials/ib-basics/ib-basics.md)    	
 	* [Scene Navigation Basics](tutorials/navigation-basics/navigation-basics.md)
 	* [Cross-Platform Basics](tutorials/cross-platform/cross-platform.md) 
+
+* [Error Diagnostics](errors.md)
 * [Samples](samples.md)
 * [APIs & Javadoc](javadoc.md)
 * [Configuration Reference](configuration.md)
