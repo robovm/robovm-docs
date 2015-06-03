@@ -11,9 +11,9 @@
 	* [Scene Navigation Basics](tutorials/navigation-basics/navigation-basics.md)
 	* [Cross-Platform Basics](tutorials/cross-platform/cross-platform.md) 
 
-* [Error Diagnostics](errors.md)
 * [Samples](samples.md)
 * [APIs & Javadoc](javadoc.md)
+* [Error Diagnostics](errors.md)
 * [Configuration Reference](configuration.md)
 * [Advanced Topics](advanced-topics/introduction.md)
 	* [Under the Hood](advanced-topics/compilation.md)
