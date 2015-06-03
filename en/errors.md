@@ -3,14 +3,14 @@ While developing your app with RoboVM, you might run into one or more of the fol
 
 * **IDE errors**, such as error dialogs.
 * **Compilation errors**, your app didn't actually run.
-* **Deployment errors** while launching your app to a simulator or device.
+* **Deployment errors** while launching your app on a simulator or device.
 * **Crashes in Java code**, due to a bug or unhandled corner case.
 * **Crashes in native C/Objective-C code**, due to a bug or unhandled corner case.
 
-To identify the cause of an issue, you need to gather information for all these scenarios. Based on this information you can usually decide how to resolve the issue your solve. In case this is not possible, you will need to send us all the information associated with each error scenario listed below.
+To identify the cause of an issue, you need to gather information for all these scenarios. Based on this information you can usually decide how to resolve the issue yourself or ask us for help.
 
 ## IDE Errors
-RoboVM comes with dedicated plugins for both Eclipse and IntelliJ IDEA. While we take great care that these are as bug free as possible, you might still run into issues every now and then. This might involve things such as error dialogs popping up, Interface Builder integration not doing what it's supposed to do and so on. In this case, collect the following information:
+RoboVM comes with dedicated plugins for both Eclipse and IntelliJ IDEA. While we take great care that these are as bug free as possible, you might still run into issues every now and then. This might involve things such as error dialogs popping up, Interface Builder integration not doing what it's supposed to do, and so on. In this case, collect the following information:
 
 * The IDE logs
   * IntelliJ IDEA: *Help -> Show Log in Finder*.
@@ -41,11 +41,11 @@ Your code or 3rd party libraries you include in your RoboVM app may throw an unr
 * Gradle: the output of the Gradle build and subsequent information in the console.
 
 ## Crashes in Native Code
-If your app crashes without any messages like Java stack traces, chances are it crashed in native C/Objective-C code your RoboVM app uses. In this case, collect the following information:
+If your app crashes without any messages like Java stack traces, chances are it crashed in native C/Objective-C code that your RoboVM app uses. In this case, collect the following information:
 
 * Simulator
   1. Open the *Console* app via Spotlight (CMD + Space, type `console`).
-  2. Under `Diagnostics and Usage Information -> User Diagnostics Report`, locate the log file starting with your apps executable name as defined in `robovm.properties` with the time stamp that matches your failed app run.
+  2. Under `Diagnostics and Usage Information -> User Diagnostics Report`, locate the log file starting with your app's executable name as defined in `robovm.properties` with the time stamp that matches your failed app run.
     ![images/error_simulator.png](images/error_simulator.png)
   3. Grab the full log output.
 * Device
