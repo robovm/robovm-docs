@@ -10,13 +10,11 @@ With all the [prerequisites](../getting-started/introduction.md) out of the way,
 
 There are three __important__ steps that must be completed in order to properly setup IntelliJ for working with RoboVM.
 
-1. IntelliJ _MUST_ be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. Locate your IntelliJ installation folder, right-click the IntelliJ application and select _Show Package Contents_. Open the `Info.plist` file located in `Contents` by double clicking it and make sure the _JVMVersion_ entry under _JVMOptions_ is set to 1.7+.
+1. IntelliJ _MUST_ be run using Oracle’s Java SE 7 JDK or later. Apple’s Java 6 JVM will not work. The easiest way to ensure this is to download IntelliJ IDEA with JetBrain's custom JDK bundled. This is available for [EAP builds](https://confluence.jetbrains.com/display/IDEADEV/IDEA+14.1+EAP) builds. For release builds, locate your IntelliJ IDEA installation folder, right-click the IntelliJ application and select _Show Package Contents_. Open the `Info.plist` file located in `Contents` by double clicking it and make sure the _JVMVersion_ entry under _JVMOptions_ is set to 1.7+. Note that this alternative will break the signature of the application. OS X will prompt you to allow the app to run each time you launch IntelliJ IDEA.
 
-2. The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. To do this, locate your IntelliJ installation folder, right-click the IntelliJ application, and select _Show Package Contents_. Open the `idea.vmoptions` file located in `Contents/bin` in a text editor and change the -Xmx value to 1G or more.
+2. The default max heap setting for IntelliJ is set too low by default. In order to increase it *you need to change the -Xmx setting used when launching IntelliJ*. Locate your IntelliJ installation folder, right-click the IntelliJ application, and select _Show Package Contents_. Copy the `idea.vmoptions` file located in `Contents/bin` to `~/IdeaIC14/` (note that the version might have changed). Open the copy in a text editor and change the -Xmx value to 1G or more.
 
 3. You can now configure a JDK by navigating to _Configure > Project Defaults > Project Structure_ on the _Welcome to IntelliJ IDEA_ dialog. Select _SDKs_ in the left pane, click the plus sign, and choose JDK. IntelliJ will be smart enough to find your JDK installations, so just select the one you want to use.
-
-> IMPORTANT: for Interface Builder integration to work, *you need to enable automatic project compilation*. Open the IntelliJ IDEA _Preferences_, select __Build, Execution, Deployment -> Compiler__ and check the __Make project automatically__ checkbox. This will automatically compile any source files after you save modifications. 
 
 ### Installing the Plugin
 
