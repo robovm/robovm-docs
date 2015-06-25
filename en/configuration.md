@@ -254,6 +254,32 @@ Specifies, in nested `<symbol>` elements, symbols that should be exported when l
 
 > NOTE: `-exportedsymbols` can either be specified multiple times on the command line, each specifying a single value or specified once with multiple `:` separated values. E.g. `-exportedsymbols 'CB*:sin'`.
 
+## &lt;unhideSymbols&gt;
+
+Specifies, in nested `<symbol>` elements, symbols in linked in static libraries that are hidden in the library but should be unhidden and exported when linking the executable. This is required if such symbols are referenced by Bro `@Bridge` or `@GlobalValue` methods. Unlike `<exportedSymbols>` wildcards are not supported in the `<unhideSymbols>` section. Symbols unhidden using `<unhideSymbols>` will always be exported.
+
+For each symbol listed in `<unhideSymbols>` the RoboVM compiler will create an exported alias symbol with the same name as the hidden symbol and the prefix `_unhidden_` added. If Bro fails to find a symbol during resolution of a `@Bridge` or `@GlobalValue` method it will prepend `_unhidden_` to the symbol name and retry the lookup.
+
+The following command will produce a list of `FOO`/`kFOO` prefixed hidden symbols in the static library `libfoo.a` suitable for use with `<unhideSymbols>`:
+```
+nm -U libfoo.a | awk '/ [a-z] _(FOO|kFOO)/ {print substr($3, 2)} | sort -u'
+```
+
+##### Example:
+
+```xml
+<unhideSymbols>
+  <symbol>foo</symbol>
+  <symbol>bar</symbol>
+</unhideSymbols>
+```
+
+##### Command line usage:
+
+`-unhidesymbols <list>`
+
+> NOTE: `-unhidesymbols` can either be specified multiple times on the command line, each specifying a single value or specified once with multiple `:` separated values. E.g. `-unhidesymbols 'foo:bar'`.
+
 ## &lt;frameworks&gt;
 
 Specifies, in nested `<framework>` elements, Mac OS X or iOS frameworks that should be linked against when linking the final executable.
