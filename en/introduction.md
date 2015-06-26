@@ -1,4 +1,4 @@
-## Mobile is Tough
+## Going mobile
 Targeting mobile means developing for both **Android and iOS**, which together cover 96% of the mobile app market. Mobile development comes with quite a few challenges:
 
 * Each platform has a **different ecosystem and development tools**. 
