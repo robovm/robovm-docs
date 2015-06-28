@@ -37,21 +37,21 @@ Your code or 3rd party libraries you include in your RoboVM app may throw an unr
   ![images/error_idea_java.png](images/error_idea_java.png)
 * Eclipse: the full output of the console window for your app run.
   ![images/error_eclipse_java.png](images/error_eclipse_java.png)
-* Maven: the output of the Maven build and subsequent information on the console.
+* Maven: the output of the Maven build and subsequent information in the console.
 * Gradle: the output of the Gradle build and subsequent information in the console.
 
 ## Crashes in Native Code
-If your app crashes without any messages like Java stack traces, chances are it crashed in native C/Objective-C code that your RoboVM app uses. In this case, collect the following information:
+If your app crashes without any messages, like Java stack traces, chances are it crashed in native C/Objective-C code that your RoboVM app uses. In this case, collect the following information:
 
 * Simulator
   1. Open the *Console* app via Spotlight (CMD + Space, type `console`).
-  2. Under `Diagnostics and Usage Information -> User Diagnostics Report`, locate the log file starting with your app's executable name as defined in `robovm.properties` with the time stamp that matches your failed app run.
+  2. Under `Diagnostics and Usage Information -> User Diagnostics Report`, locate the log file starting with your app's executable name as defined in `robovm.properties` with the timestamp that matches your failed app run.
     ![images/error_simulator.png](images/error_simulator.png)
   3. Grab the full log output.
 * Device
   1. Open *Xcode* via Spotlight (CMD + Space, type `xcode`).
   2. Under *Window - >Devices* locate your device, then click *View Device Logs*
-  3. Locate the log entry matching your app executable name as defined in `robovm.properties` and the time stamp of your failed app run.
+  3. Locate the log entry matching your app executable name as defined in `robovm.properties` and the timestamp of your failed app run.
      ![images/error_device.png](images/error_device.png)
   4. Grab the full log output.
 
@@ -61,6 +61,4 @@ If the information you gathered isn't enough for you to solve the problem yourse
 In order for us to be able to help you, we'll need the following information at a minimum:
 1. A description of your development environment including your IDE, build system, RoboVM version, Xcode version, Mac OS X version.
 2. A reproduction case that allows us to test the issue on our end.
-3. All the information gathered as described above, including compiler/deployment output, Java stack traces, simulator & device logs.
-
-
+3. All the information gathered as described above, including compiler/deployment output, Java stack traces, simulator and device logs.

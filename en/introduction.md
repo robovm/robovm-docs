@@ -40,7 +40,7 @@ Speaking of dependencies: RoboVM let's you reuse the vast amount of **[3rd party
 ## Sharing is Caring
 Using the same tools for Android, iOS and backend development is already a big plus. But you can go one step further.
 
-With RoboVM, you can **share large portitions of your code** between iOS, Android and your backend. This includes any **platform-independent code**, such as your business logic. By designing your native UIs according to **[MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)** or **[MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel)**, you can also share the C or VM of your UI code.
+With RoboVM, you can **share large portions of your code** between iOS, Android and your backend. This includes any **platform-independent code**, such as your business logic. By designing your native UIs according to **[MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)** or **[MVVM](http://en.wikipedia.org/wiki/Model_View_ViewModel)**, you can also share the C or VM of your UI code.
 
 If this is still not enough sharing for your taste, you can use **[JavaFX](http://javafxports.org/)** to share not only your platform independent code, but also your UI code across iOS, Android and desktop environments.
 
@@ -51,7 +51,7 @@ Here's our 5 step program to happiness:
 
 1. **[Sign up](https://account.robovm.com/#/register)** for a free 14-day trial.
 2. Get up to speed with our **[Getting Started Guide](getting-started/introduction.md)**.
-3. Follow our **[Tutorials & Scrceencasts](tutorials/introduction.md)**.
+3. Follow our **[Tutorials & Screencasts](tutorials/introduction.md)**.
 4. Dissect our **[Samples](samples.md)**.
 5. Talk to us on our **[Mailing List](https://groups.google.com/forum/#!forum/robovm)** or drop us a line at **[hello@robovm.com](mailto:hello@robovm.com)**
 
