@@ -12,56 +12,7 @@ This guide introduces how to architect a simple cross-platform application, whil
 
 For the moment, cross-platform project creation is in BETA. We currently only support [IntelliJ](../../getting-started/intellij.md) and the Gradle build system. This tutorial also assumes you have installed and configured the Android SDK and platform tools.
 
-> NOTE: A project wizard will be added soon that can be used to generate a fully working cross-platform project.
-
-For now, the only way to create a cross-platform project is to manually setup the modules from within IntelliJ. At each step, if you are having problems, open the Gradle view (View > Tool Windows > Gradle) and press the `Sync` button.
-
-### Android Module
-
-Select File | New | Project | Android > Gradle: Android Module
-
-* Page #1
-	* Application Name: Fortune
-	* Module Name: android
-	* Package Name: com.mycompany.fortune
-* Page #2
-	* Choose Empty Activity
-* Page #3
-	* Activity Name: FortuneActivity
-	* Layout Name: activity_fortune
-* Page #4
-	* Project Name: fortune
-
-### Core Module
-
-Select File | New | Module | Gradle
-
-* Page #1
-	* Artifact Id: core
-* Page #2
-	* Module Name: core
-
-Add a `src/main/java` directory and `com.mycompany.fortune` package within it.
-
-### iOS Module
-
-Select File | New | Module | RoboVM > RoboVM iOS Single View App
-
-* Page #1
-	* Package Name: com.mycompany.fortune
-	* Application Name: Fortune
-	* App Id: com.mycompany.fortune
-	* Build System: Gradle
-* Page #2
-	* Module Name: ios
-
-Add a RoboVM iOS run configurtation.
-
-### Configure Gradle
-
-* Replace everything in `settings.gradle` with: `include ':core', ':android', ':ios'`
-* Remove everything from the `build.gradle` file in the root directory.
-* Add `compile project(':core')` under the `dependencies` section in both `android/build.gradle` and `ios/build.gradle`.
+> TODO: SHOW PROJECT WIZARD
 
 ## Simple Start
 
@@ -77,7 +28,7 @@ Our model for the fortune app will start out with the simplest API possible, ret
 
 In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, e.g. local database storage.
 
-Create a new Java class named `FortuneStore` and paste in the following code.
+Rename `CounterStore` to `FortuneStore` and replace the code with the following:
 
 ```java
 package com.mycompany.fortune;
@@ -104,16 +55,9 @@ public class FortuneStore {
 
 In order to design the Android UI, we will be taking advantage of the Android Designer within IntelliJ. In the project view, navigate to the android module > src > main > layout, and double click on `activity_fortune.xml`.
 
-For now, all you really need is a `TextView` and a `Button`:
+The cross platform template has already set us up with a `TextView` and a `Button`, so all we need to do is move the button to the bottom of the screen, and change its text to "Show Next Fortune!".
 
-* If there isn't already one, drag a `TextView` from the palette to the canvas.
-	* Align the TextView until the guides show that it is centered vertically and horizontally.
-	* Change the __id__ property to _fortuneTextView_.
-	* Change the __textSize__ property to _24sp_.
-* Drag a `Button` from the palette to the canvas.
-	* Align the Button until it is centered horizontally and near the bottom.
-	* Change the __id__ property to _nextFortuneButton_.
-	* Change the __text__ property to _Show Next Fortune_.
+Also, we probably want to modify the __id__ property of the label and button to _fortuneTextView_ and _nextFortuneButton_ respectively.
 
 Replace the contents of `FortuneActivity.java` under the `android` module with the following code.
 
