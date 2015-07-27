@@ -539,10 +539,10 @@ You can only unwind to view controllers that have a special action taking an `UI
 
 Unwind actions receives a `UIStoryboardSegue` as the sender. Unwind actions do not take a second parameter as opposed to other actions, like button click actions which also take a `UIEvent`.
 
-We can now add an unwind segue for both the `Close` and `Save` buttons in the editing scene:
+We can now add an unwind segue for both the `Cancel` and `Save` buttons in the editing scene:
 
-1. In Xcode, select the `Close` button in the outline view or canvas.
-2. Ctrl-drag from the `Close` button to the exit symbol of the editing scene.
+1. In Xcode, select the `Cancel` button in the outline view or canvas.
+2. Ctrl-drag from the `Cancel` button to the exit symbol of the editing scene.
  ![images/add-unwind-segue.png](images/add-unwind-segue.png)
 3. From the context menu, select `unwindToNameList`.
 4. In the outline view, select the __Unwind Segue to Scene Exit Placeholder__.
