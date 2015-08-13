@@ -119,13 +119,13 @@ This will compile all samples. Next, switch into a sample directory and execute 
 
 ```bash
 # to launch on an IPhone simulator
-./gradlew launchIPhoneSimulator
+../gradlew launchIPhoneSimulator
 
 # to launch on an IPad simulator
-./gradlew launchIPadSimulator
+../gradlew launchIPadSimulator
 
 # to launch on a connected device
-./gradlew launchIOSDevice
+../gradlew launchIOSDevice
 ```
 
 See the [RoboVM Gradle Plugin documentation](getting-started/gradle.md) for more information.
