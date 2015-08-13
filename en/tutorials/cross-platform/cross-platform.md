@@ -12,7 +12,9 @@ The app we will be creating is a version of the [unix fortune](http://en.wikiped
 
 ## Project Setup
 
-Start a new project, and under the RoboVM section choose the Cross Platform template. Fill in the details for your project in the next two steps as normal, and finally click the Finish button.
+Open up RoboVM Studio (or IntelliJ) and choose "Start New Project...".
+
+Under the RoboVM section choose the Cross Platform template. Fill in the details for your project in the next two steps as normal, and finally click the Finish button.
 
 ![images/cross-platform-wizard.png](images/cross-platform-wizard.png)
 
@@ -49,7 +51,7 @@ public class FortuneStore {
 
 ### Android UI
 
-In order to design the Android UI, we will be taking advantage of the Android Designer within IntelliJ. In the project view, navigate to the android module > src > main > layout, and double click on `activity_fortune.xml`.
+In order to design the Android UI, we will be taking advantage of the Android Designer within RoboVM Studio. In the project view, navigate to the android module > src > main > layout, and double click on `activity_fortune.xml`.
 
 The cross platform template has already set us up with a `TextView` and a `Button`, so all we need to do is move the button to the bottom of the screen, and change its text to "Show Next Fortune!".
 
