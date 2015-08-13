@@ -12,6 +12,7 @@
 	* [Cross-Platform Basics](tutorials/cross-platform/cross-platform.md) 
 
 * [Samples](samples.md)
+* [RoboPods](robopods.md)
 * [APIs & Javadoc](javadoc.md)
 * [Error Diagnostics](errors.md)
 * [Configuration Reference](configuration.md)
