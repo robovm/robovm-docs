@@ -2,72 +2,19 @@
 
 > NOTE: Although a valid license key is not needed for cross platform support, this tutorial makes use of Interface Builder integration which does. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
 
-## Introduction
-
-One of RoboVM's greatest strengths is the opportunity to use the experience you have obtained with the JVM and Android in the creation of apps for iOS. Not only are you able to use the same familiar languages and libraries, but with a bit of planning, everything except UI and application code should be shareable between your Android and iOS applications.
-
-This guide introduces how to architect a simple cross-platform application, while maximizing code re-use.
-
-## Project Creation
-
-For the moment, cross-platform project creation is in BETA. We currently only support [IntelliJ](../../getting-started/intellij.md) and the Gradle build system. This tutorial also assumes you have installed and configured the Android SDK and platform tools.
-
-> NOTE: A project wizard will be added soon that can be used to generate a fully working cross-platform project.
-
-For now, the only way to create a cross-platform project is to manually setup the modules from within IntelliJ. At each step, if you are having problems, open the Gradle view (View > Tool Windows > Gradle) and press the `Sync` button.
-
-### Android Module
-
-Select File | New | Project | Android > Gradle: Android Module
-
-* Page #1
-	* Application Name: Fortune
-	* Module Name: android
-	* Package Name: com.mycompany.fortune
-* Page #2
-	* Choose Empty Activity
-* Page #3
-	* Activity Name: FortuneActivity
-	* Layout Name: activity_fortune
-* Page #4
-	* Project Name: fortune
-
-### Core Module
-
-Select File | New | Module | Gradle
-
-* Page #1
-	* Artifact Id: core
-* Page #2
-	* Module Name: core
-
-Add a `src/main/java` directory and `com.mycompany.fortune` package within it.
-
-### iOS Module
-
-Select File | New | Module | RoboVM > RoboVM iOS Single View App
-
-* Page #1
-	* Package Name: com.mycompany.fortune
-	* Application Name: Fortune
-	* App Id: com.mycompany.fortune
-	* Build System: Gradle
-* Page #2
-	* Module Name: ios
-
-Add a RoboVM iOS run configurtation.
-
-### Configure Gradle
-
-* Replace everything in `settings.gradle` with: `include ':core', ':android', ':ios'`
-* Remove everything from the `build.gradle` file in the root directory.
-* Add `compile project(':core')` under the `dependencies` section in both `android/build.gradle` and `ios/build.gradle`.
-
-## Simple Start
+<div class="video">
+	<iframe frameborder="0" allowfullscreen src="https://www.youtube.com/embed/wP3ptAnVhQw?rel=0"></iframe>
+</div>
 
 The app we will be creating is a version of the [unix fortune](http://en.wikipedia.org/wiki/Fortune_%28Unix%29) program. Each time the user presses a button, a random fortune will be displayed. The UI will be intentionally simple in order to focus on strategies for cross-platform development.
 
 ![images/overview.png](images/overview.png)
+
+## Project Setup
+
+Start a new project, and under the RoboVM section choose the Cross Platform template. Fill in the details for your project in the next two steps as normal, and finally click the Finish button.
+
+![images/cross-platform-wizard.png](images/cross-platform-wizard.png)
 
 ### Core
 
@@ -75,9 +22,9 @@ The core module should contain code that does not depend on the Android or iOS p
 
 Our model for the fortune app will start out with the simplest API possible, retrieving a random quote from a static database. In later sections we will expand that functionality to cover pulling new quotes from a web service.
 
-In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way, and employing interfaces to allow each platform to inject functionality into the core module, e.g. local database storage.
+In the process, you will learn about using popular libraries from the Android ecosystem in a cross-platform way.
 
-Create a new Java class named `FortuneStore` and paste in the following code.
+The first thing we need to do is rename `CounterStore` to `FortuneStore` and replace the code with the following:
 
 ```java
 package com.mycompany.fortune;
@@ -104,16 +51,9 @@ public class FortuneStore {
 
 In order to design the Android UI, we will be taking advantage of the Android Designer within IntelliJ. In the project view, navigate to the android module > src > main > layout, and double click on `activity_fortune.xml`.
 
-For now, all you really need is a `TextView` and a `Button`:
+The cross platform template has already set us up with a `TextView` and a `Button`, so all we need to do is move the button to the bottom of the screen, and change its text to "Show Next Fortune!".
 
-* If there isn't already one, drag a `TextView` from the palette to the canvas.
-	* Align the TextView until the guides show that it is centered vertically and horizontally.
-	* Change the __id__ property to _fortuneTextView_.
-	* Change the __textSize__ property to _24sp_.
-* Drag a `Button` from the palette to the canvas.
-	* Align the Button until it is centered horizontally and near the bottom.
-	* Change the __id__ property to _nextFortuneButton_.
-	* Change the __text__ property to _Show Next Fortune_.
+Also, we probably want to modify the __id__ property of the label and button to _fortuneTextView_ and _nextFortuneButton_ respectively.
 
 Replace the contents of `FortuneActivity.java` under the `android` module with the following code.
 
@@ -208,7 +148,7 @@ public class MyViewController extends UIViewController {
 
 ## Web Request
 
-At this point, we have a simple static database of fortunes, but in a typical application we would probably pull data from a web service. A commonly used library that is used for making RESTful queries and parsing data into Java objects is [Retrofit](http://square.github.io/retrofit/).
+At this point, we have a simple static database of fortunes, but in a typical application we would probably pull data from a web service. A commonly used library for making RESTful queries and parsing data into a Java object is [Retrofit](http://square.github.io/retrofit/).
 
 ### Configuration
 
@@ -227,8 +167,6 @@ For the android module we will need to edit the `src/main/AndroidManifest.xml` f
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-> NOTE: If you have network issues in the android emulator, open your run configuration and click on the _emulator_ tab. Turn on _Additional command line options_ and add `-dns-server 8.8.8.8`.
-
 Finally, in the ios module we need to edit the `robovm.xml` file to make sure that RoboVM links in a few classes that Retrofit needs. See the [Configuration Reference](http://docs.robovm.com/configuration.html#-lt-forcelinkclasses-gt) for more details.
 
 ```xml
@@ -241,7 +179,7 @@ Finally, in the ios module we need to edit the `robovm.xml` file to make sure th
 
 ### Fortune Client
 
-[I <3 quotes](http://www.iheartquotes.com/api) is a web service that provides a simple API to query a random quote. We will be using Retrofit to perform an asynchronous http GET, and parse the json result into a Java object.
+We are going to use the [quotes subreddit](http://www.reddit.com/r/qutoes) as a web service that provides a simple API to query a random quote. Each subreddit can be queried just by adding '.json' to the end of the url. We will be using Retrofit to perform an asynchronous http GET, and parse the json result into a Java object.
 
 We are going to create the simplest possible Retrofit client to access this service. Add a new class called `FortuneClient` to the core module and paste in the following code.
 
@@ -254,22 +192,29 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.http.GET;
 
-public class FortuneClient {
-    private static final String API_URL = "http://www.iheartquotes.com/api/v1/";
+import java.util.List;
+import java.util.Random;
 
-    private class Fortune { // [:1:]
-        public String quote;
+public class FortuneClient {
+    private static final String API_URL = "http://www.reddit.com";
+
+    static class Data { // [:1:]
+        Data data;
+        String title;
+        List<Data> children;
     }
 
     private interface FortuneService { // [:2:]
-        @GET("/random?format=json")
-        void getFortune(Callback<Fortune> callback);
+        @GET("/r/quotes.json")
+        void getFortune(Callback<Data> callback);
     }
 
     public static class OnFortuneListener { // [:3:]
         public void onFortune(String fortune) {
         }
     }
+
+    private static Random rng = new Random();
 
     private FortuneService service;
 
@@ -282,10 +227,12 @@ public class FortuneClient {
     }
 
     public void getFortune(final OnFortuneListener listener) {
-        service.getFortune(new Callback<Fortune>() { // [:5:]
+        service.getFortune(new Callback<Data>() { // [:5:]
             @Override
-            public void success(Fortune fortune, Response response) {
-                listener.onFortune(fortune.quote);
+            public void success(Data json, Response response) {
+                List<Data> fortunes = json.data.children;
+                Data fortune = fortunes.get(rng.nextInt(fortunes.size()));
+                listener.onFortune(fortune.data.title);
             }
 
             @Override
@@ -297,7 +244,7 @@ public class FortuneClient {
 }
 ```
 
-[:1:] The json that is returned actually has multiple fields that we might want to use later, but you only need to provide the ones you need.
+[:1:] The json that returned is just a simple data object with an array of nested children data objects.
 
 [:2:] Retrofit needs an interface with methods for each endpoint. There are many options available, but ours is very simple. If you provide a method that has a `Retrofit.Callback` argument, the http request will be asynchronous.
 
@@ -309,10 +256,10 @@ public class FortuneClient {
 
 ### Android Updates
 
-First we need to add a `FortuneClient` to our activity just after the `FortuneStore`:
+First we need to replace the `FortuneStore` in our activity with our new  `FortuneClient`:
 
 ```java
-private FortuneStore fortuneStore = new FortuneStore();
+// private FortuneStore fortuneStore = new FortuneStore();
 private FortuneClient fortuneClient = new FortuneClient();
 ```
 
@@ -337,7 +284,7 @@ nextFortuneButton.setOnClickListener(new View.OnClickListener() {
 Very much like in the Android activity, we need to add a `FortuneClient` to our view controller just after the `FortuneStore`:
 
 ```java
-private static FortuneStore fortuneStore = new FortuneStore();
+// private static FortuneStore fortuneStore = new FortuneStore();
 private static FortuneClient fortuneClient = new FortuneClient();
 ```
 
@@ -370,7 +317,7 @@ private void setFortune(String fortune) {
 
 ### Future Work
 
-At this point we have a working, if somewhat simple, networked fortune app. There are many topics we haven't discussed, like storing our favorite quotes to the FortuneStore, serializing the store to disc in a cross-platform way, more robust event and error handling (perhaps using a popular Android library), and making sure our client does not crash if our views get recreated.
+At this point we have a working, if somewhat simple, networked fortune app. There are many topics we haven't discussed, like storing our favorite quotes to the FortuneStore, serializing the store to disc in a cross-platform way.
 
 We will be covering those topics and more in future tutorials!
 
