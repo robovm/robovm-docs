@@ -59,6 +59,10 @@ Specifies the name of the executable to be generated.
 
 `-o <name>`
 
+## &lt;imageName&gt;
+
+An alias for &lt;executableName&gt;, but more suitable when building a framework or dynamic lib which aren't executables. [See Above](#-lt-executablename-gt).
+
 ## &lt;useDynamicJni&gt;
 
 Specifies whether to use dynamic JNI. With this enabled native methods will be dynamically linked at runtime. Native methods in classes in the boot classpath will always use static JNI. On iOS only static JNI is supported and this option is ignored. The default is `false`.
@@ -145,17 +149,26 @@ Specifies the name of the OS to build for. Allowed values are `auto`, `linux`, `
 
 ## &lt;arch&gt;
 
-Specifies the name of the CPU architecture to compile for. Allowed values are `auto`, `x86`, `x86_64`, `thumbv7`, `arm64`. Default is `auto` which  normally means to build for the current host's CPU architecture.
+Specifies the name of the CPU architecture to compile for. Allowed values are `auto`, `x86`, `x86_64`, `thumbv7`, `arm64`. Default is `auto` which  normally means to build for the current host's CPU architecture. Multiple arch elements can be included for multi arch builds.
 
 ##### Example:
 
 ```xml
 <arch>thumbv7</arch>
+<arch>x86_64</arch>
 ```
 
 ##### Command line usage:
 
 `-arch <name>`
+
+## &lt;archive&gt;
+
+Specifies if an archive should be generated.
+
+##### Command line usage:
+
+`-archive <boolean>`
 
 ## &lt;forceLinkClasses&gt;
 
@@ -629,6 +642,10 @@ Specifies the target to build for. Either `auto`, `console` or `ios`. The defaul
 `-plist <file>`
 
 > TIP: The specified `Info.plist` file will be searched for `${...}` patterns just like `robovm.xml` files are. Such patterns will be replaced by the corresponding property, usually read from a `robovm.properties` file.
+
+## &lt;infoPList&gt;
+
+An alias for &lt;iosInfoPList&gt;. [See Above](#-lt-iosinfoplist-gt).
 
 ## &lt;iosResourceRulesPList&gt;
 
