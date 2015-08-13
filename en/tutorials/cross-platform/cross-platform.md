@@ -12,7 +12,7 @@ The app we will be creating is a version of the [unix fortune](http://en.wikiped
 
 ## Project Setup
 
-Open up RoboVM Studio (or IntelliJ) and choose "Start New Project...".
+Open up RoboVM Studio (or IntelliJ) and choose __Start New Project...__.
 
 Under the RoboVM section choose the Cross Platform template. Fill in the details for your project in the next two steps as normal, and finally click the Finish button.
 
@@ -51,7 +51,7 @@ public class FortuneStore {
 
 ### Android UI
 
-In order to design the Android UI, we will be taking advantage of the Android Designer within RoboVM Studio. In the project view, navigate to the android module > src > main > layout, and double click on `activity_fortune.xml`.
+In order to design the Android UI, we will be taking advantage of the Android Designer within RoboVM Studio. In the project view, navigate to the __android module > src > main > layout__, and double click on `activity_fortune.xml`.
 
 The cross platform template has already set us up with a `TextView` and a `Button`, so all we need to do is move the button to the bottom of the screen, and change its text to "Show Next Fortune!".
 
@@ -98,7 +98,7 @@ public class FortuneActivity extends Activity {
 
 ### iOS UI
 
-In order to design the UI for the iOS app, we will make use of [Interface Builder](../ib-basics/ib-basics.md) from within Xcode. In the project view, navigate to the ios module > resources > Base.lproj, and double click on `Main.storyboard`.
+In order to design the UI for the iOS app, we will make use of [Interface Builder](../ib-basics/ib-basics.md) from within Xcode. In the project view, navigate to the __ios module > resources > Base.lproj__, and double click on `Main.storyboard`.
 
 There should already be a label and a button, which is exactly what we need, after some minor configuration.
 
