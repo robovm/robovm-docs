@@ -8,3 +8,5 @@ pom.xml.next
 release.properties
 .idea
 node_modules/
+.project
+.settings/
