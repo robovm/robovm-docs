@@ -6,6 +6,7 @@
 	* [Getting Started with IntelliJ](getting-started/intellij.md)
 	* [Getting Started with Maven](getting-started/maven.md)
 	* [Getting Started with Gradle](getting-started/gradle.md)
+	* [Device Provisioning](getting-started/provisioning.md)
 	* [Project and Code Structure](getting-started/structure.md)
 * [Tutorials](tutorials/introduction.md)
 	* [Interface Builder Basics](tutorials/ib-basics/ib-basics.md)    	
