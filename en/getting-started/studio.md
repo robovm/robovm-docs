@@ -1,5 +1,9 @@
 # Getting Started with RoboVM Studio
 
+<div class="video">
+	<iframe frameborder="0" allowfullscreen src="https://www.youtube.com/embed/wwr3sMo-84s?rel=0"></iframe>
+</div>
+
 This section shows how to build and test RoboVM iOS applications using RoboVM Studio. It will explain how to activate your commercial license, create new iOS projects, build an iOS application and then compile, test and debug using the tools and interfaces you are already familiar with.
 
 ## Installing RoboVM Studio
