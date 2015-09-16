@@ -7,7 +7,7 @@
 	},
 	"variables": {
 		"appVersion": "1.0.0",
-		"osxVersion": "10.9",
+		"osxVersion": "10.10",
 		"xcodeVersion": "6.x"
 	},
 	"plugins": [

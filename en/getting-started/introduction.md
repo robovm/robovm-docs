@@ -9,8 +9,8 @@ In this section you'll learn how to install RoboVM and make sure the toolchain w
 In order to use RoboVM the following is required:
 
 * A Mac running Mac OS X {{ book.osxVersion }} or later
-* [Oracle's Java SE JDK 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
-* [Xcode {{ book.xcodeVersion }} from the Mac App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+* [Oracle's Java SE JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
+* The [latest Xcode from the Mac OS X App Store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
 > NOTE: The first time you install Xcode and every time you update to a new version you have to open it once to agree to the Xcode terms.
 
