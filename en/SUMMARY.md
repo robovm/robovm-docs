@@ -1,6 +1,7 @@
 # Summary
 
 * [Getting Started](getting-started/introduction.md)
+	* [Getting Started with RoboVM Studio](getting-started/studio.md)
 	* [Getting Started with Eclipse](getting-started/eclipse.md)
 	* [Getting Started with IntelliJ](getting-started/intellij.md)
 	* [Getting Started with Maven](getting-started/maven.md)
