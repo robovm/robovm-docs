@@ -49,7 +49,7 @@ RoboVM also powers **[libGDX](http://libgdx.badlogicgames.com)**, a very popular
 ## Ready?
 Here's our 5 step program to happiness:
 
-1. **[Sign up](https://account.robovm.com/#/register)** for a free 14-day trial.
+1. **[Sign up](https://account.robovm.com/#/register)** for a trial.
 2. Get up to speed with our **[Getting Started Guide](getting-started/introduction.md)**.
 3. Follow our **[Tutorials & Screencasts](tutorials/introduction.md)**.
 4. Dissect our **[Samples](samples.md)**.

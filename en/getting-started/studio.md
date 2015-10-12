@@ -8,12 +8,9 @@ This section shows how to build and test RoboVM iOS applications using RoboVM St
 
 ## Installing RoboVM Studio
 
-Before installing, make sure to intall Xcode and Oracle's JDK 7+. RoboVM Studio will help you get everything else setup automatically the first time you open it. First it will ask you to point to the JDK you would like to use, which should be automatic. Then you can choose where it should install the android sdk, if you want to use RoboVM Studio for cross platform development. And finally you can input your license key if you have [http://www.robovm.com/pricing/](purchased a subscription) for one of RoboVM's subscription plans. Activating the license will enable the features you purchased, such as debugging support or Interface Builder integration.
+Before installing, make sure to intall Xcode and Oracle's JDK 7+. RoboVM Studio will help you get everything else setup automatically the first time you open it. First it will ask you to point to the JDK you would like to use, which should be automatic. Then you can choose where it should install the android sdk, if you want to use RoboVM Studio for cross platform development. And finally you input your license key for one of RoboVM's subscription plans.
 
 ![License Manager dialog](images/license-manager.png)
-
-> NOTE: A commercial license is not required to create RoboVM applications and deploy them to the App Store. Commercial licenses add additional features and services on top of the free core of RoboVM. For more information, visit our [pricing page](http://www.robovm.com/pricing/).
-
 
 ## Creating a New Project
 

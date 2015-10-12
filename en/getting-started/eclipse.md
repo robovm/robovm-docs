@@ -26,13 +26,10 @@ Follow the on-screen instructions until installation is complete and restart Ecl
 
 > NOTE: You can use a nightly build by using `http://download.robovm.org/nightlies/eclipse/` as the software site instead of the one listed above.
 
-## Activating your License 
-
-If you have [purchased a subscription](https://robovm.com/pricing/) for one of RoboVM's subscription plans, you have to active the license for use on your computer. Activating the license will enable the features you purchased, such as debugging support or Interface Builder integration. Select _License Manager_ from the Eclipse _RoboVM_ menu and enter your license key.
+## Activating your License
+You have to active the license for use on your computer. Activating the license will enable the features you purchased. Select _License Manager_ from the Eclipse _RoboVM_ menu and enter your license key.
 
 ![License Manager dialog](/images/license-manager.png)
-
-> NOTE: A commercial license is not required to create RoboVM applications and deploy them to the App Store. Commercial licenses add additional features and services on top of the free core of RoboVM. For more information, visit our [pricing page](https://robovm.com/pricing/).
 
 ## Creating a Project
 

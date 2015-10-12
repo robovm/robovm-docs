@@ -1,7 +1,5 @@
 # Interface Builder Basics
 
-> NOTE: You will need to have a valid license key to use Interface Builder integration. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
-
 <div class="video">
 	<iframe frameborder="0" allowfullscreen src="https://www.youtube.com/embed/eQYu4ATQWi8?rel=0"></iframe>
 </div>

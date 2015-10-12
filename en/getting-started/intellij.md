@@ -26,15 +26,9 @@ With IntelliJ setup, you are ready to install the RoboVM IntelliJ plugin. Open t
 
 ## Activating your License 
 
-If you have [https://robovm.com/pricing/](purchased a subscription) for one
-of RoboVM's subscription plans, you have to active the license for use on your
-computer. Activating the license will enable the features you purchased, such
-as debugging support or Interface Builder integration. Select _License Manager_ from the IntelliJ _RoboVM_ menu and enter your license key.
+You have to active the license for use on your computer. Activating the license will enable the features you purchased. Select _License Manager_ from the IntelliJ _RoboVM_ menu and enter your license key.
 
 ![License Manager dialog](/images/license-manager.png)
-
-> NOTE: A commercial license is not required to create RoboVM applications and deploy them to the App Store. Commercial licenses add additional features and services on top of the free core of RoboVM. For more information, visit our [pricing page](https://robovm.com/pricing/).
-
 
 ## Creating a New Project
 

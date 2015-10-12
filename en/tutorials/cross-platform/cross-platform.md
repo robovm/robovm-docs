@@ -1,7 +1,5 @@
 # Cross-Platform Basics
 
-> NOTE: Although a valid license key is not needed for cross platform support, this tutorial makes use of Interface Builder integration which does. You can [sign up for a 14-day free trial](https://account.robovm.com/#/login) to test this feature.
-
 <div class="video">
 	<iframe frameborder="0" allowfullscreen src="https://www.youtube.com/embed/wP3ptAnVhQw?rel=0"></iframe>
 </div>
